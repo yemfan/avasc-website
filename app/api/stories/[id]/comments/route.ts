@@ -5,6 +5,8 @@ import { ensureAppUser } from "@/lib/ensure-user";
 import { commentContainsBlockedPattern } from "@/lib/comment-policy";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const bodySchema = z.object({
   body: z.string().min(2).max(4000),
 });

@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const createSchema = z.object({
   title: z.string().min(3).max(200),
   body: z.string().min(20).max(20000),

@@ -6,6 +6,8 @@ import { linkCaseIndicatorsToEntities } from "@/lib/entity-linking";
 import { normalizeIndicatorValue } from "@/lib/indicators";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 const createCaseSchema = z.object({
   title: z.string().min(3).max(200),
   scamType: z.string().min(2).max(120),

@@ -6,6 +6,8 @@ import { ensureAppUser } from "@/lib/ensure-user";
 import { prisma } from "@/lib/prisma";
 import { presignEvidencePut } from "@/lib/s3";
 
+export const dynamic = "force-dynamic";
+
 const bodySchema = z.object({
   caseId: z.string().min(1),
   fileName: z.string().min(1).max(200),

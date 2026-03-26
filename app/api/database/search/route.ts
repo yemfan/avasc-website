@@ -4,6 +4,8 @@ import type { IndicatorType, Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { normalizeIndicatorValue } from "@/lib/indicators";
 
+export const dynamic = "force-dynamic";
+
 const querySchema = z.object({
   q: z.string().max(200).optional(),
   type: z.enum(["phone", "email", "domain", "wallet", "other"]).optional(),

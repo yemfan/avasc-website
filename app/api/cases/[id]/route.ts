@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 type RouteParams = { params: Promise<{ id: string }> };
 
 export async function GET(_req: Request, { params }: RouteParams) {
