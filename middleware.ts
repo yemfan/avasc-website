@@ -19,7 +19,8 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          // Do not call request.cookies.set — request cookies are read-only on the Edge
+          // runtime (Vercel), which throws and yields MIDDLEWARE_INVOCATION_FAILED.
           supabaseResponse = NextResponse.next({
             request,
           });
@@ -31,7 +32,12 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // Network / edge hiccup: still serve the page without blocking the whole site.
+    return NextResponse.next({ request });
+  }
 
   return supabaseResponse;
 }
