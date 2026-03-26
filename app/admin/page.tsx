@@ -1,22 +1,18 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const cases = await prisma.case.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 100,
-    select: {
-      id: true,
-      title: true,
-      scamType: true,
-      status: true,
-      visibility: true,
-      reporterUserId: true,
-      createdAt: true,
-    },
-  });
+  const db = getServiceSupabase();
+  const { data: cases, error } = await db
+    .from("Case")
+    .select("id, title, scamType, status, visibility, reporterUserId, createdAt")
+    .order("createdAt", { ascending: false })
+    .limit(100);
+  if (error) throw error;
+
+  const list = cases ?? [];
 
   return (
     <div className="space-y-6">
@@ -32,7 +28,7 @@ export default async function AdminPage() {
           <h2 className="text-lg font-semibold text-slate-900">Recent cases</h2>
         </div>
         <ul className="divide-y divide-slate-100">
-          {cases.map((c) => (
+          {list.map((c) => (
             <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
               <div>
                 <p className="font-medium text-slate-900">{c.title}</p>

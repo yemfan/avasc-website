@@ -4,7 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { linkCaseIndicatorsToEntities } from "@/lib/entity-linking";
 import { normalizeIndicatorValue } from "@/lib/indicators";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { newRowId } from "@/lib/db/id";
 
 export const dynamic = "force-dynamic";
 
@@ -41,21 +42,15 @@ export async function GET() {
   }
   await ensureAppUser(user);
 
-  const cases = await prisma.case.findMany({
-    where: { reporterUserId: user.id },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      scamType: true,
-      status: true,
-      visibility: true,
-      supportRequested: true,
-      createdAt: true,
-    },
-  });
+  const db = getServiceSupabase();
+  const { data: cases, error } = await db
+    .from("Case")
+    .select("id, title, scamType, status, visibility, supportRequested, createdAt")
+    .eq("reporterUserId", user.id)
+    .order("createdAt", { ascending: false });
+  if (error) throw error;
 
-  return NextResponse.json({ success: true, cases });
+  return NextResponse.json({ success: true, cases: cases ?? [] });
 }
 
 export async function POST(req: Request) {
@@ -77,38 +72,45 @@ export async function POST(req: Request) {
   if (user) await ensureAppUser(user);
 
   const reporterUserId = user?.id ?? null;
+  const db = getServiceSupabase();
+  const caseId = newRowId();
+  const now = new Date().toISOString();
 
-  const created = await prisma.case.create({
-    data: {
-      reporterUserId,
-      title: data.title,
-      scamType: data.scamType,
-      amountCents: data.amountCents,
-      currency: data.currency ?? "USD",
-      paymentMethod: data.paymentMethod,
-      occurredAtStart: data.occurredAtStart ? new Date(data.occurredAtStart) : undefined,
-      occurredAtEnd: data.occurredAtEnd ? new Date(data.occurredAtEnd) : undefined,
-      narrativePrivate: data.narrativePrivate,
-      narrativePublic: data.narrativePublic ?? null,
-      visibility: data.visibility,
-      supportRequested: data.supportRequested ?? false,
-      isAnonymousSubmit: data.isAnonymousSubmit ?? false,
-      status: "submitted",
-    },
+  const { error: ce } = await db.from("Case").insert({
+    id: caseId,
+    reporterUserId,
+    title: data.title,
+    scamType: data.scamType,
+    amountCents: data.amountCents ?? null,
+    currency: data.currency ?? "USD",
+    paymentMethod: data.paymentMethod ?? null,
+    occurredAtStart: data.occurredAtStart ? data.occurredAtStart : null,
+    occurredAtEnd: data.occurredAtEnd ? data.occurredAtEnd : null,
+    narrativePrivate: data.narrativePrivate,
+    narrativePublic: data.narrativePublic ?? null,
+    visibility: data.visibility,
+    supportRequested: data.supportRequested ?? false,
+    isAnonymousSubmit: data.isAnonymousSubmit ?? false,
+    status: "submitted",
+    createdAt: now,
+    updatedAt: now,
   });
+  if (ce) throw ce;
 
   if (data.indicators.length) {
-    await prisma.caseIndicator.createMany({
-      data: data.indicators.map((ind) => ({
-        caseId: created.id,
-        type: ind.type,
-        value: normalizeIndicatorValue(ind.type, ind.value),
-        rawValue: ind.value,
-      })),
-    });
+    const rows = data.indicators.map((ind) => ({
+      id: newRowId(),
+      caseId,
+      type: ind.type,
+      value: normalizeIndicatorValue(ind.type, ind.value),
+      rawValue: ind.value,
+      createdAt: now,
+    }));
+    const { error: indErr } = await db.from("CaseIndicator").insert(rows);
+    if (indErr) throw indErr;
   }
 
-  await linkCaseIndicatorsToEntities(created.id);
+  await linkCaseIndicatorsToEntities(caseId);
 
-  return NextResponse.json({ success: true, caseId: created.id });
+  return NextResponse.json({ success: true, caseId });
 }

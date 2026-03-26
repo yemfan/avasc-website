@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getScamEntityPublicById } from "@/lib/db/entity-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -9,27 +9,13 @@ type PageProps = { params: Promise<{ id: string }> };
 export default async function ScamEntityPage({ params }: PageProps) {
   const { id } = await params;
 
-  const entity = await prisma.scamEntity.findUnique({
-    where: { id },
-    include: {
-      caseLinks: {
-        include: {
-          case: {
-            select: {
-              id: true,
-              title: true,
-              scamType: true,
-              visibility: true,
-              narrativePublic: true,
-              createdAt: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const raw = await getScamEntityPublicById(id);
 
-  if (!entity) notFound();
+  if (!raw) notFound();
+
+  const entity = raw as Record<string, unknown> & {
+    caseLinks: { caseId: string; case: Record<string, unknown> }[];
+  };
 
   return (
     <div className="space-y-8">
@@ -44,21 +30,21 @@ export default async function ScamEntityPage({ params }: PageProps) {
       </div>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{entity.type}</p>
-        <p className="mt-2 font-mono text-lg text-slate-900">{entity.normalizedValue}</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{entity.type as string}</p>
+        <p className="mt-2 font-mono text-lg text-slate-900">{entity.normalizedValue as string}</p>
         <dl className="mt-6 grid gap-4 sm:grid-cols-3">
           <div>
             <dt className="text-xs text-slate-500">Risk score</dt>
-            <dd className="text-2xl font-semibold text-slate-900">{entity.riskScore}</dd>
+            <dd className="text-2xl font-semibold text-slate-900">{entity.riskScore as number}</dd>
           </div>
           <div>
             <dt className="text-xs text-slate-500">Linked reports</dt>
-            <dd className="text-2xl font-semibold text-slate-900">{entity.reportCount}</dd>
+            <dd className="text-2xl font-semibold text-slate-900">{entity.reportCount as number}</dd>
           </div>
           <div>
             <dt className="text-xs text-slate-500">Last seen</dt>
             <dd className="text-sm text-slate-800">
-              {new Date(entity.lastSeenAt).toLocaleString()}
+              {new Date(entity.lastSeenAt as string).toLocaleString()}
             </dd>
           </div>
         </dl>
@@ -69,16 +55,17 @@ export default async function ScamEntityPage({ params }: PageProps) {
         <ul className="mt-4 space-y-4">
           {entity.caseLinks.map((link) => {
             const c = link.case;
+            const visibility = c.visibility as string;
             const showSummary =
-              c.visibility === "public" || c.visibility === "anonymized" ? c.narrativePublic : null;
+              visibility === "public" || visibility === "anonymized" ? c.narrativePublic : null;
             return (
               <li key={link.caseId} className="border-b border-slate-100 pb-4 last:border-b-0">
-                <p className="font-medium text-slate-900">{c.title}</p>
+                <p className="font-medium text-slate-900">{c.title as string}</p>
                 <p className="text-xs text-slate-500">
-                  {c.scamType} · {new Date(c.createdAt).toLocaleDateString()}
+                  {c.scamType as string} · {new Date(c.createdAt as string).toLocaleDateString()}
                 </p>
                 {showSummary ? (
-                  <p className="mt-2 text-sm text-slate-700">{showSummary}</p>
+                  <p className="mt-2 text-sm text-slate-700">{showSummary as string}</p>
                 ) : (
                   <p className="mt-2 text-sm text-slate-500">
                     Details restricted — this case is not published with a public summary.

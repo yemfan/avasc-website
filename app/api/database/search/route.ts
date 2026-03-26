@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import type { IndicatorType, Prisma } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 import { normalizeIndicatorValue } from "@/lib/indicators";
+import type { IndicatorType } from "@/lib/types/db";
 
 export const dynamic = "force-dynamic";
 
@@ -26,57 +26,47 @@ export async function GET(req: Request) {
 
   const { q, type, scamType } = parsed.data;
   const term = q?.trim();
+  const db = getServiceSupabase();
 
-  const where: Prisma.ScamEntityWhereInput = {};
+  let entityQuery = db
+    .from("ScamEntity")
+    .select("id, type, normalizedValue, riskScore, reportCount, lastSeenAt")
+    .order("riskScore", { ascending: false })
+    .order("reportCount", { ascending: false })
+    .limit(50);
 
   if (type) {
-    where.type = type as IndicatorType;
+    entityQuery = entityQuery.eq("type", type);
   }
 
   if (term) {
-    if (type) {
-      const normalized = normalizeIndicatorValue(type as IndicatorType, term);
-      where.normalizedValue = { contains: normalized, mode: "insensitive" };
-    } else {
-      where.normalizedValue = { contains: term.toLowerCase(), mode: "insensitive" };
-    }
+    const pattern =
+      type && term
+        ? `%${normalizeIndicatorValue(type as IndicatorType, term)}%`
+        : `%${term.toLowerCase()}%`;
+    entityQuery = entityQuery.ilike("normalizedValue", pattern);
   }
 
-  const entities = await prisma.scamEntity.findMany({
-    where,
-    orderBy: [{ riskScore: "desc" }, { reportCount: "desc" }],
-    take: 50,
-    select: {
-      id: true,
-      type: true,
-      normalizedValue: true,
-      riskScore: true,
-      reportCount: true,
-      lastSeenAt: true,
-    },
-  });
+  const { data: entities, error: ee } = await entityQuery;
+  if (ee) throw ee;
 
-  let casesPreview: { id: string; title: string; scamType: string; createdAt: Date }[] = [];
+  let casesPreview: { id: string; title: string; scamType: string; createdAt: string }[] = [];
   if (scamType?.trim()) {
-    casesPreview = await prisma.case.findMany({
-      where: {
-        scamType: { equals: scamType.trim(), mode: "insensitive" },
-        OR: [{ visibility: "public" }, { visibility: "anonymized" }],
-      },
-      take: 20,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        title: true,
-        scamType: true,
-        createdAt: true,
-      },
-    });
+    const st = scamType.trim();
+    const { data: cases, error: ce } = await db
+      .from("Case")
+      .select("id, title, scamType, createdAt")
+      .ilike("scamType", st)
+      .in("visibility", ["public", "anonymized"])
+      .order("createdAt", { ascending: false })
+      .limit(20);
+    if (ce) throw ce;
+    casesPreview = (cases ?? []) as typeof casesPreview;
   }
 
   return NextResponse.json({
     success: true,
-    entities,
+    entities: entities ?? [],
     casesPreview,
   });
 }

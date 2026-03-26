@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getScamEntityPublicById } from "@/lib/db/entity-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -9,35 +9,18 @@ type RouteParams = { params: Promise<{ id: string }> };
 export async function GET(_req: Request, { params }: RouteParams) {
   const { id } = await params;
 
-  const entity = await prisma.scamEntity.findUnique({
-    where: { id },
-    include: {
-      caseLinks: {
-        include: {
-          case: {
-            select: {
-              id: true,
-              title: true,
-              scamType: true,
-              visibility: true,
-              narrativePublic: true,
-              createdAt: true,
-              status: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const raw = await getScamEntityPublicById(id);
 
-  if (!entity) {
+  if (!raw) {
     return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
   }
 
-  const relatedCases = entity.caseLinks.map((l) => {
+  const entity = raw;
+  const relatedCases = (entity.caseLinks as { caseId: string; case: Record<string, unknown> }[]).map((l) => {
     const c = l.case;
+    const visibility = c.visibility as string;
     const safe =
-      c.visibility === "public" || c.visibility === "anonymized"
+      visibility === "public" || visibility === "anonymized"
         ? {
             id: c.id,
             title: c.title,

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { newRowId } from "@/lib/db/id";
 
 export const dynamic = "force-dynamic";
 
@@ -13,20 +14,16 @@ const createSchema = z.object({
 });
 
 export async function GET() {
-  const stories = await prisma.story.findMany({
-    where: { status: "approved" },
-    orderBy: { createdAt: "desc" },
-    take: 50,
-    select: {
-      id: true,
-      title: true,
-      body: true,
-      isAnonymous: true,
-      createdAt: true,
-    },
-  });
+  const db = getServiceSupabase();
+  const { data: stories, error } = await db
+    .from("Story")
+    .select("id, title, body, isAnonymous, createdAt")
+    .eq("status", "approved")
+    .order("createdAt", { ascending: false })
+    .limit(50);
+  if (error) throw error;
 
-  return NextResponse.json({ success: true, stories });
+  return NextResponse.json({ success: true, stories: stories ?? [] });
 }
 
 export async function POST(req: Request) {
@@ -48,15 +45,24 @@ export async function POST(req: Request) {
     );
   }
 
-  const story = await prisma.story.create({
-    data: {
+  const db = getServiceSupabase();
+  const id = newRowId();
+  const now = new Date().toISOString();
+  const { data: story, error } = await db
+    .from("Story")
+    .insert({
+      id,
       authorUserId: user.id,
       title: parsed.data.title,
       body: parsed.data.body,
       isAnonymous: parsed.data.isAnonymous ?? false,
       status: "pending",
-    },
-  });
+      createdAt: now,
+      updatedAt: now,
+    })
+    .select("id, status")
+    .single();
+  if (error) throw error;
 
   return NextResponse.json({ success: true, storyId: story.id, status: story.status });
 }

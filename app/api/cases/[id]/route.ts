@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { getCaseDetailById } from "@/lib/db/case-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -17,16 +18,14 @@ export async function GET(_req: Request, { params }: RouteParams) {
     return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
   }
   await ensureAppUser(user);
-  const appUser = await prisma.user.findUniqueOrThrow({ where: { id: user.id } });
 
-  const c = await prisma.case.findUnique({
-    where: { id },
-    include: {
-      indicators: true,
-      evidence: true,
-      entityLinks: { include: { entity: true } },
-    },
-  });
+  const db = getServiceSupabase();
+  const { data: appUser, error: ue } = await db.from("User").select("*").eq("id", user.id).maybeSingle();
+  if (ue || !appUser) {
+    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+  }
+
+  const c = await getCaseDetailById(id);
 
   if (!c) {
     return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });

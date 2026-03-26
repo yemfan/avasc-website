@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +14,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   await ensureAppUser(user);
 
-  const appUser = await prisma.user.findUnique({ where: { id: user.id } });
+  const db = getServiceSupabase();
+  const { data: appUser } = await db.from("User").select("role").eq("id", user.id).maybeSingle();
   if (!appUser || appUser.role !== "admin") {
     redirect("/dashboard");
   }

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { newRowId } from "@/lib/db/id";
 
 export const dynamic = "force-dynamic";
 
@@ -38,22 +39,31 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, error: "Invalid storage key" }, { status: 400 });
   }
 
-  const c = await prisma.case.findUnique({ where: { id: caseId } });
+  const db = getServiceSupabase();
+  const { data: c, error: ce } = await db.from("Case").select("reporterUserId").eq("id", caseId).maybeSingle();
+  if (ce) throw ce;
   if (!c || c.reporterUserId !== user.id) {
     return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
   }
 
   const bucket = process.env.S3_BUCKET_AVASC ?? "unknown";
+  const id = newRowId();
+  const now = new Date().toISOString();
 
-  const file = await prisma.evidenceFile.create({
-    data: {
+  const { data: file, error: fe } = await db
+    .from("EvidenceFile")
+    .insert({
+      id,
       caseId,
       storageKey,
       bucket,
       mimeType,
       sizeBytes,
-    },
-  });
+      createdAt: now,
+    })
+    .select("id")
+    .single();
+  if (fe) throw fe;
 
   return NextResponse.json({ success: true, evidenceId: file.id });
 }

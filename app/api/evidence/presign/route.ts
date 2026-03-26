@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 import { presignEvidencePut } from "@/lib/s3";
 
 export const dynamic = "force-dynamic";
@@ -43,7 +43,9 @@ export async function POST(req: Request) {
 
   const { caseId, fileName, contentType, contentLength } = parsed.data;
 
-  const c = await prisma.case.findUnique({ where: { id: caseId } });
+  const db = getServiceSupabase();
+  const { data: c, error } = await db.from("Case").select("reporterUserId").eq("id", caseId).maybeSingle();
+  if (error) throw error;
   if (!c || c.reporterUserId !== user.id) {
     return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
   }

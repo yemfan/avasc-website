@@ -1,4 +1,4 @@
-import type { IndicatorType } from "@prisma/client";
+import type { IndicatorType } from "@/lib/types/db";
 
 export function normalizeIndicatorValue(type: IndicatorType, raw: string): string {
   const t = raw.trim().toLowerCase();

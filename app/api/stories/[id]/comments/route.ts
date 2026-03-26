@@ -3,7 +3,8 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { commentContainsBlockedPattern } from "@/lib/comment-policy";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { newRowId } from "@/lib/db/id";
 
 export const dynamic = "force-dynamic";
 
@@ -41,19 +42,28 @@ export async function POST(req: Request, { params }: RouteParams) {
     );
   }
 
-  const story = await prisma.story.findUnique({ where: { id: storyId } });
+  const db = getServiceSupabase();
+  const { data: story, error: se } = await db.from("Story").select("id, status").eq("id", storyId).maybeSingle();
+  if (se) throw se;
   if (!story || story.status !== "approved") {
     return NextResponse.json({ success: false, error: "Not found" }, { status: 404 });
   }
 
-  const comment = await prisma.comment.create({
-    data: {
+  const commentId = newRowId();
+  const now = new Date().toISOString();
+  const { data: comment, error: ce } = await db
+    .from("Comment")
+    .insert({
+      id: commentId,
       storyId,
       authorUserId: user.id,
       body: parsed.data.body,
       status: "pending",
-    },
-  });
+      createdAt: now,
+    })
+    .select("id, status")
+    .single();
+  if (ce) throw ce;
 
   return NextResponse.json({ success: true, commentId: comment.id, status: comment.status });
 }

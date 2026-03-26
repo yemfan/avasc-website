@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 
 export const dynamic = "force-dynamic";
 
@@ -15,24 +15,19 @@ export async function GET() {
   }
   await ensureAppUser(user);
 
-  const appUser = await prisma.user.findUnique({ where: { id: user.id } });
+  const db = getServiceSupabase();
+  const { data: appUser, error: ue } = await db.from("User").select("role").eq("id", user.id).maybeSingle();
+  if (ue) throw ue;
   if (!appUser || appUser.role !== "admin") {
     return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
   }
 
-  const cases = await prisma.case.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 100,
-    select: {
-      id: true,
-      title: true,
-      scamType: true,
-      status: true,
-      visibility: true,
-      reporterUserId: true,
-      createdAt: true,
-    },
-  });
+  const { data: cases, error } = await db
+    .from("Case")
+    .select("id, title, scamType, status, visibility, reporterUserId, createdAt")
+    .order("createdAt", { ascending: false })
+    .limit(100);
+  if (error) throw error;
 
-  return NextResponse.json({ success: true, cases });
+  return NextResponse.json({ success: true, cases: cases ?? [] });
 }

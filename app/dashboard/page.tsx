@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
-import { prisma } from "@/lib/prisma";
+import { getServiceSupabase } from "@/lib/supabase/service-role";
 
 export const dynamic = "force-dynamic";
 
@@ -15,19 +15,15 @@ export default async function DashboardPage() {
 
   await ensureAppUser(user);
 
-  const cases = await prisma.case.findMany({
-    where: { reporterUserId: user.id },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      scamType: true,
-      status: true,
-      visibility: true,
-      supportRequested: true,
-      createdAt: true,
-    },
-  });
+  const db = getServiceSupabase();
+  const { data: cases, error } = await db
+    .from("Case")
+    .select("id, title, scamType, status, visibility, supportRequested, createdAt")
+    .eq("reporterUserId", user.id)
+    .order("createdAt", { ascending: false });
+  if (error) throw error;
+
+  const list = cases ?? [];
 
   return (
     <div className="space-y-8">
@@ -58,11 +54,11 @@ export default async function DashboardPage() {
             New report
           </Link>
         </div>
-        {cases.length === 0 ? (
+        {list.length === 0 ? (
           <p className="mt-4 text-sm text-slate-600">No cases yet.</p>
         ) : (
           <ul className="mt-4 divide-y divide-slate-100">
-            {cases.map((c) => (
+            {list.map((c) => (
               <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 py-4">
                 <div>
                   <p className="font-medium text-slate-900">{c.title}</p>
