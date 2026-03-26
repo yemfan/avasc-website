@@ -1,0 +1,12 @@
+<svg width="200" height="230" viewBox="0 0 54 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer shield -->
+  <path d="M27 2L4 11V32C4 45 27 60 27 60C27 60 50 45 50 32V11L27 2Z" fill="#1B3D6E" stroke="#C9963A" stroke-width="2.5"/>
+  <!-- Inner shield -->
+  <path d="M27 10L12 17V32C12 41.5 27 53 27 53C27 53 42 41.5 42 32V17L27 10Z" fill="#132444" stroke="rgba(201,150,58,0.5)" stroke-width="1.2"/>
+  <!-- AVASC text -->
+  <text x="27" y="30" text-anchor="middle" font-family="Georgia, serif" font-size="9" font-weight="700" fill="#C9963A" letter-spacing="2">AVASC</text>
+  <!-- Divider line -->
+  <line x1="16" y1="34" x2="38" y2="34" stroke="rgba(201,150,58,0.35)" stroke-width="0.8"/>
+  <!-- Crown/checkmark decoration -->
+  <path d="M20 40L24.5 46L27 43L29.5 46L34 40" stroke="#C9963A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

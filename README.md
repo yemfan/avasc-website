@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AVASC — Anti-scam reporting platform
 
-## Getting Started
+Production-oriented Next.js (App Router) app for reporting scams, searching normalized indicators, viewing scam profiles, sharing moderated survivor stories, and basic admin review.
 
-First, run the development server:
+## Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router) + **TypeScript** + **Tailwind CSS 4**
+- **Supabase Auth** (email/password; PKCE callback at `/auth/callback`)
+- **Prisma ORM** + **PostgreSQL** (use Supabase Postgres connection strings)
+- **AWS S3** presigned uploads for evidence (`/api/evidence/presign` + client `PUT`)
+
+## Prerequisites
+
+- Node.js 20+
+- A Supabase project (Auth + Database)
+- AWS credentials + S3 bucket for evidence (optional for local dev without uploads)
+
+## Setup
+
+1. Copy environment variables:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Fill in:
+
+   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `DATABASE_URL` (Supabase **connection pooling** URL, port `6543`, `?pgbouncer=true`)
+   - `DIRECT_URL` (Supabase **direct** URL, port `5432`) — used by Prisma migrations
+   - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET_AVASC` (for evidence uploads)
+   - `NEXT_PUBLIC_APP_URL` (e.g. `http://localhost:3000`)
+
+3. In Supabase **Auth → URL configuration**, add:
+
+   - Site URL: `http://localhost:3000` (or production URL)
+   - Redirect URLs: `http://localhost:3000/auth/callback`
+
+4. Install and generate Prisma client:
+
+   ```bash
+   npm install
+   npm run db:generate
+   ```
+
+5. Create schema in Postgres:
+
+   ```bash
+   npm run db:migrate
+   ```
+
+   (Uses `prisma/migrations` — first migration should be created from `prisma/schema.prisma`.)
+
+6. (Optional) Seed sample indicator rows:
+
+   ```bash
+   npm run db:seed
+   ```
+
+7. Run the dev server:
+
+   ```bash
+   npm run dev
+   ```
+
+## Admin users
+
+Roles live in the `User` table (`victim` | `admin` | `moderator`). After your first Supabase login, promote yourself in SQL (Supabase SQL editor), e.g.:
+
+```sql
+update "User" set role = 'admin' where email = 'you@example.com';
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Legacy static site
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The previous static export is preserved under `_legacy_static/` (original `index.html`, `Images/`, etc.).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Security notes
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Case narratives default to **private**; public endpoints never return `narrativePrivate`.
+- Comments reject URL-like patterns (MVP).
+- Evidence uploads require authenticated reporter and matching `caseId` in the storage key prefix.
