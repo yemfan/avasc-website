@@ -15,13 +15,30 @@ function createPrisma(): PrismaClient {
   });
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrisma();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+/** Lazy init so `next build` can run without DATABASE_URL (e.g. Vercel preview env). */
+function getOrCreatePrisma(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrisma();
+  }
+  return globalForPrisma.prisma;
 }
+
+/**
+ * Same singleton as `prisma`; proxies to a lazily created client so importing this module
+ * does not throw during build when DATABASE_URL is unset.
+ */
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getOrCreatePrisma();
+    const value = Reflect.get(client, prop, client);
+    if (typeof value === "function") {
+      return value.bind(client);
+    }
+    return value;
+  },
+});
 
 /** Same singleton as `prisma`; use either import style across the app. */
 export function getPrisma(): PrismaClient {
-  return prisma;
+  return getOrCreatePrisma();
 }
