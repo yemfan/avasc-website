@@ -50,9 +50,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Image
               src={brandImages.mark64}
               alt={brand.logoAltMark}
-              width={28}
-              height={28}
-              className="h-7 w-7 object-contain opacity-80"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain opacity-80"
             />
             <p className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} {brand.shortName} ({brand.legalName}). All rights reserved.

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
-import { brandImages } from "@/lib/brand-images";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,10 +20,6 @@ export const metadata: Metadata = {
   },
   description:
     "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
-  icons: {
-    icon: [{ url: brandImages.mark64, sizes: "64x64", type: "image/png" }],
-    apple: [{ url: brandImages.mark180, sizes: "180x180", type: "image/png" }],
-  },
 };
 
 export default function RootLayout({

@@ -76,9 +76,9 @@ export default async function Home() {
             <Image
               src={brandImages.logoFull}
               alt={brand.logoAltFull}
-              width={320}
-              height={200}
-              className="h-auto w-full max-w-[min(100%,18rem)] object-contain opacity-95 drop-shadow-[0_0_24px_rgba(197,139,43,0.15)] lg:max-w-[20rem]"
+              width={480}
+              height={300}
+              className="h-auto w-full max-w-[min(100%,26rem)] object-contain opacity-95 drop-shadow-[0_0_24px_rgba(197,139,43,0.15)] sm:max-w-[min(100%,28rem)] lg:max-w-[32rem]"
               priority
             />
           </div>
