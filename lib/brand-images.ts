@@ -1,8 +1,11 @@
 /** Paths for files in `public/images` (URL-encoded where filenames contain spaces). */
 export const brandImages = {
-  mark64: "/images/AVASC64.svg",
-  mark180: "/images/AVASC180.svg",
-  logoFull: "/images/avasc-logo-full.svg",
+  /** Small mark: nav/footer, favicon. */
+  mark64: "/images/avasc64.png",
+  /** Larger mark: About page, Apple touch. */
+  mark180: "/images/avasc180.png",
+  /** Full wordmark / hero logo. */
+  logoFull: "/images/AVASClogo.png",
 } as const;
 
 /** Display and accessibility copy aligned with official AVASC branding. */
