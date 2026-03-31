@@ -1,0 +1,609 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  victim
+  moderator
+  admin
+}
+
+enum CaseVisibility {
+  private
+  anonymized_public
+  public_story_candidate
+}
+
+enum CaseStatus {
+  NEW
+  PENDING_REVIEW
+  NEEDS_FOLLOW_UP
+  CLUSTERED
+  PUBLISHED_ANONYMIZED
+  CLOSED
+}
+
+enum RecoveryStage {
+  NOT_STARTED
+  INITIAL_RESPONSE
+  EVIDENCE_GATHERING
+  REPORTED_TO_INSTITUTIONS
+  UNDER_REVIEW
+  COMPLETED
+}
+
+enum IndicatorType {
+  WALLET
+  PHONE
+  EMAIL
+  DOMAIN
+  TX_HASH
+  SOCIAL_HANDLE
+  ALIAS
+  PLATFORM
+  COMPANY_NAME
+  BANK_ACCOUNT
+}
+
+enum EvidenceRedactionStatus {
+  NOT_REVIEWED
+  SAFE
+  NEEDS_REDACTION
+  REDACTED
+}
+
+enum ClusterPublicStatus {
+  DRAFT
+  INTERNAL
+  PUBLISHED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ModerationStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum CommentModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+  SPAM
+}
+
+enum SupportType {
+  EMOTIONAL_SUPPORT
+  REPORTING_HELP
+  RECOVERY_GUIDANCE
+  LEGAL_REFERRAL
+  MEDIA_ADVOCACY
+  GENERAL_HELP
+}
+
+enum SupportRequestStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+enum DonationType {
+  one_time
+  monthly
+}
+
+enum PaymentProvider {
+  stripe
+  paypal
+}
+
+enum MatchStrengthLabel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ClusterSuggestionType {
+  ASSIGN_TO_EXISTING
+  CREATE_NEW
+}
+
+enum SuggestionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum SourceType {
+  GOVERNMENT
+  NGO
+  COMMERCIAL
+  AVASC_FIRST_PARTY
+  INTERNAL
+}
+
+enum AccessTier {
+  PUBLIC
+  PARTNER
+  INTERNAL
+  RESTRICTED
+}
+
+enum EntityType {
+  DOMAIN
+  WALLET
+  PHONE
+  EMAIL
+  TX_HASH
+  SOCIAL_HANDLE
+  ALIAS
+  PLATFORM
+  COMPANY_NAME
+  BANK_ACCOUNT
+  ORGANIZATION
+}
+
+model User {
+  id                   String   @id @default(uuid()) @db.Uuid
+  supabaseUserId       String   @unique @db.Uuid
+  email                String   @unique
+  displayName          String?
+  role                 UserRole @default(victim)
+  isAnonymousByDefault Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  cases           Case[]
+  stories         Story[]
+  comments        Comment[]
+  supportRequests SupportRequest[] @relation("SupportRequestUser")
+  assignedSupport SupportRequest[] @relation("SupportRequestAssignee")
+  auditLogs       AuditLog[]       @relation("AuditActor")
+
+  @@index([role])
+}
+
+model Case {
+  id                          String         @id @default(uuid()) @db.Uuid
+  userId                      String         @db.Uuid
+  scamType                    String
+  title                       String
+  summary                     String
+  fullNarrative               String?
+  incidentStartDate           DateTime?
+  incidentEndDate             DateTime?
+  amountLost                  Decimal?       @db.Decimal(12, 2)
+  currency                    String?        @db.VarChar(10)
+  paymentMethod               String?
+  initialContactChannel       String?
+  jurisdiction                String?
+  visibility                  CaseVisibility @default(private)
+  status                      CaseStatus     @default(NEW)
+  recoveryStage               RecoveryStage  @default(NOT_STARTED)
+  allowFollowUp               Boolean        @default(false)
+  allowLawEnforcementReferral Boolean        @default(false)
+  allowCaseMatching           Boolean        @default(true)
+  allowPublicAnonymizedUse    Boolean        @default(false)
+  internalNotes               String?
+  createdAt                   DateTime       @default(now())
+  updatedAt                   DateTime       @updatedAt
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  indicators         CaseIndicator[]
+  evidenceFiles      EvidenceFile[]
+  supportRequests    SupportRequest[]
+  stories            Story[]
+  clusterLinks       ScamClusterCase[]
+  sourceMatches      CaseMatchCache[]    @relation("SourceCaseMatches")
+  targetMatches      CaseMatchCache[]    @relation("TargetCaseMatches")
+  clusterSuggestions ClusterSuggestion[]
+
+  @@index([userId])
+  @@index([scamType])
+  @@index([status])
+  @@index([visibility])
+  @@index([createdAt])
+}
+
+model CaseIndicator {
+  id              String        @id @default(uuid()) @db.Uuid
+  caseId          String        @db.Uuid
+  indicatorType   IndicatorType
+  rawValue        String
+  normalizedValue String
+  isPublic        Boolean       @default(false)
+  isVerified      Boolean       @default(false)
+  confidenceScore Int?
+  notes           String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+  @@index([indicatorType])
+  @@index([normalizedValue])
+  @@index([indicatorType, normalizedValue])
+}
+
+model EvidenceFile {
+  id              String                  @id @default(uuid()) @db.Uuid
+  caseId          String                  @db.Uuid
+  fileName        String
+  filePath        String
+  bucket          String
+  mimeType        String
+  fileSize        Int
+  redactionStatus EvidenceRedactionStatus @default(NOT_REVIEWED)
+  isReviewed      Boolean                 @default(false)
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+
+  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId])
+  @@index([bucket, filePath])
+}
+
+model ScamCluster {
+  id                  String              @id @default(uuid()) @db.Uuid
+  title               String
+  slug                String              @unique
+  scamType            String
+  summary             String
+  publicStatus        ClusterPublicStatus @default(DRAFT)
+  riskLevel           RiskLevel           @default(MEDIUM)
+  redFlags            String?
+  commonScript        String?
+  safetyWarning       String?
+  recommendedNextStep String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  caseLinks           ScamClusterCase[]
+  indicatorAggregates ClusterIndicatorAggregate[]
+  clusterSuggestions  ClusterSuggestion[]         @relation("SuggestedCluster")
+
+  @@index([publicStatus])
+  @@index([riskLevel])
+  @@index([scamType])
+}
+
+model ScamClusterCase {
+  id            String   @id @default(uuid()) @db.Uuid
+  scamClusterId String   @db.Uuid
+  caseId        String   @db.Uuid
+  linkedAt      DateTime @default(now())
+
+  scamCluster ScamCluster @relation(fields: [scamClusterId], references: [id], onDelete: Cascade)
+  case        Case        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@unique([scamClusterId, caseId])
+  @@index([scamClusterId])
+  @@index([caseId])
+}
+
+model ClusterIndicatorAggregate {
+  id                 String        @id @default(uuid()) @db.Uuid
+  scamClusterId      String        @db.Uuid
+  indicatorType      IndicatorType
+  normalizedValue    String
+  displayValue       String?
+  occurrenceCount    Int           @default(1)
+  linkedCaseCount    Int           @default(1)
+  isPublic           Boolean       @default(false)
+  isVerified         Boolean       @default(false)
+  sourceIndicatorIds String[]      @default([])
+  metadataJson       Json?
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  scamCluster ScamCluster @relation(fields: [scamClusterId], references: [id], onDelete: Cascade)
+
+  @@unique([scamClusterId, indicatorType, normalizedValue])
+  @@index([scamClusterId])
+  @@index([indicatorType])
+  @@index([normalizedValue])
+}
+
+model Story {
+  id               String           @id @default(uuid()) @db.Uuid
+  userId           String           @db.Uuid
+  caseId           String?          @db.Uuid
+  title            String
+  slug             String?          @unique
+  body             String
+  videoUrl         String?
+  anonymityMode    Boolean          @default(true)
+  moderationStatus ModerationStatus @default(DRAFT)
+  publishedAt      DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  case     Case?     @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  comments Comment[]
+
+  @@index([userId])
+  @@index([caseId])
+  @@index([moderationStatus])
+}
+
+model Comment {
+  id               String                  @id @default(uuid()) @db.Uuid
+  storyId          String                  @db.Uuid
+  userId           String                  @db.Uuid
+  body             String
+  moderationStatus CommentModerationStatus @default(PENDING)
+  flagReason       String?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+
+  story Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([storyId])
+  @@index([userId])
+}
+
+model SupportRequest {
+  id           String               @id @default(uuid()) @db.Uuid
+  userId       String               @db.Uuid
+  caseId       String?              @db.Uuid
+  assignedToId String?              @db.Uuid
+  supportType  SupportType
+  status       SupportRequestStatus @default(OPEN)
+  note         String?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  user       User  @relation("SupportRequestUser", fields: [userId], references: [id], onDelete: Cascade)
+  case       Case? @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  assignedTo User? @relation("SupportRequestAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([caseId])
+  @@index([assignedToId])
+  @@index([status])
+}
+
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  actorUserId  String?  @db.Uuid
+  entityType   String
+  entityId     String
+  action       String
+  metadataJson Json?
+  createdAt    DateTime @default(now())
+
+  actor User? @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId])
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model ScamAlert {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  summary     String
+  scamType    String
+  severity    String    @default("info")
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([published])
+  @@index([publishedAt])
+}
+
+model Donation {
+  id                        String          @id @default(uuid()) @db.Uuid
+  donorName                 String?
+  donorEmail                String
+  amount                    Int?
+  currency                  String?
+  paymentProvider           PaymentProvider
+  donationType              DonationType
+  providerSessionId         String?         @unique
+  providerTransactionId     String?         @unique
+  providerSubscriptionId    String?         @unique
+  receiptNumber             String?
+  receiptSentAt             DateTime?
+  monthlyConfirmationSentAt DateTime?
+  createdAt                 DateTime        @default(now())
+  updatedAt                 DateTime        @updatedAt
+
+  @@index([donorEmail])
+  @@index([donationType])
+}
+
+model CaseMatchCache {
+  id                    String             @id @default(uuid()) @db.Uuid
+  sourceCaseId          String             @db.Uuid
+  targetCaseId          String             @db.Uuid
+  totalScore            Int
+  strengthLabel         MatchStrengthLabel
+  matchedIndicatorTypes String[]           @default([])
+  matchedIndicatorsJson Json?
+  reasonsJson           Json?
+  isVisibleToVictim     Boolean            @default(false)
+  isVisiblePublicly     Boolean            @default(false)
+  computedAt            DateTime           @default(now())
+  expiresAt             DateTime?
+
+  sourceCase Case @relation("SourceCaseMatches", fields: [sourceCaseId], references: [id], onDelete: Cascade)
+  targetCase Case @relation("TargetCaseMatches", fields: [targetCaseId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceCaseId, targetCaseId])
+  @@index([sourceCaseId])
+  @@index([targetCaseId])
+}
+
+model ClusterSuggestion {
+  id                 String                @id @default(uuid()) @db.Uuid
+  caseId             String                @db.Uuid
+  suggestionType     ClusterSuggestionType
+  suggestedClusterId String?               @db.Uuid
+  suggestedTitle     String?
+  suggestedScamType  String?
+  suggestedSummary   String?
+  suggestedRiskLevel RiskLevel?
+  fitScore           Int?
+  confidenceLabel    MatchStrengthLabel
+  reasonsJson        Json?
+  seedCaseIds        String[]              @default([])
+  status             SuggestionStatus      @default(PENDING)
+  createdAt          DateTime              @default(now())
+  reviewedAt         DateTime?
+
+  case             Case         @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  suggestedCluster ScamCluster? @relation("SuggestedCluster", fields: [suggestedClusterId], references: [id], onDelete: SetNull)
+
+  @@index([caseId])
+  @@index([suggestedClusterId])
+  @@index([status])
+}
+
+model SourceSystem {
+  id               String     @id @default(uuid()) @db.Uuid
+  name             String     @unique
+  sourceType       SourceType
+  accessTier       AccessTier
+  refreshFrequency String?
+  parserKey        String?
+  legalNotes       String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  sourceRecords SourceRecord[]
+}
+
+model SourceRecord {
+  id               String     @id @default(uuid()) @db.Uuid
+  sourceSystemId   String     @db.Uuid
+  sourceRecordKey  String
+  sourceUrl        String?
+  rawPayload       Json
+  payloadHash      String?
+  accessTier       AccessTier @default(INTERNAL)
+  usageRestriction String?
+  ingestedAt       DateTime   @default(now())
+  createdAt        DateTime   @default(now())
+
+  sourceSystem  SourceSystem         @relation(fields: [sourceSystemId], references: [id], onDelete: Cascade)
+  incidentLinks IncidentSourceLink[]
+
+  @@unique([sourceSystemId, sourceRecordKey])
+  @@index([sourceSystemId])
+  @@index([ingestedAt])
+}
+
+model Incident {
+  id                String     @id @default(uuid()) @db.Uuid
+  canonicalScamType String
+  title             String
+  narrativeSummary  String?
+  firstSeenAt       DateTime?
+  lastSeenAt        DateTime?
+  jurisdiction      String?
+  amountLossMin     Decimal?   @db.Decimal(12, 2)
+  amountLossMax     Decimal?   @db.Decimal(12, 2)
+  confidenceScore   Int?
+  sourceCount       Int        @default(0)
+  accessTier        AccessTier @default(INTERNAL)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  sourceLinks      IncidentSourceLink[]
+  entityLinks      IncidentEntityLink[]
+  enforcementLinks EnforcementLink[]
+
+  @@index([canonicalScamType])
+  @@index([jurisdiction])
+}
+
+model IncidentSourceLink {
+  id                String   @id @default(uuid()) @db.Uuid
+  incidentId        String   @db.Uuid
+  sourceRecordId    String   @db.Uuid
+  mappingConfidence Int?
+  mappedBy          String?
+  mappedAt          DateTime @default(now())
+
+  incident     Incident     @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  sourceRecord SourceRecord @relation(fields: [sourceRecordId], references: [id], onDelete: Cascade)
+
+  @@unique([incidentId, sourceRecordId])
+  @@index([incidentId])
+  @@index([sourceRecordId])
+}
+
+model Entity {
+  id             String     @id @default(uuid()) @db.Uuid
+  entityType     EntityType
+  canonicalValue String
+  displayValue   String?
+  isPublicSafe   Boolean    @default(false)
+  isVerified     Boolean    @default(false)
+  accessTier     AccessTier @default(INTERNAL)
+  firstSeenAt    DateTime?
+  lastSeenAt     DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  incidentLinks IncidentEntityLink[]
+
+  @@unique([entityType, canonicalValue])
+  @@index([entityType])
+  @@index([canonicalValue])
+}
+
+model IncidentEntityLink {
+  id         String   @id @default(uuid()) @db.Uuid
+  incidentId String   @db.Uuid
+  entityId   String   @db.Uuid
+  role       String?
+  confidence Int?
+  createdAt  DateTime @default(now())
+
+  incident Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  entity   Entity   @relation(fields: [entityId], references: [id], onDelete: Cascade)
+
+  @@unique([incidentId, entityId])
+  @@index([incidentId])
+  @@index([entityId])
+}
+
+model EnforcementLink {
+  id         String    @id @default(uuid()) @db.Uuid
+  incidentId String?   @db.Uuid
+  agency     String
+  actionType String
+  caseNumber String?
+  actionUrl  String?
+  filedAt    DateTime?
+  createdAt  DateTime  @default(now())
+
+  incident Incident? @relation(fields: [incidentId], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+  @@index([agency])
+  @@index([filedAt])
+}

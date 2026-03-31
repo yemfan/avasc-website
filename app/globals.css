@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --avasc-gold: #C58B2B;
+  --avasc-gold-light: #F5C96A;
+  --avasc-gold-dark: #8B5E1A;
+
+  --avasc-blue: #0B1F3A;
+  --avasc-blue-light: #1E3A5F;
+  --avasc-blue-glow: #1E90FF;
+
+  --avasc-bg: #050A14;
+  --avasc-bg-soft: #0F172A;
+  --avasc-bg-card: #111827;
+
+  --avasc-border: #1E293B;
+  --avasc-divider: #263041;
+
+  --avasc-text-primary: #E5E7EB;
+  --avasc-text-secondary: #9CA3AF;
+  --avasc-text-muted: #6B7280;
+
+  --risk-low: #22C55E;
+  --risk-medium: #F59E0B;
+  --risk-high: #EF4444;
+  --risk-critical: #B91C1C;
+
+  --avasc-orange: #FF6A00;
+  --avasc-cyan: #06B6D4;
+
+  /* shadcn semantic → AVASC dark */
+  --background: var(--avasc-bg);
+  --foreground: var(--avasc-text-primary);
+  --card: var(--avasc-bg-card);
+  --card-foreground: var(--avasc-text-primary);
+  --popover: var(--avasc-bg-card);
+  --popover-foreground: var(--avasc-text-primary);
+  --primary: var(--avasc-blue-light);
+  --primary-foreground: var(--avasc-text-primary);
+  --secondary: var(--avasc-bg-soft);
+  --secondary-foreground: var(--avasc-text-primary);
+  --muted: var(--avasc-bg-soft);
+  --muted-foreground: var(--avasc-text-secondary);
+  --accent: var(--avasc-bg-soft);
+  --accent-foreground: var(--avasc-gold-light);
+  --destructive: #EF4444;
+  --destructive-foreground: #fafafa;
+  --border: var(--avasc-border);
+  --input: var(--avasc-border);
+  --ring: var(--avasc-gold);
+  --radius: 0.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-avasc-gold: var(--avasc-gold);
+  --color-avasc-gold-light: var(--avasc-gold-light);
+  --color-avasc-gold-dark: var(--avasc-gold-dark);
+  --color-avasc-blue: var(--avasc-blue);
+  --color-avasc-blue-light: var(--avasc-blue-light);
+  --color-avasc-blue-glow: var(--avasc-blue-glow);
+  --color-avasc-bg: var(--avasc-bg);
+  --color-avasc-bg-soft: var(--avasc-bg-soft);
+  --color-avasc-bg-card: var(--avasc-bg-card);
+  --color-avasc-border: var(--avasc-border);
+  --color-avasc-divider: var(--avasc-divider);
+  --color-avasc-text-primary: var(--avasc-text-primary);
+  --color-avasc-text-secondary: var(--avasc-text-secondary);
+  --color-avasc-text-muted: var(--avasc-text-muted);
+  --color-risk-low: var(--risk-low);
+  --color-risk-medium: var(--risk-medium);
+  --color-risk-high: var(--risk-high);
+  --color-risk-critical: var(--risk-critical);
+  --color-avasc-orange: var(--avasc-orange);
+  --color-avasc-cyan: var(--avasc-cyan);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-lg: var(--radius);
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--avasc-bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--avasc-bg);
+  color: var(--avasc-text-primary);
 }

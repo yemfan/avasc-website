@@ -1,48 +1,49 @@
-import Link from "next/link";
-import { getServiceSupabase } from "@/lib/supabase/service-role";
-
 export const dynamic = "force-dynamic";
 
-export default async function AdminPage() {
-  const db = getServiceSupabase();
-  const { data: cases, error } = await db
-    .from("Case")
-    .select("id, title, scamType, status, visibility, reporterUserId, createdAt")
-    .order("createdAt", { ascending: false })
-    .limit(100);
-  if (error) throw error;
-
-  const list = cases ?? [];
-
+export default function AdminOverviewPage() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Admin</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Review submissions. Promote users to admin/moderator via SQL or a future admin tool.
+      <section className="rounded-2xl border border-border bg-background p-6 shadow-sm">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">Admin Overview</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Monitor incoming cases, support requests, moderation queues, and scam intelligence.
         </p>
-      </div>
+      </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-6 py-4">
-          <h2 className="text-lg font-semibold text-slate-900">Recent cases</h2>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Pending Cases</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">0</p>
         </div>
-        <ul className="divide-y divide-slate-100">
-          {list.map((c) => (
-            <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
-              <div>
-                <p className="font-medium text-slate-900">{c.title}</p>
-                <p className="text-xs text-slate-500">
-                  {c.scamType} · {c.status} · {c.visibility}
-                  {c.reporterUserId ? "" : " · anonymous submission"}
-                </p>
-              </div>
-              <Link href={`/cases/${c.id}`} className="text-sm font-medium text-slate-900 underline">
-                Open
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Open Support Requests</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">0</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Stories Pending Review</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">0</p>
+        </div>
+        <div className="rounded-2xl border border-border bg-background p-5 shadow-sm">
+          <p className="text-sm text-muted-foreground">Published Clusters</p>
+          <p className="mt-2 text-3xl font-bold text-foreground">0</p>
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-foreground">Recent Activity</h3>
+          <p className="mt-3 text-sm text-muted-foreground">No recent moderation activity yet.</p>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-background p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-foreground">Quick Actions</h3>
+          <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+            <p>• Review pending cases</p>
+            <p>• Moderate stories and comments</p>
+            <p>• Publish alerts</p>
+            <p>• Update scam clusters</p>
+          </div>
+        </div>
       </section>
     </div>
   );

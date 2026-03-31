@@ -1,80 +1,102 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
-import { ensureAppUser } from "@/lib/ensure-user";
-import { getServiceSupabase } from "@/lib/supabase/service-role";
+import { EmptyState } from "@/components/avasc/EmptyState";
+import { PageHeader } from "@/components/avasc/PageHeader";
+import { StatCard } from "@/components/avasc/StatCard";
+import { requireUser } from "@/lib/auth/require-user";
+import { loadDashboardOverview, presentCaseStatus } from "@/lib/victim-dashboard";
+import { storyStatusPresentation } from "@/lib/victim-dashboard/story-labels";
+import { supportStatusLabel, supportTypeLabel } from "@/lib/victim-dashboard/support-labels";
+import { getPrisma } from "@/lib/prisma";
+import type { ModerationStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+export default async function DashboardOverviewPage() {
+  const user = await requireUser();
+  const [overview, publishedStoriesCount] = await Promise.all([
+    loadDashboardOverview(user.id),
+    getPrisma().story.count({
+      where: { userId: user.id, moderationStatus: "APPROVED" },
+    }),
+  ]);
 
-  await ensureAppUser(user);
-
-  const db = getServiceSupabase();
-  const { data: cases, error } = await db
-    .from("Case")
-    .select("id, title, scamType, status, visibility, supportRequested, createdAt")
-    .eq("reporterUserId", user.id)
-    .order("createdAt", { ascending: false });
-  if (error) throw error;
-
-  const list = cases ?? [];
+  const noRecentActivity =
+    overview.recentCases.length === 0 &&
+    overview.recentSupport.length === 0 &&
+    overview.recentStories.length === 0;
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Your dashboard</h1>
-        <p className="mt-2 text-sm text-slate-600">
-          Track cases you submitted and follow recovery guidance.
-        </p>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Overview"
+        title="Your Dashboard"
+        description="Track your reports, support requests, and next steps in one place."
+      />
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <StatCard label="Cases Submitted" value={overview.totalCases} />
+        <StatCard label="Open Support Requests" value={overview.openSupportRequests} />
+        <StatCard label="Stories Shared" value={publishedStoriesCount} />
       </div>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Next steps</h2>
-        <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-slate-700">
-          <li>Secure accounts and enable two-factor authentication where possible.</li>
-          <li>Report to your bank or card network if funds were transferred.</li>
-          <li>File a report with local law enforcement or cybercrime unit.</li>
-          <li>Keep evidence copies in a safe place.</li>
-        </ul>
-      </section>
-
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold text-slate-900">Your cases</h2>
-          <Link
-            href="/report"
-            className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-          >
-            New report
-          </Link>
-        </div>
-        {list.length === 0 ? (
-          <p className="mt-4 text-sm text-slate-600">No cases yet.</p>
-        ) : (
-          <ul className="mt-4 divide-y divide-slate-100">
-            {list.map((c) => (
-              <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 py-4">
-                <div>
-                  <p className="font-medium text-slate-900">{c.title}</p>
-                  <p className="text-xs text-slate-500">
-                    {c.scamType} · {c.status} · {c.visibility}
-                    {c.supportRequested ? " · support requested" : ""}
-                  </p>
-                </div>
-                <Link href={`/cases/${c.id}`} className="text-sm font-medium text-slate-900 underline">
-                  View
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {noRecentActivity ? (
+        <EmptyState
+          title="No recent updates"
+          description="When your cases, support requests, or shared stories change, you'll see the latest activity here."
+          actionLabel="Report a New Case"
+          actionHref="/report"
+        />
+      ) : (
+        <section className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
+          <h2 className="text-lg font-semibold text-white">Recent activity</h2>
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div>
+              <h3 className="text-sm font-medium text-[var(--avasc-text-secondary)]">Cases</h3>
+              <ul className="mt-2 space-y-2 text-sm">
+                {overview.recentCases.map((c) => (
+                  <li key={c.id}>
+                    <Link
+                      href={`/dashboard/cases/${c.id}`}
+                      className="font-medium text-[var(--avasc-gold-light)] hover:text-[var(--avasc-gold)]"
+                    >
+                      {c.title}
+                    </Link>
+                    <p className="text-xs text-[var(--avasc-text-muted)]">
+                      {c.scamType} · {presentCaseStatus(c.status).label} · {c.createdAt.toLocaleDateString()}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-sm font-medium text-[var(--avasc-text-secondary)]">Support</h3>
+                <ul className="mt-2 space-y-2 text-sm text-[var(--avasc-text-primary)]">
+                  {overview.recentSupport.map((s) => (
+                    <li key={s.id}>
+                      {supportTypeLabel(s.supportType)} — {supportStatusLabel(s.status).label}
+                      {s.caseTitle ? ` · ${s.caseTitle}` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-sm font-medium text-[var(--avasc-text-secondary)]">Stories</h3>
+                <ul className="mt-2 space-y-2 text-sm text-[var(--avasc-text-primary)]">
+                  {overview.recentStories.map((s) => {
+                    const pres = storyStatusPresentation(s.status as ModerationStatus, s.publishedAt);
+                    return (
+                      <li key={s.id}>
+                        {s.title} — {pres.label}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

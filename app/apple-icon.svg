@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="AVASC">
+  <rect width="180" height="180" rx="40" fill="#050A14" />
+  <path
+    fill="#C58B2B"
+    d="m90 36 42 96H99l-7.2-18H78.2L71 132H48l42-96zm0 25.2-18.6 44.4h37.2L90 61.2z"
+  />
+</svg>

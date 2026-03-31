@@ -1,68 +1,28 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
-import { ensureAppUser } from "@/lib/ensure-user";
-import { getServiceSupabase } from "@/lib/supabase/service-role";
-import { newRowId } from "@/lib/db/id";
+import { createPublicStorySchema, createStorySubmission, listApprovedPublicStories } from "@/lib/public-stories";
 
 export const dynamic = "force-dynamic";
 
-const createSchema = z.object({
-  title: z.string().min(3).max(200),
-  body: z.string().min(20).max(20000),
-  isAnonymous: z.boolean().optional(),
-});
-
 export async function GET() {
-  const db = getServiceSupabase();
-  const { data: stories, error } = await db
-    .from("Story")
-    .select("id, title, body, isAnonymous, createdAt")
-    .eq("status", "approved")
-    .order("createdAt", { ascending: false })
-    .limit(50);
-  if (error) throw error;
-
-  return NextResponse.json({ success: true, stories: stories ?? [] });
+  const stories = await listApprovedPublicStories(50);
+  return NextResponse.json({ success: true, stories });
 }
 
 export async function POST(req: Request) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-  }
-  await ensureAppUser(user);
-
   const json = await req.json();
-  const parsed = createSchema.safeParse(json);
+  const parsed = createPublicStorySchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
       { success: false, error: "Invalid payload", issues: parsed.error.flatten() },
       { status: 400 }
     );
   }
-
-  const db = getServiceSupabase();
-  const id = newRowId();
-  const now = new Date().toISOString();
-  const { data: story, error } = await db
-    .from("Story")
-    .insert({
-      id,
-      authorUserId: user.id,
-      title: parsed.data.title,
-      body: parsed.data.body,
-      isAnonymous: parsed.data.isAnonymous ?? false,
-      status: "pending",
-      createdAt: now,
-      updatedAt: now,
-    })
-    .select("id, status")
-    .single();
-  if (error) throw error;
-
-  return NextResponse.json({ success: true, storyId: story.id, status: story.status });
+  try {
+    const created = await createStorySubmission(parsed.data);
+    return NextResponse.json({ success: true, storyId: created.storyId, status: created.status });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not submit story";
+    const status = message === "Unauthorized" ? 401 : 500;
+    return NextResponse.json({ success: false, error: message }, { status });
+  }
 }

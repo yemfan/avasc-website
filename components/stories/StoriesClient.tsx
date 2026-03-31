@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Story = {
   id: string;
+  slug: string;
   title: string;
   body: string;
   isAnonymous: boolean;
@@ -71,6 +73,9 @@ export function StoriesClient() {
                 </p>
                 <h3 className="mt-1 text-lg font-semibold text-slate-900">{s.title}</h3>
                 <p className="mt-3 whitespace-pre-wrap text-sm text-slate-800">{s.body}</p>
+                <Link href={`/stories/${s.slug}`} className="mt-3 inline-block text-sm font-medium text-slate-700 hover:underline">
+                  Read story page
+                </Link>
               </li>
             ))}
           </ul>

@@ -1,0 +1,89 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
+export const metadata = {
+  title: "Recovery center",
+};
+
+const modules = [
+  {
+    title: "Crypto scam response",
+    points: [
+      "Stop sending funds; rotate credentials if a platform was compromised.",
+      "Export transaction hashes, wallet addresses, and chat logs (redact personal IDs).",
+      "Report to your exchange and local cybercrime unit where available.",
+    ],
+  },
+  {
+    title: "Bank & wire fraud",
+    points: [
+      "Call your bank’s fraud line immediately with dates and amounts.",
+      "Request recall / SWIFT investigation for wires when timing allows.",
+      "Preserve emails, SMS, and call logs that show misrepresentation.",
+    ],
+  },
+  {
+    title: "Romance & social engineering",
+    points: [
+      "Cease contact with the scammer; do not accept new “helpers” from the same thread.",
+      "Document platform handles and payment trails.",
+      "Seek emotional support from trusted people or counselors — shame is a tactic.",
+    ],
+  },
+  {
+    title: "Fake recovery agents",
+    points: [
+      "Anyone promising guaranteed return for an upfront fee is highly suspect.",
+      "Legitimate agencies do not ask for gift cards or crypto to “unlock” funds.",
+      "Report the new scam attempt to AVASC with prior case reference if you have one.",
+    ],
+  },
+];
+
+export default function RecoveryPage() {
+  return (
+    <div className="space-y-10">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden />
+        Back to home
+      </Link>
+      <header className="max-w-3xl">
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Recovery center</h1>
+        <p className="mt-4 text-slate-600 leading-relaxed">
+          Grounded first steps and warnings — not legal advice. Pair this with a structured{" "}
+          <Link href="/report" className="font-medium text-slate-900 underline underline-offset-2">
+            scam report
+          </Link>{" "}
+          so our team can triage and match patterns safely.
+        </p>
+      </header>
+      <div className="grid gap-6 md:grid-cols-2">
+        {modules.map((m) => (
+          <section
+            key={m.title}
+            className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+          >
+            <h2 className="text-lg font-semibold text-slate-900">{m.title}</h2>
+            <ul className="mt-4 list-inside list-disc space-y-2 text-sm text-slate-600">
+              {m.points.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <section className="rounded-2xl border border-amber-200 bg-amber-50/80 p-6 text-sm text-amber-950">
+        <p className="font-semibold">Evidence checklist</p>
+        <ul className="mt-3 list-inside list-disc space-y-1 text-amber-950/90">
+          <li>Chronological narrative (private report form)</li>
+          <li>Indicators: domains, numbers, wallets, transaction IDs</li>
+          <li>Screenshots and PDFs (upload after account creation where required)</li>
+          <li>Financial institution reference numbers</li>
+        </ul>
+      </section>
+    </div>
+  );
+}

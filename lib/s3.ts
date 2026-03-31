@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const region = process.env.AWS_REGION ?? "us-east-1";
@@ -32,4 +32,16 @@ export async function presignEvidencePut(params: {
     ContentLength: params.contentLength,
   });
   return getSignedUrl(client, command, { expiresIn: 60 * 15 });
+}
+
+export async function presignEvidenceGet(key: string): Promise<string> {
+  const bucket = process.env.S3_BUCKET_AVASC;
+  if (!bucket) throw new Error("S3_BUCKET_AVASC is not set");
+
+  const client = getS3Client();
+  const command = new GetObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+  return getSignedUrl(client, command, { expiresIn: 60 * 10 });
 }

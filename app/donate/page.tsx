@@ -1,0 +1,175 @@
+import type { Metadata } from "next";
+import {
+  DonateForm,
+  DonateHero,
+  DonationOptionCard,
+  FAQItem,
+  FinalDonateCTA,
+  ImpactCard,
+  MissionStoryBlock,
+  TrustStrip,
+  WhyDonateCard,
+} from "@/components/donate";
+
+export const metadata: Metadata = {
+  title: "Support AVASC | Donate",
+  description:
+    "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
+};
+
+const STRIPE_DONATE_URL = process.env.NEXT_PUBLIC_STRIPE_DONATE_URL || "";
+const STRIPE_MONTHLY_URL = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_URL || "";
+const PAYPAL_DONATE_URL = process.env.NEXT_PUBLIC_PAYPAL_DONATE_URL || "";
+
+type DonatePageProps = {
+  searchParams: Promise<{ thanks?: string | string[] }>;
+};
+
+export default async function DonatePage({ searchParams }: DonatePageProps) {
+  const sp = await searchParams;
+  const thanksRaw = sp?.thanks;
+  const showThanks =
+    thanksRaw === "1" || (Array.isArray(thanksRaw) && thanksRaw[0] === "1");
+
+  return (
+    <main className="min-h-screen bg-background">
+      <DonateHero
+        title="Support Scam Victims. Help Stop the Next Scam."
+        subtitle="Your donation helps AVASC support victims, build scam intelligence tools, and expand public awareness."
+        monthlyUrl={STRIPE_MONTHLY_URL || undefined}
+        oneTimeUrl={STRIPE_DONATE_URL || undefined}
+      />
+
+      <TrustStrip items={["Secure donation options", "Victim-centered mission", "Privacy and dignity first"]} />
+
+      <section className="mx-auto max-w-2xl px-6 py-12">
+        <h2 className="text-2xl font-semibold tracking-tight text-foreground">Give with a custom amount</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Choose one-time or monthly, then continue to our secure payment provider.
+        </p>
+        <div className="mt-8">
+          <DonateForm showThanks={showThanks} />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">Your support creates real impact</h2>
+          <p className="mt-3 text-muted-foreground">
+            Every contribution helps AVASC build better tools, support victims, and turn reported scam experiences into
+            public protection.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <ImpactCard amount="$25" text="Helps expand victim support resources" />
+          <ImpactCard amount="$50" text="Helps review and organize scam reports" />
+          <ImpactCard amount="$100" text="Helps improve scam pattern tracking" />
+          <ImpactCard amount="$250" text="Helps support outreach and scam awareness efforts" />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-8">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">Why donate to AVASC</h2>
+          <p className="mt-3 text-muted-foreground">
+            Your support helps us do three things well: assist victims, organize scam intelligence, and prevent future
+            harm.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          <WhyDonateCard
+            title="Support victims"
+            text="Help people facing fraud access guidance, resources, and practical next steps."
+          />
+          <WhyDonateCard
+            title="Build scam intelligence"
+            text="Strengthen a structured database that helps people compare scam patterns and recognize warning signs."
+          />
+          <WhyDonateCard
+            title="Prevent future harm"
+            text="Turn reported experiences into education, awareness, and protection for others."
+          />
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 py-16">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">Choose how you want to give</h2>
+          <p className="mt-3 text-muted-foreground">
+            Monthly support helps AVASC grow more steadily, while one-time gifts help fund immediate work.
+          </p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-3">
+          <DonationOptionCard
+            title="Monthly Giving"
+            description="Provide steady support that helps AVASC plan, build, and assist more victims over time."
+            buttonLabel="Become a Monthly Supporter"
+            href={STRIPE_MONTHLY_URL || undefined}
+            featured
+          />
+          <DonationOptionCard
+            title="One-Time Donation"
+            description="Make a direct contribution to support platform development and victim resources."
+            buttonLabel="Donate Once"
+            href={STRIPE_DONATE_URL || undefined}
+          />
+          <DonationOptionCard
+            title="Donate with PayPal"
+            description="Use PayPal if that is your preferred way to give."
+            buttonLabel="Donate with PayPal"
+            href={PAYPAL_DONATE_URL || undefined}
+          />
+        </div>
+      </section>
+
+      <MissionStoryBlock />
+
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">Frequently asked questions</h2>
+          <p className="mt-3 text-muted-foreground">A few quick answers before you donate.</p>
+        </div>
+
+        <div className="space-y-4">
+          <FAQItem
+            question="Where does my donation go?"
+            answer="Donations support AVASC’s platform development, victim support resources, scam awareness, and outreach."
+          />
+          <FAQItem
+            question="Is my payment secure?"
+            answer="Yes. Donations are processed through trusted payment providers such as Stripe and PayPal."
+          />
+          <FAQItem
+            question="Are donations tax-deductible?"
+            answer="Please display the appropriate tax language based on your nonprofit registration and tax status."
+          />
+          <FAQItem
+            question="Does AVASC guarantee recovery?"
+            answer="No. AVASC is not a law firm and does not guarantee recovery."
+          />
+          <FAQItem
+            question="Can I give monthly?"
+            answer="Yes. Monthly giving is one of the most helpful ways to support AVASC’s mission."
+          />
+        </div>
+      </section>
+
+      <FinalDonateCTA
+        title="Help us turn pain into protection."
+        subtitle="Too many scam victims face fraud alone. Your support helps build a better response."
+        monthlyUrl={STRIPE_MONTHLY_URL || null}
+        oneTimeUrl={STRIPE_DONATE_URL || null}
+      />
+
+      <section className="border-t">
+        <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-muted-foreground">
+          Donations support AVASC’s platform development, scam awareness, victim support resources, and outreach. AVASC
+          is not a law firm and does not guarantee recovery.
+        </div>
+      </section>
+    </main>
+  );
+}

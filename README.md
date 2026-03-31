@@ -4,10 +4,12 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
 
 ## Stack
 
-- **Next.js 16** (App Router) + **TypeScript** + **Tailwind CSS 4**
+- **Next.js 15** (App Router) + **TypeScript** + **Tailwind CSS 4**
 - **Supabase Auth** (email/password; PKCE callback at `/auth/callback`)
-- **Prisma ORM** + **PostgreSQL** (use Supabase Postgres connection strings)
-- **AWS S3** presigned uploads for evidence (`/api/evidence/presign` + client `PUT`)
+- **Prisma ORM** + **PostgreSQL** (staff console reads/writes via Prisma; `DATABASE_URL` required for `/admin`)
+- **Radix + CVA + shadcn-style UI primitives** under `components/ui/` (Tailwind-aligned with the public site)
+- **Recharts** on the admin overview
+- **AWS S3** presigned uploads for evidence (`/api/evidence/presign` + client `PUT`; staff GET uses `presignEvidenceGet` for review)
 
 ## Prerequisites
 
@@ -26,8 +28,7 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
 2. Fill in:
 
    - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `DATABASE_URL` (Supabase **connection pooling** URL, port `6543`, `?pgbouncer=true`)
-   - `DIRECT_URL` (Supabase **direct** URL, port `5432`) — used by Prisma migrations
+   - `DATABASE_URL` (Supabase Postgres — direct `5432` URL for Prisma migrate, or pooler `6543` with `?pgbouncer=true` for serverless query patterns)
    - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET_AVASC` (for evidence uploads)
    - `NEXT_PUBLIC_APP_URL` (e.g. `http://localhost:3000`)
 
@@ -43,15 +44,15 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
    npm run db:generate
    ```
 
-5. Create schema in Postgres:
+5. Apply SQL migrations in Supabase (**SQL editor** or CLI), in order:
 
-   ```bash
-   npm run db:migrate
-   ```
+   - `supabase/migrations/20260325120000_init.sql`
+   - `supabase/migrations/20260325140000_platform_extensions.sql`
+   - `supabase/migrations/20260326120000_admin_staff_fields.sql` (viewer role, `User.name`, case notes, indicator flags, story `publishedAt`, cluster editorial fields, etc.)
 
-   (Uses `prisma/migrations` — first migration should be created from `prisma/schema.prisma`.)
+   Alternatively, after aligning `DATABASE_URL`, use `npx prisma db push` or `npm run db:migrate` once Prisma migration history is initialized from `prisma/schema.prisma`.
 
-6. (Optional) Seed sample indicator rows:
+6. (Optional) Load deterministic demo rows for the staff UI:
 
    ```bash
    npm run db:seed
@@ -63,13 +64,26 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
    npm run dev
    ```
 
-## Admin users
+## Staff console (`/admin`)
 
-Roles live in the `User` table (`victim` | `admin` | `moderator`). After your first Supabase login, promote yourself in SQL (Supabase SQL editor), e.g.:
+- **Auth**: Supabase session + `User` row. Layout calls `requireStaff()`; only `admin`, `moderator`, and `viewer` may enter. Everyone else is redirected to `/dashboard`.
+- **Data**: Server Components and **server actions** use **Prisma** (`lib/prisma.ts`). Configure **`DATABASE_URL`** to your Supabase Postgres connection or the console will throw at runtime.
+- **RBAC** (`lib/admin/permissions.ts`):
+  - **admin** — full access, including cluster merge and **Users** page.
+  - **moderator** — case/story/comment/support/alert workflows; cannot merge clusters or edit roles.
+  - **viewer** — read-only UI (forms hidden/disabled where enforced server-side).
+- **Routes**: `/admin` (KPIs + charts), `/admin/cases`, `/admin/cases/[id]`, `/admin/stories`, `/admin/stories/[id]`, `/admin/comments`, `/admin/clusters`, `/admin/clusters/[id]`, `/admin/support`, `/admin/alerts`, `/admin/users` (admin-only), `/admin/audit`.
+- **Audit**: `writeAuditLog` records key mutations (cases, indicators, stories, comments, clusters, support, alerts, user roles).
+
+### Promote staff accounts
+
+Roles live in the `User` table (`victim` | `admin` | `moderator` | `viewer`). After your first Supabase login, promote yourself in SQL (Supabase SQL editor), e.g.:
 
 ```sql
 update "User" set role = 'admin' where email = 'you@example.com';
 ```
+
+Or use **Admin → Users** once you already have an admin account.
 
 ## Legacy static site
 

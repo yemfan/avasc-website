@@ -1,36 +1,13 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { linkCaseIndicatorsToEntities } from "@/lib/entity-linking";
 import { normalizeIndicatorValue } from "@/lib/indicators";
 import { getServiceSupabase } from "@/lib/supabase/service-role";
 import { newRowId } from "@/lib/db/id";
+import { createCaseBodySchema } from "@/lib/report/case-submission";
 
 export const dynamic = "force-dynamic";
-
-const createCaseSchema = z.object({
-  title: z.string().min(3).max(200),
-  scamType: z.string().min(2).max(120),
-  amountCents: z.number().int().nonnegative().optional(),
-  currency: z.string().max(8).optional(),
-  paymentMethod: z.string().max(120).optional(),
-  occurredAtStart: z.string().datetime().optional(),
-  occurredAtEnd: z.string().datetime().optional(),
-  narrativePrivate: z.string().min(20).max(20000),
-  narrativePublic: z.string().max(8000).optional(),
-  visibility: z.enum(["private", "anonymized", "public"]).default("private"),
-  supportRequested: z.boolean().optional(),
-  isAnonymousSubmit: z.boolean().optional(),
-  indicators: z
-    .array(
-      z.object({
-        type: z.enum(["phone", "email", "domain", "wallet", "other"]),
-        value: z.string().min(2).max(500),
-      })
-    )
-    .max(50),
-});
 
 export async function GET() {
   const supabase = await createClient();
@@ -60,7 +37,7 @@ export async function POST(req: Request) {
   } = await supabase.auth.getUser();
 
   const json = await req.json();
-  const parsed = createCaseSchema.safeParse(json);
+  const parsed = createCaseBodySchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
       { success: false, error: "Invalid payload", issues: parsed.error.flatten() },
@@ -76,10 +53,14 @@ export async function POST(req: Request) {
   const caseId = newRowId();
   const now = new Date().toISOString();
 
+  const supportTypes = data.supportTypes ?? [];
+  const supportRequested = data.supportRequested ?? supportTypes.length > 0;
+
   const { error: ce } = await db.from("Case").insert({
     id: caseId,
     reporterUserId,
     title: data.title,
+    summaryShort: data.summaryShort ?? null,
     scamType: data.scamType,
     amountCents: data.amountCents ?? null,
     currency: data.currency ?? "USD",
@@ -88,8 +69,17 @@ export async function POST(req: Request) {
     occurredAtEnd: data.occurredAtEnd ? data.occurredAtEnd : null,
     narrativePrivate: data.narrativePrivate,
     narrativePublic: data.narrativePublic ?? null,
+    initialContactChannel: data.initialContactChannel ?? null,
+    jurisdictionCountry: data.jurisdictionCountry ?? null,
+    jurisdictionState: data.jurisdictionState ?? null,
+    allowFollowUp: data.allowFollowUp ?? true,
+    allowLawEnforcementReferral: data.allowLawEnforcementReferral ?? false,
+    allowCaseMatching: data.allowCaseMatching ?? true,
+    allowAnonymizedPublicSearch: data.allowAnonymizedPublicSearch ?? false,
+    storyVisibilityCandidate: data.storyVisibilityCandidate ?? false,
     visibility: data.visibility,
-    supportRequested: data.supportRequested ?? false,
+    supportRequested,
+    supportTypes: supportTypes.length ? supportTypes : null,
     isAnonymousSubmit: data.isAnonymousSubmit ?? false,
     status: "submitted",
     createdAt: now,
@@ -108,6 +98,22 @@ export async function POST(req: Request) {
     }));
     const { error: indErr } = await db.from("CaseIndicator").insert(rows);
     if (indErr) throw indErr;
+  }
+
+  if (reporterUserId && supportTypes.length > 0) {
+    const supportRows = supportTypes.map((supportType) => ({
+      id: newRowId(),
+      userId: reporterUserId,
+      caseId,
+      supportType,
+      status: "open",
+      submittedNote: "Requested during report submission",
+      notes: "Requested during report submission",
+      createdAt: now,
+      updatedAt: now,
+    }));
+    const { error: srErr } = await db.from("SupportRequest").insert(supportRows);
+    if (srErr) throw srErr;
   }
 
   await linkCaseIndicatorsToEntities(caseId);

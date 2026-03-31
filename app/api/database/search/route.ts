@@ -3,12 +3,13 @@ import { z } from "zod";
 import { getServiceSupabase } from "@/lib/supabase/service-role";
 import { normalizeIndicatorValue } from "@/lib/indicators";
 import type { IndicatorType } from "@/lib/types/db";
+import { INDICATOR_TYPES } from "@/lib/report/case-submission";
 
 export const dynamic = "force-dynamic";
 
 const querySchema = z.object({
   q: z.string().max(200).optional(),
-  type: z.enum(["phone", "email", "domain", "wallet", "other"]).optional(),
+  type: z.enum(INDICATOR_TYPES).optional(),
   scamType: z.string().max(120).optional(),
 });
 

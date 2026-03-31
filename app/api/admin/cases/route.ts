@@ -18,7 +18,11 @@ export async function GET() {
   const db = getServiceSupabase();
   const { data: appUser, error: ue } = await db.from("User").select("role").eq("id", user.id).maybeSingle();
   if (ue) throw ue;
-  if (!appUser || appUser.role !== "admin") {
+  if (!appUser) {
+    return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
+  }
+  const role = appUser.role as string;
+  if (!["admin", "moderator", "viewer"].includes(role)) {
     return NextResponse.json({ success: false, error: "Forbidden" }, { status: 403 });
   }
 

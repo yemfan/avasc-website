@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     template: "%s | AVASC",
   },
   description:
-    "Report scams, search indicators, compare patterns, and find recovery guidance — with privacy-first defaults.",
+    "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
         <AppShell>{children}</AppShell>
       </body>
     </html>

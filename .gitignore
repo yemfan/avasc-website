@@ -41,3 +41,6 @@ vercel
 *.tsbuildinfo
 next-env.d.ts
 
+# local supabase temp
+supabase/.temp/
+
