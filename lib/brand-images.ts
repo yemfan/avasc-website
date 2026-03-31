@@ -1,5 +1,5 @@
 /** Paths for files in `public/images` (URL-encoded where filenames contain spaces). */
-/** Favicons use Next’s file convention: keep `app/icon.png` and `app/apple-icon.png` in sync with `mark64` / `mark180`. */
+/** Favicons: `app/icon.png` = copy of `avasc64.png`; `app/apple-icon.png` = copy of `avasc180.png`. */
 export const brandImages = {
   /** Small mark: nav/footer, favicon. */
   mark64: "/images/avasc64.png",
