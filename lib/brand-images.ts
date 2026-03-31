@@ -1,10 +1,10 @@
 /** Paths for files in `public/images` (URL-encoded where filenames contain spaces). */
-/** Favicons: `app/icon.png` = copy of `avasc64.png`; `app/apple-icon.png` = copy of `avasc180.png`. */
+/** Favicons: `app/icon.png` = `avasc-logo64.png`; `app/apple-icon.png` = `avasc-logo180.png`. */
 export const brandImages = {
-  /** Small mark: nav/footer, favicon. */
-  mark64: "/images/avasc64.png",
-  /** Larger mark: About page, Apple touch. */
-  mark180: "/images/avasc180.png",
+  /** Small mark: nav/footer; same artwork as tab favicon. */
+  mark64: "/images/avasc-logo64.png",
+  /** 180×180 mark: About page, Apple touch icon. */
+  mark180: "/images/avasc-logo180.png",
   /** Full wordmark / hero logo (nav + home hero). */
   logoFull: "/images/avasc-logo-full.png",
 } as const;
