@@ -13,6 +13,8 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { href: "/admin/comments", label: "Comments" },
   { href: "/admin/support", label: "Support" },
   { href: "/admin/alerts", label: "Alerts" },
+  { href: "/admin/alerts/visibility", label: "Alert surfaces" },
+  { href: "/admin/imports", label: "Imports" },
   { href: "/admin/audit", label: "Audit Log" },
   { href: "/admin/users", label: "Users" },
 ];

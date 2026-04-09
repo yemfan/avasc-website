@@ -87,6 +87,12 @@ export async function processCriticalClustersSince(
         scamClusterId: c.id,
         score: threatScore,
         isSent: false,
+        isPublicVisible: true,
+        isRealtimeVisible: true,
+        isHomepageVisible: true,
+        isDailyFeedVisible: false,
+        sourceType: "INTERNAL",
+        approvalStatus: "APPROVED",
       },
     });
     alertsCreated++;

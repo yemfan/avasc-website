@@ -181,6 +181,7 @@ model User {
   assignedSupport SupportRequest[] @relation("SupportRequestAssignee")
   auditLogs       AuditLog[]       @relation("AuditActor")
   subscriptions   Subscription[]
+  alertsApproved  Alert[]          @relation("AlertApprovedBy")
 
   @@index([role])
 }
@@ -294,6 +295,7 @@ model ScamCluster {
   clusterSuggestions   ClusterSuggestion[]         @relation("SuggestedCluster")
   clusterSubscriptions ClusterSubscription[]
   userAlertFeedItems   UserAlertFeedItem[]
+  outboundAlerts       Alert[]
 
   @@index([publicStatus])
   @@index([riskLevel])
@@ -626,7 +628,6 @@ model EnforcementLink {
 
 /**
  * Outbound alert payload (REALTIME, DAILY, WEEKLY). Distinct from `ScamAlert` (curated site announcements).
- * `scamClusterId` is an optional reference id only (no FK to `ScamCluster`).
  */
 model Alert {
   id            String   @id @default(uuid()) @db.Uuid
@@ -637,14 +638,66 @@ model Alert {
   scamClusterId String?  @db.Uuid
   score         Int?
   isSent        Boolean  @default(false)
-  createdAt     DateTime @default(now())
 
-  deliveryLogs         AlertDeliveryLog[]
-  userAlertFeedItems   UserAlertFeedItem[]
+  /** Public-facing surfaces (moderator-controlled). */
+  isPublicVisible    Boolean @default(true)
+  isRealtimeVisible  Boolean @default(false)
+  isHomepageVisible  Boolean @default(false)
+  isDailyFeedVisible Boolean @default(false)
+
+  /** ONEDRIVE | INTERNAL | MANUAL — ingestion provenance. */
+  sourceType       String?
+  sourceName       String?
+  sourceFileId     String?
+  /** PENDING | APPROVED | REJECTED — set APPROVED for INTERNAL/MANUAL/system alerts. */
+  approvalStatus   String   @default("PENDING")
+  approvedByUserId String?  @db.Uuid
+  approvedAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  scamCluster        ScamCluster?              @relation(fields: [scamClusterId], references: [id], onDelete: SetNull)
+  approvedBy         User?                     @relation("AlertApprovedBy", fields: [approvedByUserId], references: [id], onDelete: SetNull)
+  deliveryLogs       AlertDeliveryLog[]
+  userAlertFeedItems UserAlertFeedItem[]
+  ingestions         ExternalContentIngestion[]
 
   @@index([scamClusterId])
   @@index([alertType])
   @@index([createdAt])
+  @@index([isPublicVisible])
+  @@index([isHomepageVisible])
+  @@index([approvalStatus])
+  @@index([sourceType])
+}
+
+/** OneDrive / external JSON feed ingestion audit trail. */
+model ExternalContentIngestion {
+  id             String    @id @default(uuid()) @db.Uuid
+  sourceName     String
+  sourceFilePath String
+  sourceFileId   String?
+  sourceType     String    @default("ONEDRIVE")
+  contentType    String
+  checksum        String?
+  /** Dedupe key from JSON `source_id`. */
+  sourcePayloadId String?
+  rawPayload      Json
+  status          String
+  errorMessage   String?
+  linkedAlertId  String?   @db.Uuid
+  createdAt      DateTime  @default(now())
+  processedAt    DateTime?
+  approvedAt     DateTime?
+
+  linkedAlert Alert? @relation(fields: [linkedAlertId], references: [id], onDelete: SetNull)
+
+  @@index([sourceFileId])
+  @@index([status])
+  @@index([contentType])
+  @@index([checksum])
+  @@index([sourcePayloadId])
 }
 
 model Subscription {

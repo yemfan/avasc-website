@@ -68,6 +68,12 @@ export async function evaluateClusterForAlert(clusterId: string) {
       scamClusterId: cluster.id,
       score,
       isSent: false,
+      isPublicVisible: true,
+      isRealtimeVisible: true,
+      isHomepageVisible: true,
+      isDailyFeedVisible: false,
+      sourceType: "INTERNAL",
+      approvalStatus: "APPROVED",
     },
   });
 

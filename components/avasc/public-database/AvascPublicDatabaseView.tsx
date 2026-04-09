@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { Search, ShieldAlert, ArrowRight, AlertTriangle, Bell } from "lucide-react";
 import type { PublicDatabaseFiltersData, PublicScamSearchResult } from "@/lib/public-database/public-search-types";
+import type { PublicAlertItem } from "@/lib/alerts/avasc-alert-section-api-and-loader";
 import { IndicatorChip } from "@/components/avasc/IndicatorChip";
 import { RiskBadge } from "@/components/avasc/RiskBadge";
 import { PublicDatabaseSearchFilters } from "@/components/avasc/public-database/PublicDatabaseSearchFilters";
+import { AlertStripCompact } from "@/components/marketing/AvascAlertSection";
 
 function Container({ children }: { children: React.ReactNode }) {
   return <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
@@ -24,6 +26,7 @@ type AvascPublicDatabaseViewProps = {
   scamType: string;
   riskLevel: string;
   indicatorType: string;
+  realtimeAlerts: PublicAlertItem[];
 };
 
 function ResultCard({ item }: { item: PublicScamSearchResult }) {
@@ -158,23 +161,27 @@ export function AvascPublicDatabaseView({
   scamType,
   riskLevel,
   indicatorType,
+  realtimeAlerts,
 }: AvascPublicDatabaseViewProps) {
   return (
     <Container>
-      <div className="space-y-8 py-8 sm:space-y-10 sm:py-10">
-        <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[#0F172A] to-[#0B1F3A] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
-            <ShieldAlert className="h-3.5 w-3.5" aria-hidden />
-            AVASC Public Scam Database
-          </div>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">Search reported scam patterns.</h1>
-          <p className="mt-4 max-w-3xl text-base leading-8 text-[var(--avasc-text-secondary)]">
-            Search published scam profiles using publicly approved indicators such as domains, wallet addresses, emails,
-            aliases, platforms, and scam types.
-          </p>
-        </section>
+      <div className="py-8 sm:py-10">
+        <AlertStripCompact items={realtimeAlerts} />
 
-        <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
+        <div className="mt-6 space-y-8 sm:space-y-10">
+          <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[#0F172A] to-[#0B1F3A] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
+              <ShieldAlert className="h-3.5 w-3.5" aria-hidden />
+              AVASC Public Scam Database
+            </div>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">Search reported scam patterns.</h1>
+            <p className="mt-4 max-w-3xl text-base leading-8 text-[var(--avasc-text-secondary)]">
+              Search published scam profiles using publicly approved indicators such as domains, wallet addresses, emails,
+              aliases, platforms, and scam types.
+            </p>
+          </section>
+
+          <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
           <div className="space-y-6">
             <PublicDatabaseSearchFilters
               filters={filters}
@@ -208,6 +215,7 @@ export function AvascPublicDatabaseView({
           </div>
 
           <SidebarCTA />
+          </div>
         </div>
       </div>
     </Container>

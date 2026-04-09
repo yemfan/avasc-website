@@ -13,7 +13,9 @@ import {
   LineChart,
   MessageSquareHeart,
 } from "lucide-react";
+import type { PublicAlertItem } from "@/lib/alerts/avasc-alert-section-api-and-loader";
 import { HomepageAlertSignup } from "@/components/marketing/HomepageAlertSignup";
+import { AvascAlertSection } from "@/components/marketing/AvascAlertSection";
 
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
@@ -610,13 +612,22 @@ function FooterCol({
   );
 }
 
-export default function AvascHomepageProductionSkeleton() {
+type AvascHomepageProductionSkeletonProps = {
+  realtimeAlerts: PublicAlertItem[];
+  dailyAlerts: PublicAlertItem[];
+};
+
+export default function AvascHomepageProductionSkeleton({
+  realtimeAlerts,
+  dailyAlerts,
+}: AvascHomepageProductionSkeletonProps) {
   return (
     <MarketingPageShell>
       <Navbar />
       <Container>
         <div className="space-y-8 py-8 sm:space-y-10 sm:py-10 lg:space-y-12 lg:py-12">
           <Hero />
+          <AvascAlertSection realtimeAlerts={realtimeAlerts} dailyAlerts={dailyAlerts} />
           <TrustStrip />
           <AlertSignupModule />
           <SearchPreview />

@@ -43,6 +43,12 @@ export async function sendDailyDigestEmail(
       message: html,
       alertType: "DAILY",
       isSent: false,
+      isPublicVisible: true,
+      isDailyFeedVisible: true,
+      isHomepageVisible: true,
+      isRealtimeVisible: false,
+      sourceType: "INTERNAL",
+      approvalStatus: "APPROVED",
     },
   });
 
@@ -153,6 +159,12 @@ export async function sendWeeklyDigestEmail(
       message: html,
       alertType: "WEEKLY",
       isSent: false,
+      isPublicVisible: true,
+      isRealtimeVisible: false,
+      isHomepageVisible: false,
+      isDailyFeedVisible: false,
+      sourceType: "INTERNAL",
+      approvalStatus: "APPROVED",
     },
   });
 

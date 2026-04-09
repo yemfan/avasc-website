@@ -20,6 +20,18 @@
     {
       "path": "/api/cron/alerts/personalized-weekly",
       "schedule": "30 14 * * 1"
+    },
+    {
+      "path": "/api/cron/import-onedrive-realtime",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/import-onedrive-daily",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/import-onedrive-weekly",
+      "schedule": "0 12 * * *"
     }
   ]
 }
