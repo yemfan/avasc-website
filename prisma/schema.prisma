@@ -159,6 +159,11 @@ enum EntityType {
   ORGANIZATION
 }
 
+enum AlertChannel {
+  SMS
+  EMAIL
+}
+
 model User {
   id                   String   @id @default(uuid()) @db.Uuid
   supabaseUserId       String   @unique @db.Uuid
@@ -175,6 +180,7 @@ model User {
   supportRequests SupportRequest[] @relation("SupportRequestUser")
   assignedSupport SupportRequest[] @relation("SupportRequestAssignee")
   auditLogs       AuditLog[]       @relation("AuditActor")
+  subscriptions   Subscription[]
 
   @@index([role])
 }
@@ -273,16 +279,26 @@ model ScamCluster {
   commonScript        String?
   safetyWarning       String?
   recommendedNextStep String?
+
+  // helpful for alerting
+  threatScore          Int                 @default(0)
+  reportCountSnapshot  Int                 @default(0)
+  publicIndicatorCount Int                 @default(0)
+  lastAlertedAt        DateTime?
+
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
-  caseLinks           ScamClusterCase[]
-  indicatorAggregates ClusterIndicatorAggregate[]
-  clusterSuggestions  ClusterSuggestion[]         @relation("SuggestedCluster")
+  caseLinks            ScamClusterCase[]
+  indicatorAggregates  ClusterIndicatorAggregate[]
+  clusterSuggestions   ClusterSuggestion[]         @relation("SuggestedCluster")
+  clusterSubscriptions ClusterSubscription[]
+  userAlertFeedItems   UserAlertFeedItem[]
 
   @@index([publicStatus])
   @@index([riskLevel])
   @@index([scamType])
+  @@index([lastAlertedAt])
 }
 
 model ScamClusterCase {
@@ -606,4 +622,131 @@ model EnforcementLink {
   @@index([incidentId])
   @@index([agency])
   @@index([filedAt])
+}
+
+/**
+ * Outbound alert payload (REALTIME, DAILY, WEEKLY). Distinct from `ScamAlert` (curated site announcements).
+ * `scamClusterId` is an optional reference id only (no FK to `ScamCluster`).
+ */
+model Alert {
+  id            String   @id @default(uuid()) @db.Uuid
+  title         String
+  message       String
+  alertType     String
+  riskLevel     String?
+  scamClusterId String?  @db.Uuid
+  score         Int?
+  isSent        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  deliveryLogs         AlertDeliveryLog[]
+  userAlertFeedItems   UserAlertFeedItem[]
+
+  @@index([scamClusterId])
+  @@index([alertType])
+  @@index([createdAt])
+}
+
+model Subscription {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String?  @db.Uuid
+  email         String?  @unique
+  phone         String?  @unique
+  smsEnabled    Boolean  @default(false)
+  emailDaily    Boolean  @default(false)
+  emailWeekly   Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user                   User?                    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  clusterSubscriptions   ClusterSubscription[]
+  deliveryLogs           AlertDeliveryLog[]
+  subscriptionDigestLogs SubscriptionDigestLog[]
+  userAlertFeedItems     UserAlertFeedItem[]
+
+  @@index([userId])
+}
+
+/** In-app / cross-channel feed row for a subscriber (denormalized title/message for history). */
+model UserAlertFeedItem {
+  id             String   @id @default(uuid()) @db.Uuid
+  subscriptionId String   @db.Uuid
+  alertId        String?  @db.Uuid
+  scamClusterId  String?  @db.Uuid
+  title          String
+  message        String
+  alertType      String // REALTIME | DAILY | WEEKLY | FOLLOWED_CLUSTER
+  channel        String // SMS | EMAIL | IN_APP
+  isRead         Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  alert        Alert?       @relation(fields: [alertId], references: [id], onDelete: SetNull)
+  scamCluster  ScamCluster? @relation(fields: [scamClusterId], references: [id], onDelete: SetNull)
+
+  @@index([subscriptionId, createdAt])
+  @@index([subscriptionId, isRead])
+}
+
+/** One execution of a daily or weekly digest batch. */
+model DigestRun {
+  id         String    @id @default(uuid()) @db.Uuid
+  digestType String // DAILY | WEEKLY
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  subscriptionDigestLogs SubscriptionDigestLog[]
+}
+
+/** Per-subscriber outcome for a digest send (audit trail). */
+model SubscriptionDigestLog {
+  id             String   @id @default(uuid()) @db.Uuid
+  subscriptionId String   @db.Uuid
+  digestRunId    String   @db.Uuid
+  digestType     String // DAILY | WEEKLY
+  status         String // SENT | FAILED
+  subject        String
+  sentAt         DateTime @default(now())
+  errorMessage   String?
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  digestRun    DigestRun    @relation(fields: [digestRunId], references: [id], onDelete: Cascade)
+
+  @@index([subscriptionId])
+  @@index([digestRunId])
+  @@index([sentAt])
+}
+
+model ClusterSubscription {
+  id             String   @id @default(uuid()) @db.Uuid
+  clusterId      String   @db.Uuid
+  subscriptionId String   @db.Uuid
+  createdAt      DateTime @default(now())
+
+  scamCluster  ScamCluster  @relation(fields: [clusterId], references: [id], onDelete: Cascade)
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@unique([clusterId, subscriptionId])
+  @@index([clusterId])
+  @@index([subscriptionId])
+}
+
+model AlertDeliveryLog {
+  id                String       @id @default(uuid()) @db.Uuid
+  alertId           String       @db.Uuid
+  subscriptionId    String       @db.Uuid
+  channel           AlertChannel
+  status            String
+  providerMessageId String?
+  errorMessage      String?
+  sentAt            DateTime     @default(now())
+
+  alert        Alert        @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@index([alertId])
+  @@index([subscriptionId])
+  @@index([sentAt])
 }

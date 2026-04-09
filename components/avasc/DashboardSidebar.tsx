@@ -13,17 +13,19 @@ const items = [
   { href: "/dashboard/cases", label: "My Cases" },
   { href: "/dashboard/support", label: "Support" },
   { href: "/dashboard/stories", label: "Stories" },
+  { href: "/dashboard/alerts", label: "Alerts" },
   { href: "/dashboard/profile", label: "Profile" },
 ] as const;
 
 export type DashboardSidebarProps = {
   user: User;
+  unreadAlertCount?: number;
 };
 
 /**
  * Desktop sidebar for the victim dashboard. Pairs with {@link DashboardShell} and root {@link TopNavbar}.
  */
-export function DashboardSidebar({ user }: DashboardSidebarProps) {
+export function DashboardSidebar({ user, unreadAlertCount = 0 }: DashboardSidebarProps) {
   const pathname = usePathname();
   const accountLabel = user.displayName?.trim() || user.email || "Account";
 
@@ -43,13 +45,22 @@ export function DashboardSidebar({ user }: DashboardSidebarProps) {
         <nav className="flex flex-1 flex-col space-y-1.5 overflow-y-auto px-4 py-6" aria-label="Dashboard">
           {items.map((item) => {
             const active = isNavActive(pathname, item.href);
+            const showBadge = item.href === "/dashboard/alerts" && unreadAlertCount > 0;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={cn("block rounded-xl px-4 py-3 text-sm font-medium", avascNavItemClass(active))}
+                className={cn(
+                  "flex items-center justify-between gap-2 rounded-xl px-4 py-3 text-sm font-medium",
+                  avascNavItemClass(active)
+                )}
               >
-                {item.label}
+                <span>{item.label}</span>
+                {showBadge ? (
+                  <span className="min-w-[1.25rem] shrink-0 rounded-full bg-[var(--avasc-gold)] px-1.5 py-0.5 text-center text-[10px] font-bold leading-none text-black">
+                    {unreadAlertCount > 99 ? "99+" : unreadAlertCount}
+                  </span>
+                ) : null}
               </Link>
             );
           })}

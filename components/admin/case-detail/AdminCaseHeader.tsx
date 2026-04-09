@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Case } from "@prisma/client";
 
 type AdminCaseHeaderProps = {
@@ -22,10 +23,26 @@ export function AdminCaseHeader({ record }: AdminCaseHeaderProps) {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Badge>{record.scamType}</Badge>
-          <Badge variant="outline">{record.status}</Badge>
-          <Badge variant="secondary">{record.visibility}</Badge>
+        <div className="flex flex-col items-start gap-3 sm:items-end">
+          <div className="flex flex-wrap justify-end gap-2">
+            <Badge>{record.scamType}</Badge>
+            <Badge variant="outline">{record.status}</Badge>
+            <Badge variant="secondary">{record.visibility}</Badge>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href={`/admin/cases/${record.id}/review-production`}
+              className="inline-flex min-h-9 items-center rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition hover:border-[var(--avasc-gold)] hover:text-[var(--avasc-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Production review
+            </Link>
+            <Link
+              href={`/dashboard/cases/${record.id}`}
+              className="inline-flex min-h-9 items-center rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              Victim view
+            </Link>
+          </div>
         </div>
       </div>
     </section>

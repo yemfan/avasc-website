@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import { requireRole } from "@/lib/auth/require-role";
 import { UserRole } from "@prisma/client";
 import { getAdminCaseDetail } from "@/lib/admin/get-admin-case-detail";
+import { getCaseReviewWorkflowData } from "@/lib/admin/get-case-review-workflow-data";
 
+import { AvascAdminReviewWorkflow } from "@/components/admin/case-detail/AvascAdminReviewWorkflow";
 import { AdminCaseHeader } from "@/components/admin/case-detail/AdminCaseHeader";
 import { AdminCaseSummaryCard } from "@/components/admin/case-detail/AdminCaseSummaryCard";
 import { AdminCaseNarrativeCard } from "@/components/admin/case-detail/AdminCaseNarrativeCard";
@@ -22,9 +24,13 @@ export default async function AdminCaseDetailPage({ params }: PageProps) {
   const record = await getAdminCaseDetail(id);
   if (!record) notFound();
 
+  const reviewWorkflow = await getCaseReviewWorkflowData(id);
+
   return (
     <div className="space-y-6">
       <AdminCaseHeader record={record} />
+
+      {reviewWorkflow ? <AvascAdminReviewWorkflow caseId={id} data={reviewWorkflow} /> : null}
 
       <div className="grid gap-6 xl:grid-cols-3">
         <div className="space-y-6 xl:col-span-2">

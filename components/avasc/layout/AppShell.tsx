@@ -39,6 +39,12 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link href="/report" className="transition-colors hover:text-avasc-gold-light">
               Report intake
             </Link>
+            <span className="text-avasc-divider" aria-hidden>
+              |
+            </span>
+            <Link href="/alerts" className="transition-colors hover:text-avasc-gold-light">
+              Alerts
+            </Link>
           </div>
           <p className="max-w-3xl leading-relaxed text-avasc-text-muted">
             AVASC is a nonprofit support and intelligence initiative. We are not a law firm, private investigator, or

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PublicIndicatorGroup } from "@/components/public/PublicIndicatorGroup";
 import { PublicScamProfileHeader } from "@/components/public/PublicScamProfileHeader";
 import { PublicScamProfileSummary } from "@/components/public/PublicScamProfileSummary";
+import { FollowScamButton } from "@/components/alerts/FollowScamButton";
 import { RelatedPublicProfiles } from "@/components/public/RelatedPublicProfiles";
 import { ReportMatchingCaseCTA } from "@/components/public/ReportMatchingCaseCTA";
 import { getPublicScamProfileBySlug } from "@/lib/public-database/public-profile";
@@ -53,6 +54,8 @@ export default async function PublicScamProfilePage({ params }: PageProps) {
         <PublicScamProfileSummary profile={profile} />
 
         <ReportMatchingCaseCTA matchedProfileSlug={profile.slug} />
+
+        <FollowScamButton clusterId={profile.id} clusterTitle={profile.title} />
 
         <section className="space-y-4">
           <h2 className="text-2xl font-bold tracking-tight text-foreground">Public Indicators</h2>

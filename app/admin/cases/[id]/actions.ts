@@ -13,6 +13,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth/require-role";
 import { recomputeCaseMatches } from "@/lib/matching/recompute-case-matches";
+import { recomputeMatchingAction } from "./review-actions";
 import {
   submitCaseQuickAction,
 } from "./form-actions";
@@ -411,6 +412,51 @@ export async function updateIndicatorAction(formData: FormData) {
 
   revalidatePath(`/admin/cases/${indicator.caseId}`);
   revalidatePath("/admin/cases");
+}
+
+export async function markCaseNeedsFollowUpAction(formData: FormData) {
+  const actor = await requireRole([UserRole.admin, UserRole.moderator]);
+
+  const parsed = recomputeSchema.safeParse({
+    caseId: formData.get("caseId"),
+  });
+
+  if (!parsed.success) {
+    throw new Error("Invalid request.");
+  }
+
+  const { caseId } = parsed.data;
+
+  await prisma.case.update({
+    where: { id: caseId },
+    data: { status: CaseStatus.NEEDS_FOLLOW_UP },
+  });
+
+  await prisma.auditLog.create({
+    data: {
+      actorUserId: actor.id,
+      entityType: "Case",
+      entityId: caseId,
+      action: "CASE_MARKED_NEEDS_FOLLOW_UP",
+      metadataJson: {},
+    },
+  });
+
+  revalidatePath(`/admin/cases/${caseId}`);
+  revalidatePath("/admin/cases");
+}
+
+/** Delegates to `recomputeMatchingAction` (shared audit + revalidation). */
+export async function runIntakeMatchingPipelineAction(formData: FormData) {
+  const parsed = recomputeSchema.safeParse({
+    caseId: formData.get("caseId"),
+  });
+
+  if (!parsed.success) {
+    throw new Error("Invalid intake pipeline request.");
+  }
+
+  return recomputeMatchingAction({ caseId: parsed.data.caseId });
 }
 
 export async function recomputeMatchesAction(formData: FormData) {

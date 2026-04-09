@@ -6,6 +6,7 @@ import { UserRole } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth/require-role";
+import { recomputeClusterIndicatorAggregates } from "@/lib/clustering/process-case-for-matching";
 
 const mergeClustersSchema = z.object({
   mergeSuggestionId: z.string().min(1),
@@ -39,7 +40,7 @@ export async function mergeClustersAction(formData: FormData) {
   // Optional Prisma delegates (merge models) — dynamic access when client shape varies.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- delegates are not in PrismaClient typings
   const prismaAny = prisma as unknown as Record<string, any>;
-  if (!prismaAny.clusterMergeSuggestion || !prismaAny.clusterIndicatorAggregate) {
+  if (!prismaAny.clusterMergeSuggestion) {
     throw new Error("Cluster merge models are not available in the current Prisma schema.");
   }
 
@@ -87,67 +88,13 @@ export async function mergeClustersAction(formData: FormData) {
       });
     }
 
-    for (const aggregate of sourceCluster.indicatorAggregates) {
-      const existing = await txAny.clusterIndicatorAggregate.findUnique({
-        where: {
-          scamClusterId_indicatorType_normalizedValue: {
-            scamClusterId: targetClusterId,
-            indicatorType: aggregate.indicatorType,
-            normalizedValue: aggregate.normalizedValue,
-          },
-        },
-      });
-
-      if (existing) {
-        const mergedSourceIds = Array.from(
-          new Set([...existing.sourceIndicatorIds, ...aggregate.sourceIndicatorIds])
-        );
-
-        await txAny.clusterIndicatorAggregate.update({
-          where: {
-            scamClusterId_indicatorType_normalizedValue: {
-              scamClusterId: targetClusterId,
-              indicatorType: aggregate.indicatorType,
-              normalizedValue: aggregate.normalizedValue,
-            },
-          },
-          data: {
-            occurrenceCount: existing.occurrenceCount + aggregate.occurrenceCount,
-            linkedCaseCount: Math.max(existing.linkedCaseCount, aggregate.linkedCaseCount),
-            isPublic: existing.isPublic || aggregate.isPublic,
-            isVerified: existing.isVerified || aggregate.isVerified,
-            sourceIndicatorIds: mergedSourceIds,
-          },
-        });
-      } else {
-        await txAny.clusterIndicatorAggregate.create({
-          data: {
-            scamClusterId: targetClusterId,
-            indicatorType: aggregate.indicatorType,
-            normalizedValue: aggregate.normalizedValue,
-            displayValue: aggregate.displayValue,
-            occurrenceCount: aggregate.occurrenceCount,
-            linkedCaseCount: aggregate.linkedCaseCount,
-            isPublic: aggregate.isPublic,
-            isVerified: aggregate.isVerified,
-            sourceIndicatorIds: aggregate.sourceIndicatorIds,
-            metadataJson: aggregate.metadataJson,
-          },
-        });
-      }
-    }
-
     await txAny.scamClusterCase.deleteMany({
       where: {
         scamClusterId: sourceClusterId,
       },
     });
 
-    await txAny.clusterIndicatorAggregate.deleteMany({
-      where: {
-        scamClusterId: sourceClusterId,
-      },
-    });
+    await recomputeClusterIndicatorAggregates(tx, targetClusterId);
 
     await txAny.clusterMergeSuggestion.update({
       where: { id: mergeSuggestionId },

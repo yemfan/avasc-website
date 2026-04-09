@@ -1,5 +1,5 @@
 import { ClusterPublicStatus, RiskLevel, ScamCluster } from "@prisma/client";
-import { updateClusterAction } from "@/app/admin/clusters/[id]/actions";
+import { updateClusterAction } from "@/lib/admin/admin-cluster-detail-actions";
 
 type AdminClusterEditCardProps = {
   cluster: ScamCluster;
@@ -17,6 +17,7 @@ export function AdminClusterEditCard({ cluster }: AdminClusterEditCardProps) {
         <input type="hidden" name="clusterId" value={cluster.id} />
 
         <Field label="Title" name="title" defaultValue={cluster.title} />
+        <Field label="Slug" name="slug" defaultValue={cluster.slug} />
         <Field label="Scam Type" name="scamType" defaultValue={cluster.scamType} />
 
         <TextArea

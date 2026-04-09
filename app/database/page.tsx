@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { searchPublicScamProfiles } from "@/lib/public-database/public-search";
+import { searchPublicScamProfiles } from "@/lib/public-database/public-scam-search";
 import { getPublicDatabaseFilters } from "@/lib/public-database/public-filters";
-import { SearchFiltersForm } from "@/components/avasc/SearchFiltersForm";
-import { ScamProfileCard } from "@/components/avasc/ScamProfileCard";
-import { PublicDatabaseEmptyState } from "@/components/public/PublicDatabaseEmptyState";
+import { AvascPublicDatabaseView } from "@/components/avasc/public-database/AvascPublicDatabaseView";
 
 export const dynamic = "force-dynamic";
 
@@ -46,37 +44,13 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
   ]);
 
   return (
-    <div className="w-full space-y-6">
-      <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
-        <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Search Reported Scam Patterns</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--avasc-text-secondary)] sm:text-base">
-          Search published scam profiles using publicly approved indicators such as domains, wallet addresses, emails,
-          aliases, and scam types. Results are based on moderated, anonymized scam intelligence.
-        </p>
-      </section>
-
-      <SearchFiltersForm
-        filters={filters}
-        initialQuery={query}
-        selectedScamType={scamType}
-        selectedRiskLevel={riskLevel}
-        selectedIndicatorType={indicatorType}
-      />
-
-      {results.length === 0 ? (
-        <PublicDatabaseEmptyState />
-      ) : (
-        <section className="space-y-4" aria-label="Search results">
-          {results.map((result) => (
-            <ScamProfileCard key={result.id} result={result} />
-          ))}
-        </section>
-      )}
-
-      <section className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 text-sm text-[var(--avasc-text-muted)] shadow-[0_8px_30px_rgba(0,0,0,0.2)]">
-        Results include only published scam profiles and publicly approved indicator data. AVASC does not publish private
-        victim information and is not a law firm.
-      </section>
-    </div>
+    <AvascPublicDatabaseView
+      results={results}
+      filters={filters}
+      query={query}
+      scamType={scamType}
+      riskLevel={riskLevel}
+      indicatorType={indicatorType}
+    />
   );
 }

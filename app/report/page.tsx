@@ -1,5 +1,4 @@
-import { PageHeader } from "@/components/avasc/PageHeader";
-import { ReportCaseForm } from "@/components/avasc/forms/ReportCaseForm";
+import { ReportMatchingCaseFlow } from "@/components/avasc/report/ReportMatchingCaseFlow";
 
 export const metadata = {
   title: "Report a scam | AVASC",
@@ -17,13 +16,8 @@ export default async function ReportPage({ searchParams }: PageProps) {
     typeof raw === "string" ? raw.trim() || undefined : Array.isArray(raw) ? raw[0]?.trim() || undefined : undefined;
 
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-6">
-      <PageHeader
-        eyebrow="Public intake"
-        title="Report Your Case"
-        description="Submit a scam report so AVASC can review the pattern, support your next steps, and help protect others."
-      />
-      <ReportCaseForm matchedProfileSlug={matchedProfileSlug} />
+    <div className="mx-auto w-full max-w-4xl py-6 sm:py-10">
+      <ReportMatchingCaseFlow matchedProfileSlug={matchedProfileSlug} />
     </div>
   );
 }
