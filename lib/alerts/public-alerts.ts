@@ -40,7 +40,8 @@ export async function getHomepageAlertSectionData(): Promise<{
       getPublicAlerts({ type: "DAILY", limit: 6, forHomepage: true }),
     ]);
     return { realtimeAlerts, dailyAlerts };
-  } catch {
+  } catch (err) {
+    console.error("[getHomepageAlertSectionData] failed, using empty alerts", err);
     return { realtimeAlerts: [], dailyAlerts: [] };
   }
 }
@@ -163,8 +164,9 @@ export async function getPublicAlerts(input?: {
   });
 }
 
-function stripHtml(html: string): string {
-  return html
+function stripHtml(html: string | null | undefined): string {
+  const s = html ?? "";
+  return s
     .replace(/<[^>]*>/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -199,13 +201,21 @@ function buildShortText(args: {
 }
 
 function formatAlertDate(date: Date) {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
+  const t = date instanceof Date ? date.getTime() : NaN;
+  if (!Number.isFinite(t)) {
+    return "—";
+  }
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  } catch {
+    return "—";
+  }
 }
 
 /**

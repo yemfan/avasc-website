@@ -74,14 +74,20 @@ export function HomepageHero({
             </p>
           </div>
           <div className="min-w-0">
-            <AvascAlertSection
-              realtimeAlerts={realtimeAlerts}
-              dailyAlerts={dailyAlerts}
-              hideSubscribeCta
-              compact
-              title="Realtime alerts & daily news"
-              subtitle="Critical warnings as they surface, plus staff-reviewed daily highlights. Indicators are public-safe; follow links for full profiles."
-            />
+            <div
+              className="rounded-2xl border border-white/[0.1] bg-[#050a14]/75 p-5 shadow-[0_16px_48px_-20px_rgba(0,0,0,0.65)] ring-1 ring-[var(--avasc-gold)]/[0.12] backdrop-blur-md sm:p-6 lg:p-7"
+              role="region"
+              aria-label="Realtime alerts and daily news"
+            >
+              <AvascAlertSection
+                realtimeAlerts={realtimeAlerts}
+                dailyAlerts={dailyAlerts}
+                hideSubscribeCta
+                compact
+                title="Realtime alerts & daily news"
+                subtitle="Critical warnings as they surface, plus staff-reviewed daily highlights. Indicators are public-safe; follow links for full profiles."
+              />
+            </div>
           </div>
         </div>
       </div>

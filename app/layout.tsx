@@ -17,6 +17,8 @@ const geistMono = Geist_Mono({
 const frauncesDisplay = Fraunces({
   variable: "--font-avasc-display",
   subsets: ["latin"],
+  /** Required with `axes` for variable Fraunces; avoids next/font misconfiguration in production. */
+  weight: "variable",
   axes: ["SOFT", "WONK", "opsz"],
 });
 
