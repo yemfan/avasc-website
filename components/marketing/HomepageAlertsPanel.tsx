@@ -1,21 +1,19 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
-import { AvascAlertSection } from "@/components/marketing/AvascAlertSection";
 import { HomepageAlertSignup } from "@/components/marketing/HomepageAlertSignup";
-import type { AlertItem } from "@/components/marketing/AvascAlertSection";
 
 type HomepageAlertsPanelProps = {
-  realtimeAlerts: AlertItem[];
-  dailyAlerts: AlertItem[];
+  children?: ReactNode;
 };
 
 /**
- * Homepage-only: one card with realtime ticker + daily alert cards, and a single
- * subscribe control that reveals the full signup form on demand.
+ * Homepage-only: mission highlights plus a single subscribe control that reveals
+ * the full signup form on demand. (Alerts content lives in HomepageHero.)
  */
-export function HomepageAlertsPanel({ realtimeAlerts, dailyAlerts }: HomepageAlertsPanelProps) {
+export function HomepageAlertsPanel({ children }: HomepageAlertsPanelProps) {
   const [formOpen, setFormOpen] = useState(false);
   const formRegionId = useId();
 
@@ -34,13 +32,7 @@ export function HomepageAlertsPanel({ realtimeAlerts, dailyAlerts }: HomepageAle
       />
 
       <div className="relative space-y-8">
-        <AvascAlertSection
-          realtimeAlerts={realtimeAlerts}
-          dailyAlerts={dailyAlerts}
-          hideSubscribeCta
-          title="Realtime alerts & daily news"
-          subtitle="Critical warnings as they surface, plus staff-reviewed daily highlights. Indicators are public-safe; follow links for full profiles."
-        />
+        {children}
 
         <div className="border-t border-white/[0.08] pt-8">
           <div className="flex flex-col items-center gap-6">

@@ -54,6 +54,7 @@ export function AvascAlertSection({
   title = "AVASC Alerts",
   subtitle = "Live scam intelligence with realtime warnings and daily analysis.",
   hideSubscribeCta = false,
+  compact = false,
 }: {
   realtimeAlerts: AlertItem[];
   dailyAlerts: AlertItem[];
@@ -61,13 +62,15 @@ export function AvascAlertSection({
   subtitle?: string;
   /** When true, omit the header link (e.g. homepage uses an inline subscribe control). */
   hideSubscribeCta?: boolean;
+  /** Tighter typography and single-column daily cards (e.g. homepage hero sidebar). */
+  compact?: boolean;
 }) {
   return (
-    <section className="space-y-6">
+    <section className={compact ? "min-w-0 space-y-4" : "space-y-6"}>
       <div
         className={
           hideSubscribeCta
-            ? "flex flex-col gap-4"
+            ? "flex flex-col gap-3"
             : "flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
         }
       >
@@ -76,8 +79,24 @@ export function AvascAlertSection({
             <Bell className="h-3.5 w-3.5" />
             Live intelligence
           </div>
-          <h2 className="font-display mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl">{title}</h2>
-          <p className="mt-3 max-w-3xl text-base leading-relaxed text-[var(--avasc-text-secondary)]">{subtitle}</p>
+          <h2
+            className={
+              compact
+                ? "font-display mt-3 text-2xl font-medium tracking-tight text-white sm:text-3xl"
+                : "font-display mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl"
+            }
+          >
+            {title}
+          </h2>
+          <p
+            className={
+              compact
+                ? "mt-2 max-w-none text-sm leading-relaxed text-[var(--avasc-text-secondary)] sm:text-[0.9375rem]"
+                : "mt-3 max-w-3xl text-base leading-relaxed text-[var(--avasc-text-secondary)]"
+            }
+          >
+            {subtitle}
+          </p>
         </div>
 
         {hideSubscribeCta ? null : (
@@ -91,16 +110,22 @@ export function AvascAlertSection({
         )}
       </div>
 
-      <RealtimeAlertTicker items={realtimeAlerts} />
-      <DailyAlertFeed items={dailyAlerts} />
+      <RealtimeAlertTicker items={realtimeAlerts} compact={compact} />
+      <DailyAlertFeed items={dailyAlerts} compact={compact} />
     </section>
   );
 }
 
-export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
+export function RealtimeAlertTicker({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
   if (!items.length) {
     return (
-      <div className="rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-5 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm">
+      <div
+        className={
+          compact
+            ? "rounded-xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-4 text-xs text-[var(--avasc-text-secondary)] backdrop-blur-sm sm:text-sm"
+            : "rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-5 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm"
+        }
+      >
         No active realtime alerts right now.
       </div>
     );
@@ -109,7 +134,13 @@ export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
   const duplicated = [...items, ...items];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#120a08] via-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
+    <div
+      className={
+        compact
+          ? "overflow-hidden rounded-xl border border-white/[0.08] bg-gradient-to-br from-[#120a08] via-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] shadow-[0_12px_32px_-16px_rgba(0,0,0,0.45)]"
+          : "overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#120a08] via-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]"
+      }
+    >
       <style>{`
         @keyframes avascTickerScroll {
           0% { transform: translateX(0); }
@@ -124,16 +155,29 @@ export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
         }
       `}</style>
 
-      <div className="flex items-center border-b border-white/5 px-4 py-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/15 px-3 py-1 text-xs font-semibold text-red-300">
-          <Radio className="h-3.5 w-3.5" />
+      <div className={cx("flex items-center border-b border-white/5 px-3 sm:px-4", compact ? "py-2" : "py-3")}>
+        <div
+          className={
+            compact
+              ? "inline-flex items-center gap-1.5 rounded-full border border-red-500/30 bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-300 sm:text-xs"
+              : "inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/15 px-3 py-1 text-xs font-semibold text-red-300"
+          }
+        >
+          <Radio className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
           LIVE ALERTS
         </div>
-        <div className="ml-3 text-xs text-[var(--avasc-text-muted)]">Critical and high-priority scam activity</div>
+        <div
+          className={cx(
+            "ml-2 text-[var(--avasc-text-muted)]",
+            compact ? "line-clamp-2 text-[10px] sm:line-clamp-none sm:text-xs" : "text-xs"
+          )}
+        >
+          Critical and high-priority scam activity
+        </div>
       </div>
 
-      <div className="avasc-ticker-wrapper overflow-hidden py-4">
-        <div className="avasc-ticker-track flex items-center gap-4 px-4">
+      <div className={`avasc-ticker-wrapper overflow-hidden ${compact ? "py-2" : "py-4"}`}>
+        <div className={`avasc-ticker-track flex items-center gap-3 px-3 sm:gap-4 sm:px-4 ${compact ? "[&_a]:py-2 [&_a]:text-xs" : ""}`}>
           {duplicated.map((item, index) => {
             const styles = priorityClasses(item.priority);
             return (
@@ -156,46 +200,72 @@ export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
   );
 }
 
-export function DailyAlertFeed({ items }: { items: AlertItem[] }) {
+export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
   if (!items.length) {
     return (
-      <div className="rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-6 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm">
+      <div
+        className={
+          compact
+            ? "rounded-xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-4 text-xs text-[var(--avasc-text-secondary)] backdrop-blur-sm sm:text-sm"
+            : "rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-6 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm"
+        }
+      >
         No daily alerts published yet.
       </div>
     );
   }
 
   return (
-    <div className="grid gap-4 lg:grid-cols-3">
+    <div className={compact ? "grid grid-cols-1 gap-3" : "grid gap-4 lg:grid-cols-3"}>
       {items.map((item) => (
-        <DailyAlertCard key={item.id} item={item} />
+        <DailyAlertCard key={item.id} item={item} compact={compact} />
       ))}
     </div>
   );
 }
 
-export function DailyAlertCard({ item }: { item: AlertItem }) {
+export function DailyAlertCard({ item, compact = false }: { item: AlertItem; compact?: boolean }) {
   const styles = priorityClasses(item.priority);
 
   return (
     <article
       className={cx(
-        "rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/90 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition",
+        compact
+          ? "rounded-xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/90 p-4 shadow-[0_12px_28px_-18px_rgba(0,0,0,0.4)] backdrop-blur-sm transition"
+          : "rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/90 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition",
         styles.cardBorder
       )}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
-          <ShieldAlert className="h-3.5 w-3.5" />
+      <div className="flex items-start justify-between gap-2">
+        <div
+          className={
+            compact
+              ? "inline-flex items-center gap-1.5 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-2 py-0.5 text-[10px] font-semibold text-[var(--avasc-gold-light)] sm:text-xs"
+              : "inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]"
+          }
+        >
+          <ShieldAlert className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
           Daily Alert
         </div>
-        <span className={cx("rounded-full border px-3 py-1 text-xs font-semibold", styles.badge)}>{item.priority}</span>
+        <span
+          className={cx(
+            "rounded-full border font-semibold",
+            compact ? "px-2 py-0.5 text-[10px] sm:text-xs" : "px-3 py-1 text-xs",
+            styles.badge
+          )}
+        >
+          {item.priority}
+        </span>
       </div>
 
-      <h3 className="mt-4 text-xl font-semibold tracking-tight text-white">{item.title}</h3>
-      <p className="mt-3 text-sm leading-7 text-[var(--avasc-text-secondary)]">{item.summary}</p>
+      <h3 className={compact ? "mt-3 text-base font-semibold tracking-tight text-white" : "mt-4 text-xl font-semibold tracking-tight text-white"}>
+        {item.title}
+      </h3>
+      <p className={compact ? "mt-2 text-xs leading-relaxed text-[var(--avasc-text-secondary)] sm:text-sm" : "mt-3 text-sm leading-7 text-[var(--avasc-text-secondary)]"}>
+        {item.summary}
+      </p>
 
-      <div className="mt-5 flex flex-wrap gap-2">
+      <div className={compact ? "mt-3 flex flex-wrap gap-1.5" : "mt-5 flex flex-wrap gap-2"}>
         {typeof item.stats?.newReports === "number" ? (
           <MetaPill>{item.stats.newReports} new reports</MetaPill>
         ) : null}
@@ -205,14 +275,20 @@ export function DailyAlertCard({ item }: { item: AlertItem }) {
         {item.stats?.indicatorLabel ? <MetaPill>{item.stats.indicatorLabel}</MetaPill> : null}
       </div>
 
-      <div className="mt-5 flex items-center justify-between gap-3">
-        <div className="text-xs text-[var(--avasc-text-muted)]">{item.publishedAt}</div>
+      <div className={compact ? "mt-3 flex items-center justify-between gap-2" : "mt-5 flex items-center justify-between gap-3"}>
+        <div
+          className={
+            compact ? "text-[10px] text-[var(--avasc-text-muted)] sm:text-xs" : "text-xs text-[var(--avasc-text-muted)]"
+          }
+        >
+          {item.publishedAt}
+        </div>
         <Link
           href={alertHref(item)}
-          className="inline-flex items-center text-sm font-medium text-[var(--avasc-gold-light)] hover:text-white"
+          className={compact ? "inline-flex items-center text-xs font-medium text-[var(--avasc-gold-light)] hover:text-white" : "inline-flex items-center text-sm font-medium text-[var(--avasc-gold-light)] hover:text-white"}
         >
           View details
-          <ChevronRight className="ml-1 h-4 w-4" />
+          <ChevronRight className={compact ? "ml-0.5 h-3.5 w-3.5" : "ml-1 h-4 w-4"} />
         </Link>
       </div>
     </article>
