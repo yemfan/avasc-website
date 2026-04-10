@@ -1,2 +1,2 @@
--- AddForeignKey
-ALTER TABLE "Alert" ADD CONSTRAINT "Alert_scamClusterId_fkey" FOREIGN KEY ("scamClusterId") REFERENCES "ScamCluster"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+-- Deferred: Alert -> ScamCluster FK requires "ScamCluster"."id" ::uuid (see supabase platform_extensions legacy TEXT id).
+SELECT 1;

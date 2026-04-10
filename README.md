@@ -28,7 +28,7 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
 2. Fill in:
 
    - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `DATABASE_URL` (Supabase Postgres — direct `5432` URL for Prisma migrate, or pooler `6543` with `?pgbouncer=true` for serverless query patterns)
+   - `DATABASE_URL` (Supabase: for local Prisma on IPv4 networks, use **Connect → Session pooler**; direct `db.*.supabase.co:5432` is often IPv6-only and causes P1001)
    - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_BUCKET_AVASC` (for evidence uploads)
    - `NEXT_PUBLIC_APP_URL` (e.g. `http://localhost:3000`)
 
@@ -44,13 +44,21 @@ Production-oriented Next.js (App Router) app for reporting scams, searching norm
    npm run db:generate
    ```
 
-5. Apply SQL migrations in Supabase (**SQL editor** or CLI), in order:
+5. Apply database migrations in order (**Supabase SQL first**, then **Prisma**):
 
-   - `supabase/migrations/20260325120000_init.sql`
-   - `supabase/migrations/20260325140000_platform_extensions.sql`
-   - `supabase/migrations/20260326120000_admin_staff_fields.sql` (viewer role, `User.name`, case notes, indicator flags, story `publishedAt`, cluster editorial fields, etc.)
+   ```bash
+   npm run db:migrate:supabase
+   npm run db:migrate:prisma
+   ```
 
-   Alternatively, after aligning `DATABASE_URL`, use `npx prisma db push` or `npm run db:migrate` once Prisma migration history is initialized from `prisma/schema.prisma`.
+   If `db:migrate:supabase` fails on `already exists` because the DB was partially created earlier, mark the matching version(s) as applied, then push again (example: init types/tables already present):
+
+   ```bash
+   npm run db:migrate:supabase:repair-applied -- 20260325120000
+   npm run db:migrate:supabase
+   ```
+
+   **Prisma P3005** (“schema is not empty”): Prisma refuses the first deploy when `public` already has objects but `_prisma_migrations` is empty or out of sync. Prefer a **fresh** `public` schema for greenfield setup, or follow [Prisma baselining](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/baselining) / `prisma migrate resolve --applied <folder>` for migrations whose SQL is already reflected in the database. Do not use `prisma migrate dev` against a shared Supabase DB unless you intend to reset; use `npm run db:migrate:prisma` (`migrate deploy`).
 
 6. (Optional) Load deterministic demo rows for the staff UI:
 

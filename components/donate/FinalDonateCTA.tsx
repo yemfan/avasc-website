@@ -12,20 +12,21 @@ export function FinalDonateCTA({
   oneTimeUrl: string | null;
 }) {
   return (
-    <section className="rounded-3xl border border-slate-200 bg-slate-900 px-6 py-10 text-slate-50 md:px-10">
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-      <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">{subtitle}</p>
-      <div className="mt-6 flex flex-wrap gap-3">
+    <section className="mx-4 rounded-[1.75rem] border border-white/[0.08] bg-[linear-gradient(135deg,var(--avasc-bg-soft)_0%,var(--avasc-blue)_100%)] px-6 py-12 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.55)] sm:mx-6 md:mx-auto md:max-w-5xl md:px-10">
+      <h2 className="font-display text-2xl font-medium tracking-tight text-white sm:text-3xl">{title}</h2>
+      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--avasc-text-secondary)] sm:text-base">{subtitle}</p>
+      <div className="mt-8 flex flex-wrap gap-3">
         <DonateLinkButton
           href={monthlyUrl ?? undefined}
-          label="Donate Monthly"
-          className="bg-white text-slate-900 hover:bg-slate-100"
+          label="Donate monthly"
+          variant="gold"
+          className="shadow-[0_12px_40px_-12px_rgba(201,148,60,0.5)]"
         />
         <DonateLinkButton
           href={oneTimeUrl ?? undefined}
-          label="One-Time Gift"
+          label="One-time gift"
           variant="outline"
-          className="border-slate-500 text-slate-100 hover:bg-slate-800"
+          className="border-white/[0.14] bg-white/[0.04] text-[var(--avasc-text-primary)] hover:border-[var(--avasc-gold)]/35"
         />
       </div>
     </section>

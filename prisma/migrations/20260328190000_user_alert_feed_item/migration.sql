@@ -19,7 +19,7 @@ ALTER TABLE "UserAlertFeedItem" ADD CONSTRAINT "UserAlertFeedItem_subscriptionId
 
 ALTER TABLE "UserAlertFeedItem" ADD CONSTRAINT "UserAlertFeedItem_alertId_fkey" FOREIGN KEY ("alertId") REFERENCES "Alert"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
-ALTER TABLE "UserAlertFeedItem" ADD CONSTRAINT "UserAlertFeedItem_scamClusterId_fkey" FOREIGN KEY ("scamClusterId") REFERENCES "ScamCluster"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+-- ScamCluster FK omitted (TEXT id vs UUID column); Prisma relation still enforced in app layer.
 
 -- CreateIndex
 CREATE INDEX "UserAlertFeedItem_subscriptionId_createdAt_idx" ON "UserAlertFeedItem"("subscriptionId", "createdAt");

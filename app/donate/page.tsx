@@ -32,7 +32,7 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
     thanksRaw === "1" || (Array.isArray(thanksRaw) && thanksRaw[0] === "1");
 
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-0 space-y-0 pb-4">
       <DonateHero
         title="Support Scam Victims. Help Stop the Next Scam."
         subtitle="Your donation helps AVASC support victims, build scam intelligence tools, and expand public awareness."
@@ -42,9 +42,9 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
 
       <TrustStrip items={["Secure donation options", "Victim-centered mission", "Privacy and dignity first"]} />
 
-      <section className="mx-auto max-w-2xl px-6 py-12">
-        <h2 className="text-2xl font-semibold tracking-tight text-foreground">Give with a custom amount</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+      <section className="mx-auto max-w-2xl py-12 sm:py-14">
+        <h2 className="font-display text-2xl font-medium tracking-tight text-white">Custom amount</h2>
+        <p className="mt-2 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
           Choose one-time or monthly, then continue to our secure payment provider.
         </p>
         <div className="mt-8">
@@ -52,10 +52,12 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section className="mx-auto max-w-7xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Your support creates real impact</h2>
-          <p className="mt-3 text-muted-foreground">
+          <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
+            Your support creates real impact
+          </h2>
+          <p className="mt-3 text-[var(--avasc-text-secondary)]">
             Every contribution helps AVASC build better tools, support victims, and turn reported scam experiences into
             public protection.
           </p>
@@ -69,10 +71,12 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-8">
+      <section className="mx-auto max-w-7xl py-10 sm:py-12">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Why donate to AVASC</h2>
-          <p className="mt-3 text-muted-foreground">
+          <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
+            Why donate to AVASC
+          </h2>
+          <p className="mt-3 text-[var(--avasc-text-secondary)]">
             Your support helps us do three things well: assist victims, organize scam intelligence, and prevent future
             harm.
           </p>
@@ -94,10 +98,12 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <section className="mx-auto max-w-7xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Choose how you want to give</h2>
-          <p className="mt-3 text-muted-foreground">
+          <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
+            Choose how you want to give
+          </h2>
+          <p className="mt-3 text-[var(--avasc-text-secondary)]">
             Monthly support helps AVASC grow more steadily, while one-time gifts help fund immediate work.
           </p>
         </div>
@@ -127,10 +133,12 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
 
       <MissionStoryBlock />
 
-      <section className="mx-auto max-w-4xl px-6 py-16">
+      <section className="mx-auto max-w-4xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight">Frequently asked questions</h2>
-          <p className="mt-3 text-muted-foreground">A few quick answers before you donate.</p>
+          <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
+            Frequently asked questions
+          </h2>
+          <p className="mt-3 text-[var(--avasc-text-secondary)]">A few quick answers before you donate.</p>
         </div>
 
         <div className="space-y-4">
@@ -164,12 +172,12 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         oneTimeUrl={STRIPE_DONATE_URL || null}
       />
 
-      <section className="border-t">
-        <div className="mx-auto max-w-5xl px-6 py-8 text-sm text-muted-foreground">
+      <section className="border-t border-white/[0.06]">
+        <div className="mx-auto max-w-7xl py-8 text-sm leading-relaxed text-[var(--avasc-text-muted)]">
           Donations support AVASC’s platform development, scam awareness, victim support resources, and outreach. AVASC
           is not a law firm and does not guarantee recovery.
         </div>
       </section>
-    </main>
+    </div>
   );
 }

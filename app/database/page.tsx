@@ -46,16 +46,14 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
   ]);
 
   return (
-    <main className="min-h-screen bg-[var(--avasc-bg)] text-[var(--avasc-text-primary)]">
-      <AvascPublicDatabaseView
-        results={results}
-        filters={filters}
-        query={query}
-        scamType={scamType}
-        riskLevel={riskLevel}
-        indicatorType={indicatorType}
-        realtimeAlerts={realtimeAlerts}
-      />
-    </main>
+    <AvascPublicDatabaseView
+      results={results}
+      filters={filters}
+      query={query}
+      scamType={scamType}
+      riskLevel={riskLevel}
+      indicatorType={indicatorType}
+      realtimeAlerts={realtimeAlerts}
+    />
   );
 }

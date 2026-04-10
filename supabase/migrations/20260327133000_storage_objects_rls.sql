@@ -9,7 +9,7 @@ BEGIN
     RETURN;
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'authenticated_can_upload_evidence') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'authenticated_can_upload_evidence') THEN
     CREATE POLICY "authenticated_can_upload_evidence"
     ON storage.objects
     FOR INSERT
@@ -17,7 +17,7 @@ BEGIN
     WITH CHECK (bucket_id = 'evidence-private');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'authenticated_can_read_evidence_metadata') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'authenticated_can_read_evidence_metadata') THEN
     CREATE POLICY "authenticated_can_read_evidence_metadata"
     ON storage.objects
     FOR SELECT
@@ -25,7 +25,7 @@ BEGIN
     USING (bucket_id = 'evidence-private');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'public_can_read_story_media') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'public_can_read_story_media') THEN
     CREATE POLICY "public_can_read_story_media"
     ON storage.objects
     FOR SELECT
@@ -33,7 +33,7 @@ BEGIN
     USING (bucket_id = 'story-media-public');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'authenticated_can_upload_story_media') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'authenticated_can_upload_story_media') THEN
     CREATE POLICY "authenticated_can_upload_story_media"
     ON storage.objects
     FOR INSERT
@@ -41,7 +41,7 @@ BEGIN
     WITH CHECK (bucket_id = 'story-media-public');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'authenticated_can_read_receipts') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'authenticated_can_read_receipts') THEN
     CREATE POLICY "authenticated_can_read_receipts"
     ON storage.objects
     FOR SELECT
@@ -49,7 +49,7 @@ BEGIN
     USING (bucket_id = 'receipts-private');
   END IF;
 
-  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE polname = 'service_can_upload_receipts') THEN
+  IF NOT EXISTS (SELECT 1 FROM pg_policies WHERE policyname = 'service_can_upload_receipts') THEN
     CREATE POLICY "service_can_upload_receipts"
     ON storage.objects
     FOR INSERT

@@ -76,9 +76,7 @@ CREATE INDEX "AlertDeliveryLog_alertId_idx" ON "AlertDeliveryLog"("alertId");
 CREATE INDEX "AlertDeliveryLog_subscriptionId_idx" ON "AlertDeliveryLog"("subscriptionId");
 CREATE INDEX "AlertDeliveryLog_sentAt_idx" ON "AlertDeliveryLog"("sentAt");
 
-ALTER TABLE "Alert" ADD CONSTRAINT "Alert_scamClusterId_fkey" FOREIGN KEY ("scamClusterId") REFERENCES "ScamCluster"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
-ALTER TABLE "ClusterSubscription" ADD CONSTRAINT "ClusterSubscription_clusterId_fkey" FOREIGN KEY ("clusterId") REFERENCES "ScamCluster"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+-- ScamCluster FKs omitted: see 20260328120000_avasc_alert_system/migration.sql (TEXT vs UUID).
 
 ALTER TABLE "ClusterSubscription" ADD CONSTRAINT "ClusterSubscription_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

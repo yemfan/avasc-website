@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { MarketingPageHeader } from "@/components/marketing/MarketingPageHeader";
 import { createCaseBodySchema, type CreateCaseBody } from "@/lib/report/case-submission";
 
 type Step = 1 | 2 | 3 | 4;
 
 const fieldClass =
-  "w-full rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg)] px-4 py-3 text-sm text-[var(--avasc-text-primary)] placeholder:text-[var(--avasc-text-muted)] outline-none transition focus:border-[var(--avasc-gold)] focus:ring-2 focus:ring-[rgba(197,139,43,0.2)]";
+  "w-full rounded-xl border border-white/[0.1] bg-[var(--avasc-bg)]/90 px-4 py-3 text-sm text-[var(--avasc-text-primary)] placeholder:text-[var(--avasc-text-muted)] outline-none ring-offset-2 ring-offset-[var(--avasc-bg)] transition focus:border-[var(--avasc-gold)]/50 focus:ring-2 focus:ring-[var(--avasc-gold)]/20";
 
 const labelClass = "mb-2 block text-sm font-medium text-white";
 
 const btnPrimaryClass =
-  "inline-flex min-h-11 items-center justify-center rounded-lg bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-5 py-3 text-sm font-semibold text-[#050A14] shadow-[0_0_20px_rgba(197,139,43,0.18)] transition hover:brightness-110 disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-5 py-3 text-sm font-semibold text-[#050A14] shadow-[0_8px_28px_-10px_rgba(201,148,60,0.45)] transition hover:brightness-[1.06] disabled:opacity-50";
 
 const btnSecondaryClass =
-  "inline-flex min-h-11 items-center justify-center rounded-lg border border-[var(--avasc-border)] px-5 py-3 text-sm font-medium text-[var(--avasc-text-primary)] transition hover:border-[var(--avasc-gold)] hover:text-white";
+  "inline-flex min-h-11 items-center justify-center rounded-xl border border-white/[0.12] px-5 py-3 text-sm font-medium text-[var(--avasc-text-primary)] transition hover:border-[var(--avasc-gold)]/40 hover:bg-white/[0.04] hover:text-white";
 
 type ReportFormState = {
   title: string;
@@ -184,8 +185,8 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
 
   if (doneId && step === 4) {
     return (
-      <div className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-8 text-center shadow-[0_8px_30px_rgba(0,0,0,0.2)] sm:p-10">
-        <h2 className="text-2xl font-bold text-[var(--avasc-gold-light)]">Report submitted</h2>
+      <div className="rounded-[1.75rem] border border-white/[0.08] bg-[var(--avasc-bg-card)]/90 p-8 text-center shadow-[0_24px_70px_-28px_rgba(0,0,0,0.55)] backdrop-blur-sm sm:p-10">
+        <h2 className="font-display text-2xl font-medium text-[var(--avasc-gold-light)]">Report submitted</h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
           Your report helps others avoid scams. Thank you.
         </p>
@@ -209,14 +210,15 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl">
-      <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Report a matching scam case</h1>
-      <p className="mt-2 text-[var(--avasc-text-secondary)]">
-        Help AVASC identify scam patterns and warn others.
-      </p>
+    <div className="mx-auto w-full max-w-3xl space-y-8">
+      <MarketingPageHeader
+        eyebrow="Victim reporting"
+        title="Report a matching scam case"
+        description="Structured intake helps staff link your experience to known patterns and protect others. Sensitive details are never published without your consent."
+      />
 
       {matchedLabel ? (
-        <div className="mt-6 rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-soft)] p-4 text-sm text-[var(--avasc-text-secondary)] sm:p-5">
+        <div className="rounded-2xl border border-white/[0.08] bg-[var(--avasc-bg-soft)]/80 p-4 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm sm:p-5">
           <p className="font-semibold text-[var(--avasc-text-primary)]">Reporting from a published pattern</p>
           <p className="mt-2 leading-relaxed">
             Staff can use this context when reviewing your case.{" "}
@@ -286,7 +288,7 @@ function Step1({
 }) {
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="text-xl font-semibold text-white">Step 1: What happened?</h2>
+      <h2 className="font-display text-xl font-medium text-white">Step 1: What happened?</h2>
 
       <div>
         <label className={labelClass} htmlFor="report-title">
@@ -374,7 +376,7 @@ function Step2({
 }) {
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="text-xl font-semibold text-white">Step 2: Scam details</h2>
+      <h2 className="font-display text-xl font-medium text-white">Step 2: Scam details</h2>
 
       <div>
         <label className={labelClass} htmlFor="report-contact">
@@ -434,7 +436,7 @@ function Step3({
 }) {
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="text-xl font-semibold text-white">Step 3: Contact & submit</h2>
+      <h2 className="font-display text-xl font-medium text-white">Step 3: Contact & submit</h2>
 
       <div>
         <label className={labelClass} htmlFor="report-email">

@@ -6,6 +6,7 @@ import { IndicatorChip } from "@/components/avasc/IndicatorChip";
 import { RiskBadge } from "@/components/avasc/RiskBadge";
 import { PublicDatabaseSearchFilters } from "@/components/avasc/public-database/PublicDatabaseSearchFilters";
 import { AlertStripCompact } from "@/components/marketing/AvascAlertSection";
+import { MarketingPageHeader } from "@/components/marketing/MarketingPageHeader";
 
 function Container({ children }: { children: React.ReactNode }) {
   return <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>;
@@ -31,10 +32,10 @@ type AvascPublicDatabaseViewProps = {
 
 function ResultCard({ item }: { item: PublicScamSearchResult }) {
   return (
-    <article className="rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)] transition hover:border-[var(--avasc-gold)] hover:shadow-[0_0_20px_rgba(197,139,43,0.18)]">
+    <article className="rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/90 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition hover:border-[var(--avasc-gold)]/40 hover:shadow-[0_20px_50px_-20px_rgba(201,148,60,0.15)]">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <h3 className="text-xl font-semibold tracking-tight text-white">{item.title}</h3>
+          <h3 className="font-display text-xl font-medium tracking-tight text-white">{item.title}</h3>
           <p className="mt-1 text-sm text-[var(--avasc-text-secondary)]">{item.scamType}</p>
         </div>
         <div className="flex flex-shrink-0 flex-wrap gap-2">
@@ -63,13 +64,13 @@ function ResultCard({ item }: { item: PublicScamSearchResult }) {
       <div className="mt-5 flex flex-wrap gap-3">
         <Link
           href={`/database/${item.slug}`}
-          className="rounded-lg border border-[var(--avasc-border)] px-4 py-2 text-sm font-medium text-white hover:border-[var(--avasc-gold)]"
+          className="rounded-xl border border-white/[0.12] px-4 py-2.5 text-sm font-medium text-white transition hover:border-[var(--avasc-gold)]/45 hover:bg-white/[0.04]"
         >
-          View Scam Profile
+          View profile
         </Link>
         <Link
           href={`/report?matchedProfile=${encodeURIComponent(item.slug)}`}
-          className="inline-flex items-center rounded-lg bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-4 py-2 text-sm font-semibold text-[#050A14]"
+          className="inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-4 py-2.5 text-sm font-semibold text-[#050A14] shadow-[0_8px_28px_-10px_rgba(201,148,60,0.45)] transition hover:brightness-[1.05]"
         >
           Report Matching Case
           <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
@@ -82,25 +83,25 @@ function ResultCard({ item }: { item: PublicScamSearchResult }) {
 function SidebarCTA() {
   return (
     <div className="space-y-4">
-      <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[#0F172A] to-[#0B1F3A] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
+      <section className="rounded-2xl border border-white/[0.08] bg-[linear-gradient(145deg,var(--avasc-bg-soft)_0%,var(--avasc-blue)_100%)] p-6 shadow-[0_20px_50px_-28px_rgba(0,0,0,0.5)]">
+        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--avasc-gold-light)]">
           <Bell className="h-3.5 w-3.5" aria-hidden />
-          AVASC Alerts
+          Alerts
         </div>
-        <h3 className="mt-4 text-xl font-semibold text-white">Get realtime scam alerts</h3>
+        <h3 className="font-display mt-4 text-xl font-medium text-white">Realtime scam alerts</h3>
         <p className="mt-3 text-sm leading-7 text-[var(--avasc-text-secondary)]">
           Subscribe to critical SMS alerts and daily or weekly scam intelligence by email.
         </p>
         <Link
           href="/alerts/subscribe"
-          className="mt-5 flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-4 py-3 text-sm font-semibold text-[#050A14]"
+          className="mt-5 flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-4 py-3 text-sm font-semibold text-[#050A14] shadow-[0_8px_28px_-10px_rgba(201,148,60,0.45)] transition hover:brightness-[1.05]"
         >
-          Subscribe to Alerts
+          Subscribe
         </Link>
       </section>
 
-      <section className="rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-        <h3 className="text-lg font-semibold text-white">Search Tips</h3>
+      <section className="rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/85 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm">
+        <h3 className="font-display text-lg font-medium text-white">Search tips</h3>
         <ul className="mt-4 space-y-3 text-sm text-[var(--avasc-text-secondary)]">
           <li className="flex items-start gap-3">
             <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-[var(--avasc-gold)]" aria-hidden />
@@ -117,10 +118,10 @@ function SidebarCTA() {
         </ul>
       </section>
 
-      <section className="rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
+      <section className="rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/85 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm">
         <div className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--avasc-gold-light)]">
           <AlertTriangle className="h-4 w-4" aria-hidden />
-          Public Safety Note
+          Public safety
         </div>
         <p className="mt-3 text-sm leading-7 text-[var(--avasc-text-secondary)]">
           Results include only published scam profiles and publicly approved indicators. AVASC does not publish private
@@ -133,11 +134,11 @@ function SidebarCTA() {
 
 function DatabaseEmptyState() {
   return (
-    <section className="rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-10 text-center shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[rgba(197,139,43,0.25)] bg-[rgba(197,139,43,0.08)]">
+    <section className="rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/85 p-10 text-center shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm">
+      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--avasc-gold)]/25 bg-[var(--avasc-gold)]/[0.08]">
         <Search className="h-6 w-6 text-[var(--avasc-gold-light)]" aria-hidden />
       </div>
-      <h3 className="mt-5 text-xl font-semibold text-white">No public scam profiles found</h3>
+      <h3 className="font-display mt-5 text-xl font-medium text-white">No profiles match</h3>
       <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-[var(--avasc-text-secondary)]">
         Try a broader keyword such as a domain, wallet, alias, platform, or scam type. If this looks similar to your
         case, consider reporting it so the pattern can be reviewed.
@@ -165,21 +166,15 @@ export function AvascPublicDatabaseView({
 }: AvascPublicDatabaseViewProps) {
   return (
     <Container>
-      <div className="py-8 sm:py-10">
+      <div className="pb-4 pt-0 sm:pb-6">
         <AlertStripCompact items={realtimeAlerts} />
 
         <div className="mt-6 space-y-8 sm:space-y-10">
-          <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[#0F172A] to-[#0B1F3A] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
-              <ShieldAlert className="h-3.5 w-3.5" aria-hidden />
-              AVASC Public Scam Database
-            </div>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">Search reported scam patterns.</h1>
-            <p className="mt-4 max-w-3xl text-base leading-8 text-[var(--avasc-text-secondary)]">
-              Search published scam profiles using publicly approved indicators such as domains, wallet addresses, emails,
-              aliases, platforms, and scam types.
-            </p>
-          </section>
+          <MarketingPageHeader
+            eyebrow="Public scam database"
+            title="Search published scam patterns"
+            description="Explore staff-reviewed profiles using public-safe indicators—domains, wallets, emails, aliases, platforms, and scam types. Your search stays private."
+          />
 
           <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
           <div className="space-y-6">

@@ -53,31 +53,42 @@ export function AvascAlertSection({
   dailyAlerts,
   title = "AVASC Alerts",
   subtitle = "Live scam intelligence with realtime warnings and daily analysis.",
+  hideSubscribeCta = false,
 }: {
   realtimeAlerts: AlertItem[];
   dailyAlerts: AlertItem[];
   title?: string;
   subtitle?: string;
+  /** When true, omit the header link (e.g. homepage uses an inline subscribe control). */
+  hideSubscribeCta?: boolean;
 }) {
   return (
-    <section className="space-y-5">
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+    <section className="space-y-6">
+      <div
+        className={
+          hideSubscribeCta
+            ? "flex flex-col gap-4"
+            : "flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"
+        }
+      >
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--avasc-gold-light)]">
             <Bell className="h-3.5 w-3.5" />
-            Live Intelligence Layer
+            Live intelligence
           </div>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">{title}</h2>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--avasc-text-secondary)]">{subtitle}</p>
+          <h2 className="font-display mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl">{title}</h2>
+          <p className="mt-3 max-w-3xl text-base leading-relaxed text-[var(--avasc-text-secondary)]">{subtitle}</p>
         </div>
 
-        <Link
-          href="/alerts/subscribe"
-          className="inline-flex items-center rounded-lg bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-5 py-3 text-sm font-semibold text-[#050A14]"
-        >
-          Subscribe to Alerts
-          <ChevronRight className="ml-2 h-4 w-4" />
-        </Link>
+        {hideSubscribeCta ? null : (
+          <Link
+            href="/alerts/subscribe"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-5 py-3 text-sm font-semibold text-[#050A14] shadow-[0_12px_36px_-14px_rgba(201,148,60,0.55)] transition hover:brightness-[1.06]"
+          >
+            Subscribe to alerts
+            <ChevronRight className="h-4 w-4" />
+          </Link>
+        )}
       </div>
 
       <RealtimeAlertTicker items={realtimeAlerts} />
@@ -89,7 +100,7 @@ export function AvascAlertSection({
 export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
   if (!items.length) {
     return (
-      <div className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 text-sm text-[var(--avasc-text-secondary)]">
+      <div className="rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-5 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm">
         No active realtime alerts right now.
       </div>
     );
@@ -98,7 +109,7 @@ export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
   const duplicated = [...items, ...items];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-[var(--avasc-border)] bg-gradient-to-r from-[#15090a] via-[#0F172A] to-[#0B1F3A] shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
+    <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-br from-[#120a08] via-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] shadow-[0_20px_50px_-20px_rgba(0,0,0,0.5)]">
       <style>{`
         @keyframes avascTickerScroll {
           0% { transform: translateX(0); }
@@ -148,7 +159,7 @@ export function RealtimeAlertTicker({ items }: { items: AlertItem[] }) {
 export function DailyAlertFeed({ items }: { items: AlertItem[] }) {
   if (!items.length) {
     return (
-      <div className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 text-sm text-[var(--avasc-text-secondary)]">
+      <div className="rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-6 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm">
         No daily alerts published yet.
       </div>
     );
@@ -169,7 +180,7 @@ export function DailyAlertCard({ item }: { item: AlertItem }) {
   return (
     <article
       className={cx(
-        "rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)] transition",
+        "rounded-2xl border border-white/[0.07] bg-[var(--avasc-bg-card)]/90 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm transition",
         styles.cardBorder
       )}
     >

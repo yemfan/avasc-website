@@ -182,23 +182,31 @@ export function HomepageAlertSignup({ embedded = false }: HomepageAlertSignupPro
 
   if (embedded) {
     return (
-      <div className="rounded-2xl border border-[var(--avasc-border)] bg-[rgba(5,10,20,0.6)] p-6">{form}</div>
+      <div className="rounded-2xl border border-white/[0.08] bg-[var(--avasc-bg-card)]/80 p-6 backdrop-blur-sm">{form}</div>
     );
   }
 
   return (
-    <section className="rounded-3xl border border-[var(--avasc-border)] bg-gradient-to-br from-[var(--avasc-bg-soft)] to-[var(--avasc-blue)] p-8 shadow-[0_8px_30px_rgba(0,0,0,0.20)]">
-      <div className="max-w-3xl">
-        <div className="inline-flex rounded-full border border-[rgba(197,139,43,0.35)] bg-[rgba(197,139,43,0.08)] px-3 py-1 text-xs font-semibold text-[var(--avasc-gold-light)]">
-          AVASC Alert Network
+    <section className="relative overflow-hidden rounded-[1.75rem] border border-white/[0.08] bg-[linear-gradient(145deg,var(--avasc-bg-soft)_0%,#0a1628_50%,var(--avasc-blue)_100%)] p-8 shadow-[0_24px_70px_-28px_rgba(0,0,0,0.55)] sm:p-10">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-30"
+        aria-hidden
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 80% 50% at 0% 100%, rgba(201, 148, 60, 0.1), transparent 55%)",
+        }}
+      />
+      <div className="relative max-w-3xl">
+        <div className="inline-flex rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--avasc-gold-light)]">
+          AVASC alert network
         </div>
 
-        <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Stay Protected in Real Time
+        <h2 className="font-display mt-5 text-3xl font-medium tracking-tight text-white sm:text-4xl">
+          Stay protected in real time
         </h2>
 
-        <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--avasc-text-secondary)]">
-          Get critical scam alerts by text message and receive daily or weekly scam intelligence by email.
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--avasc-text-secondary)]">
+          Critical scam warnings by SMS, plus daily or weekly intelligence by email—opt in to what you need.
         </p>
 
         {form}

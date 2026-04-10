@@ -61,8 +61,8 @@ function MobileMenu() {
 
 export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--avasc-divider)] bg-[rgba(5,10,20,0.88)] backdrop-blur-md supports-[backdrop-filter]:bg-[rgba(5,10,20,0.82)]">
-      <div className="mx-auto flex min-h-[5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[rgba(5,9,18,0.78)] shadow-[0_1px_0_rgba(255,255,255,0.04)_inset] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(5,9,18,0.72)]">
+      <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:min-h-[5rem] sm:px-6 lg:px-8">
         <Link
           href="/"
           className="flex shrink-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)]"

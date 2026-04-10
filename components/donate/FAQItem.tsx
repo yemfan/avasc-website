@@ -1,10 +1,10 @@
 export function FAQItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <details className="rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-      <summary className="block cursor-pointer list-none text-sm font-semibold text-slate-900 [&::-webkit-details-marker]:hidden">
+    <details className="rounded-xl border border-white/[0.08] bg-[var(--avasc-bg-card)]/70 px-4 py-3 backdrop-blur-sm transition hover:border-white/[0.12]">
+      <summary className="block cursor-pointer list-none text-sm font-semibold text-white [&::-webkit-details-marker]:hidden">
         {question}
       </summary>
-      <p className="mt-2 block text-sm leading-relaxed text-slate-600">{answer}</p>
+      <p className="mt-2 block text-sm leading-relaxed text-[var(--avasc-text-secondary)]">{answer}</p>
     </details>
   );
 }

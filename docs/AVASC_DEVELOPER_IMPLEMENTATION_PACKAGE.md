@@ -409,8 +409,7 @@ lib/
 Set these before deployment:
 
 ```
-DATABASE_URL=
-DIRECT_URL=
+DATABASE_URL=   # Supabase Session pooler URI (single URL for app + Prisma migrate; no DIRECT_URL)
 NEXT_PUBLIC_APP_URL=
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=

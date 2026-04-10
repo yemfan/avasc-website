@@ -100,16 +100,16 @@ export function PublicDatabaseSearchFilters({
   }, [query, clearDebounce, navigate]);
 
   const fieldClass =
-    "w-full rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg)] px-4 py-3 text-sm text-white outline-none transition focus:border-[var(--avasc-gold)] focus:ring-2 focus:ring-[rgba(197,139,43,0.2)]";
+    "w-full rounded-xl border border-white/[0.1] bg-[var(--avasc-bg)]/90 px-4 py-3 text-sm text-white outline-none ring-offset-2 ring-offset-[var(--avasc-bg)] transition focus:border-[var(--avasc-gold)]/50 focus:ring-2 focus:ring-[var(--avasc-gold)]/20";
 
   return (
     <section
-      className="rounded-3xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.20)]"
+      className="rounded-2xl border border-white/[0.08] bg-[var(--avasc-bg-card)]/85 p-6 shadow-[0_16px_40px_-24px_rgba(0,0,0,0.45)] backdrop-blur-sm"
       aria-label="Search published scam patterns"
     >
-      <div className="flex flex-wrap items-center gap-2 text-sm font-semibold text-[var(--avasc-gold-light)]">
+      <div className="flex flex-wrap items-center gap-2 font-display text-sm font-medium text-[var(--avasc-gold-light)]">
         <Filter className="h-4 w-4 shrink-0" aria-hidden />
-        <span>Search Published Scam Patterns</span>
+        <span>Search & filters</span>
         {isPending ? (
           <span className="text-xs font-normal text-[var(--avasc-text-muted)]">Updating…</span>
         ) : null}
@@ -209,7 +209,7 @@ export function PublicDatabaseSearchFilters({
         scamType !== "ALL" ||
         riskLevel !== "ALL" ||
         indicatorType !== "ALL" ? (
-          <div className="flex justify-end border-t border-[var(--avasc-border)] pt-4">
+          <div className="flex justify-end border-t border-white/[0.08] pt-4">
             <Link
               href="/database"
               onClick={clearDebounce}

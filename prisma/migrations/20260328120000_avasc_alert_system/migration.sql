@@ -1,5 +1,7 @@
 -- AVASC threat alerts, subscriptions, cluster follows, delivery audit (see prisma Alert / Subscription models).
 
+CREATE TYPE "RiskLevel" AS ENUM ('LOW', 'MEDIUM', 'HIGH', 'CRITICAL');
+
 CREATE TYPE "AvascAlertKind" AS ENUM ('CLUSTER_UPDATED', 'RISK_ESCALATED');
 
 CREATE TYPE "AlertDeliveryChannel" AS ENUM ('SMS', 'EMAIL');
@@ -85,13 +87,11 @@ CREATE INDEX "AlertDeliveryLog_alertId_idx" ON "AlertDeliveryLog"("alertId");
 CREATE INDEX "AlertDeliveryLog_createdAt_idx" ON "AlertDeliveryLog"("createdAt");
 CREATE INDEX "AlertDeliveryLog_channel_status_idx" ON "AlertDeliveryLog"("channel", "status");
 
-ALTER TABLE "Alert" ADD CONSTRAINT "Alert_scamClusterId_fkey" FOREIGN KEY ("scamClusterId") REFERENCES "ScamCluster"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+-- No FK to ScamCluster here: legacy supabase/migrations use "ScamCluster"."id" TEXT until aligned with Prisma @db.Uuid.
 
 ALTER TABLE "Subscription" ADD CONSTRAINT "Subscription_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 ALTER TABLE "ClusterSubscription" ADD CONSTRAINT "ClusterSubscription_subscriptionId_fkey" FOREIGN KEY ("subscriptionId") REFERENCES "Subscription"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE "ClusterSubscription" ADD CONSTRAINT "ClusterSubscription_scamClusterId_fkey" FOREIGN KEY ("scamClusterId") REFERENCES "ScamCluster"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "AlertDeliveryLog" ADD CONSTRAINT "AlertDeliveryLog_alertId_fkey" FOREIGN KEY ("alertId") REFERENCES "Alert"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
