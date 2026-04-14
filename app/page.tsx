@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { HomepageAlertsPanel } from "@/components/marketing/HomepageAlertsPanel";
 import { HomepageHero } from "@/components/marketing/HomepageHero";
 import { HomepageMissionHighlights } from "@/components/marketing/HomepageMissionHighlights";
@@ -5,6 +6,26 @@ import { getHomepageAlertSectionData } from "@/lib/alerts/avasc-alert-section-ap
 
 /** Prisma-backed alert section; do not prerender without DB. */
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "AVASC — Anti-scam support & reporting",
+  description:
+    "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
+  openGraph: {
+    title: "AVASC — Anti-scam support & reporting",
+    description:
+      "Report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
+    url: "https://avasc.org",
+    siteName: "AVASC",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default async function HomePage() {
   const { realtimeAlerts, dailyAlerts } = await getHomepageAlertSectionData();

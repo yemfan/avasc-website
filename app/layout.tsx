@@ -23,6 +23,7 @@ const frauncesDisplay = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://avasc.org"),
   title: {
     default: "AVASC — Anti-scam support & reporting",
     template: "%s | AVASC",
@@ -36,6 +37,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLdOrganization = {
+    "@context": "https://schema.org",
+    "@type": "NonprofitOrganization",
+    "name": "AVASC",
+    "alternateName": "Association of Victims Against Cyber-Scams",
+    "url": "https://avasc.org",
+    "logo": "https://avasc.org/icon.png",
+    "description": "AVASC helps victims of cyber-scams report fraud, search scam indicators, compare patterns, and find recovery guidance.",
+    "sameAs": []
+  };
+
+  const jsonLdWebsite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AVASC",
+    "url": "https://avasc.org",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://avasc.org/database?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html
       lang="en"
@@ -43,6 +67,14 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
         <ConditionalAppShell>{children}</ConditionalAppShell>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite) }}
+        />
       </body>
     </html>
   );

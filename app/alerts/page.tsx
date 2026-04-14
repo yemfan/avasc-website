@@ -1,7 +1,25 @@
+import type { Metadata } from "next";
 import { AlertSubscriptionForm } from "@/components/alerts/AlertSubscriptionForm";
 import { SectionShell } from "@/components/avasc/layout/SectionShell";
 
 type SearchProps = { searchParams: Promise<{ verify?: string }> };
+
+export const metadata: Metadata = {
+  title: "Scam Alerts | AVASC",
+  description: "Subscribe to real-time scam alerts and stay informed about emerging threats.",
+  openGraph: {
+    title: "Scam Alerts | AVASC",
+    description: "Subscribe to real-time scam alerts and stay informed about emerging threats.",
+    type: "website",
+    url: "https://avasc.org/alerts",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/alerts",
+  },
+};
 
 export default async function AlertsPage({ searchParams }: SearchProps) {
   const { verify } = await searchParams;

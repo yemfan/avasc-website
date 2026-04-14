@@ -1,8 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-export const metadata = {
-  title: "Recovery center",
+export const metadata: Metadata = {
+  title: "Recovery Center | AVASC",
+  description: "Find guidance and resources for recovering from cyber-scams.",
+  openGraph: {
+    title: "Recovery Center | AVASC",
+    description: "Find guidance and resources for recovering from cyber-scams.",
+    type: "website",
+    url: "https://avasc.org/recovery",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/recovery",
+  },
 };
 
 const modules = [

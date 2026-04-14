@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { ReportMatchingCaseFlow } from "@/components/avasc/report/ReportMatchingCaseFlow";
 
-export const metadata = {
-  title: "Report a scam | AVASC",
-  description: "Structured scam report with privacy controls.",
+export const metadata: Metadata = {
+  title: "Report a Scam | AVASC",
+  description: "Submit a scam report confidentially. Your report helps protect others.",
+  openGraph: {
+    title: "Report a Scam | AVASC",
+    description: "Submit a scam report confidentially. Your report helps protect others.",
+    type: "website",
+    url: "https://avasc.org/report",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/report",
+  },
 };
 
 type PageProps = {

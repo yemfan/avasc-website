@@ -21,6 +21,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${story.title} | Survivor story`,
     description: "Moderated survivor story from the AVASC community.",
+    openGraph: {
+      title: `${story.title} | Survivor story`,
+      description: "Moderated survivor story from the AVASC community.",
+      type: "article",
+      url: `https://avasc.org/stories/${slug}`,
+    },
+    twitter: {
+      card: "summary",
+    },
   };
 }
 

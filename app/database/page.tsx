@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     title: "Search reported scam patterns | AVASC",
     description:
       "Privacy-safe search across published scam profiles — indicators are masked or staff-approved for public display.",
+    type: "website",
+    url: "https://avasc.org/database",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/database",
   },
 };
 

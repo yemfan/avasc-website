@@ -8,6 +8,19 @@ export const metadata: Metadata = {
   title: "About AVASC",
   description:
     "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
+  openGraph: {
+    title: "About AVASC",
+    description:
+      "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
+    type: "website",
+    url: "https://avasc.org/about",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/about",
+  },
 };
 
 export default function AboutPage() {

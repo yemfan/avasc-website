@@ -1,8 +1,21 @@
+import type { Metadata } from "next";
 import { StoriesClient } from "@/components/stories/StoriesClient";
 
-export const metadata = {
-  title: "Survivor stories | AVASC",
-  description: "Share and read moderated survivor stories.",
+export const metadata: Metadata = {
+  title: "Scam Survivor Stories | AVASC",
+  description: "Read real stories from scam survivors and share your experience to help others.",
+  openGraph: {
+    title: "Scam Survivor Stories | AVASC",
+    description: "Read real stories from scam survivors and share your experience to help others.",
+    type: "website",
+    url: "https://avasc.org/stories",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/stories",
+  },
 };
 
 export default function StoriesPage() {

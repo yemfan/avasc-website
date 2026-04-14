@@ -15,6 +15,19 @@ export const metadata: Metadata = {
   title: "Support AVASC | Donate",
   description:
     "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
+  openGraph: {
+    title: "Support AVASC | Donate",
+    description:
+      "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
+    type: "website",
+    url: "https://avasc.org/donate",
+  },
+  twitter: {
+    card: "summary",
+  },
+  alternates: {
+    canonical: "/donate",
+  },
 };
 
 const STRIPE_DONATE_URL = process.env.NEXT_PUBLIC_STRIPE_DONATE_URL || "";
