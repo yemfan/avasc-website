@@ -71,6 +71,54 @@ const guides = [
     description: "Recognize fake giveaways, impersonation accounts, and marketplace fraud.",
     color: "bg-indigo-50 border-indigo-200",
   },
+  {
+    slug: "job-scam-warning-signs",
+    title: "Job Scam Warning Signs: How to Spot Fake Employment Offers",
+    description: "Learn to recognize fake job postings, work-from-home scams, and upfront fee requests.",
+    color: "bg-fuchsia-50 border-fuchsia-200",
+  },
+  {
+    slug: "tech-support-scam-protection",
+    title: "Tech Support Scam Protection: Don't Fall for Fake Computer Warnings",
+    description: "Identify fake virus popups, cold calls claiming to be Microsoft or Apple, and remote access tricks.",
+    color: "bg-teal-50 border-teal-200",
+  },
+  {
+    slug: "online-shopping-scam-prevention",
+    title: "Online Shopping Scam Prevention: How to Shop Safely Online",
+    description: "Learn to identify fake websites, counterfeit products, and unsafe payment methods.",
+    color: "bg-emerald-50 border-emerald-200",
+  },
+  {
+    slug: "identity-theft-protection",
+    title: "Identity Theft Protection: How to Safeguard Your Personal Information",
+    description: "Protect your SSN, monitor credit, freeze accounts, and detect data breaches early.",
+    color: "bg-violet-50 border-violet-200",
+  },
+  {
+    slug: "money-mule-awareness",
+    title: "Money Mule Scams: How Criminals Use Innocent People to Move Money",
+    description: "Learn how people get recruited, the legal consequences, and what to do if involved.",
+    color: "bg-pink-50 border-pink-200",
+  },
+  {
+    slug: "charity-scam-verification",
+    title: "How to Verify a Charity and Avoid Donation Scams",
+    description: "Verify 501(c)(3) status, check Charity Navigator, and avoid fake charities after disasters.",
+    color: "bg-sky-50 border-sky-200",
+  },
+  {
+    slug: "business-email-compromise",
+    title: "Business Email Compromise (BEC): How Scammers Target Companies",
+    description: "Learn about CEO fraud, invoice manipulation, vendor impersonation, and prevention policies.",
+    color: "bg-lime-50 border-lime-200",
+  },
+  {
+    slug: "sextortion-and-blackmail-scams",
+    title: "Sextortion and Online Blackmail: What to Do and How to Get Help",
+    description: "Learn what sextortion is, why you shouldn't pay, how to report, and where to find support.",
+    color: "bg-red-50 border-red-200",
+  },
 ];
 
 export default function GuidesPage() {
