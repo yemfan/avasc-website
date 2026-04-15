@@ -32,6 +32,15 @@ export const metadata: Metadata = {
   },
   description:
     "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
+  openGraph: {
+    type: "website",
+    siteName: "AVASC",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AVASC — Association of Victims Against Cyber-Scams" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
