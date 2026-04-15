@@ -55,8 +55,28 @@ const modules = [
 ];
 
 export default function RecoveryPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Recovery Center",
+        item: "https://avasc.org/recovery",
+      },
+    ],
+  };
+
   return (
     <div className="space-y-10">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Link
         href="/"
         className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
@@ -97,6 +117,38 @@ export default function RecoveryPage() {
           <li>Screenshots and PDFs (upload after account creation where required)</li>
           <li>Financial institution reference numbers</li>
         </ul>
+      </section>
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-slate-900 mb-4">Next Steps</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          <Link
+            href="/stories"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Read Survivor Stories</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Learn from others who've been scammed and recovered.
+            </p>
+          </Link>
+          <Link
+            href="/report"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Report Your Case</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Submit a detailed report to help identify scam patterns.
+            </p>
+          </Link>
+          <Link
+            href="/database"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Search Our Scam Database</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Look up indicators and check scam profiles.
+            </p>
+          </Link>
+        </div>
       </section>
     </div>
   );

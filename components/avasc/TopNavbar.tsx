@@ -24,6 +24,7 @@ const DESKTOP_LINKS = [
   { href: "/database", label: "Scam Database" },
   { href: "/report", label: "Report Case" },
   { href: "/stories", label: "Stories" },
+  { href: "/guides", label: "Guides" },
   { href: "/recovery", label: "Recovery" },
   { href: "/about", label: "About" },
 ] as const;

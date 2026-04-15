@@ -44,8 +44,28 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
   const showThanks =
     thanksRaw === "1" || (Array.isArray(thanksRaw) && thanksRaw[0] === "1");
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Donate",
+        item: "https://avasc.org/donate",
+      },
+    ],
+  };
+
   return (
     <div className="min-h-0 space-y-0 pb-4">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <DonateHero
         title="Support Scam Victims. Help Stop the Next Scam."
         subtitle="Your donation helps AVASC support victims, build scam intelligence tools, and expand public awareness."

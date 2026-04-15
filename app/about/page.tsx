@@ -24,8 +24,28 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "About",
+        item: "https://avasc.org/about",
+      },
+    ],
+  };
+
   return (
     <div className="mx-auto max-w-4xl space-y-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <header className="space-y-6">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
           <Image

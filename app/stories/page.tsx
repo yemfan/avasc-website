@@ -19,8 +19,28 @@ export const metadata: Metadata = {
 };
 
 export default function StoriesPage() {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Stories",
+        item: "https://avasc.org/stories",
+      },
+    ],
+  };
+
   return (
     <div className="space-y-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div>
         <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Survivor stories</h1>
         <p className="mt-2 max-w-2xl text-sm text-slate-600">

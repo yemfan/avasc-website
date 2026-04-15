@@ -47,8 +47,34 @@ export default async function PublicScamProfilePage({ params }: PageProps) {
     notFound();
   }
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Scam Database",
+        item: "https://avasc.org/database",
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: profile.title,
+        item: `https://avasc.org/database/${slug}`,
+      },
+    ],
+  };
+
   return (
     <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="space-y-6">
         <PublicScamProfileHeader profile={profile} />
         <PublicScamProfileSummary profile={profile} />

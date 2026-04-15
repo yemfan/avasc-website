@@ -28,8 +28,28 @@ export default async function AlertsPage({ searchParams }: SearchProps) {
       ? "Email verification tokens are no longer used — your subscription is saved directly."
       : null;
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Alerts",
+        item: "https://avasc.org/alerts",
+      },
+    ],
+  };
+
   return (
     <SectionShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div className="mx-auto max-w-2xl space-y-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Scam intelligence alerts</h1>

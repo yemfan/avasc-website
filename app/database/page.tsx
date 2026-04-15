@@ -53,8 +53,29 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
     getPublicAlerts({ type: "REALTIME", limit: 3 }).catch(() => []),
   ]);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://avasc.org",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Scam Database",
+        item: "https://avasc.org/database",
+      },
+    ],
+  };
+
   return (
-    <AvascPublicDatabaseView
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <AvascPublicDatabaseView
       results={results}
       filters={filters}
       query={query}
@@ -63,5 +84,38 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
       indicatorType={indicatorType}
       realtimeAlerts={realtimeAlerts}
     />
+      <section className="mt-12 border-t border-slate-200 pt-12">
+        <h2 className="text-xl font-semibold text-slate-900 mb-6">Learn More</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          <a
+            href="/report"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Report a Scam</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Share your experience and help us expand the database.
+            </p>
+          </a>
+          <a
+            href="/stories"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Read Survivor Stories</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Learn how others identified and responded to scams.
+            </p>
+          </a>
+          <a
+            href="/recovery"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">Recovery Resources</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              Get guidance on responding to and recovering from scams.
+            </p>
+          </a>
+        </div>
+      </section>
+    </>
   );
 }
