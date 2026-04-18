@@ -118,6 +118,52 @@ export default function RecoveryPage() {
           <li>Financial institution reference numbers</li>
         </ul>
       </section>
+      <section className="rounded-2xl border border-slate-200 bg-white p-6">
+        <h2 className="text-lg font-semibold text-slate-900">Authoritative reporting resources</h2>
+        <p className="mt-2 text-sm text-slate-600">
+          Filing with the relevant U.S. agency creates an official record, helps investigators
+          spot patterns, and is often required by banks or insurers. Filing with AVASC does not
+          replace these — we encourage you to do both.
+        </p>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          <a
+            href="https://reportfraud.ftc.gov"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">FTC — Report Fraud</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              reportfraud.ftc.gov — the U.S. Federal Trade Commission’s consumer fraud intake for
+              scams, imposters, and deceptive business practices.
+            </p>
+          </a>
+          <a
+            href="https://www.ic3.gov"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">FBI IC3</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              ic3.gov — the FBI’s Internet Crime Complaint Center. File here for cyber-enabled
+              fraud, wire fraud, crypto theft, and cross-border schemes.
+            </p>
+          </a>
+          <a
+            href="https://www.identitytheft.gov"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+          >
+            <h3 className="font-medium text-slate-900">IdentityTheft.gov</h3>
+            <p className="mt-1 text-sm text-slate-600">
+              identitytheft.gov — FTC-run recovery planner that generates a personalized
+              step-by-step plan if your identity or accounts were compromised.
+            </p>
+          </a>
+        </div>
+      </section>
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-slate-900 mb-4">Next Steps</h2>
         <div className="grid gap-4 md:grid-cols-3">

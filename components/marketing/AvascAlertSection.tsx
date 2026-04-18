@@ -118,6 +118,11 @@ export function AvascAlertSection({
 
 export function RealtimeAlertTicker({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
   if (!items.length) {
+    // TOM MJ-001: the original "No active realtime alerts right now"
+    // presented as a void and undermined the "pattern intelligence" value
+    // prop. Reframed as a positive "no current CRITICAL alerts" status with
+    // a clear path to subscribe, so the absence reads as vigilance rather
+    // than emptiness.
     return (
       <div
         className={
@@ -126,7 +131,17 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
             : "rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-5 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm"
         }
       >
-        No active realtime alerts right now.
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+          <span className="font-medium text-white">All quiet — no current critical alerts.</span>
+        </div>
+        <p className="mt-2 text-xs leading-relaxed text-[var(--avasc-text-muted)]">
+          REALTIME alerts fire only for high-confidence CRITICAL scam activity.{" "}
+          <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+            Subscribe
+          </Link>{" "}
+          to get them the moment they publish.
+        </p>
       </div>
     );
   }
@@ -202,6 +217,9 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
 
 export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
   if (!items.length) {
+    // TOM MJ-001: same reframe as RealtimeAlertTicker. Previous "No daily
+    // alerts published yet" read as broken. Now conveys the editorial cadence
+    // and links to subscribe + report.
     return (
       <div
         className={
@@ -210,7 +228,18 @@ export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[];
             : "rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-6 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm"
         }
       >
-        No daily alerts published yet.
+        <div className="font-medium text-white">Daily briefing not yet posted for today.</div>
+        <p className="mt-2 text-xs leading-relaxed text-[var(--avasc-text-muted)]">
+          AVASC publishes daily scam-pattern briefings on weekdays.{" "}
+          <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+            Subscribe by email
+          </Link>{" "}
+          to get each day&apos;s brief in your inbox, or{" "}
+          <Link href="/report" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+            report a scam
+          </Link>{" "}
+          to contribute to the next one.
+        </p>
       </div>
     );
   }
