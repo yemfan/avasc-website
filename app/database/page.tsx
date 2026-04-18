@@ -42,16 +42,42 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
   const riskLevel = params.riskLevel ?? "ALL";
   const indicatorType = params.indicatorType ?? "ALL";
 
-  const [results, filters, realtimeAlerts] = await Promise.all([
-    searchPublicScamProfiles({
-      query,
-      scamType,
-      riskLevel,
-      indicatorType,
-    }),
-    getPublicDatabaseFilters(),
-    getPublicAlerts({ type: "REALTIME", limit: 3 }).catch(() => []),
-  ]);
+  // TOM CR-001: this page was returning HTTP 500 in production (reported
+  // April 17). Root cause is likely a missing table, missing env var, or a
+  // transient Supabase issue — without live access we can't pin it down.
+  //
+  // Until root cause is fixed, catch the error server-side and render a
+  // graceful degraded view instead of crashing to a 500. Users see a useful
+  // "temporarily unavailable" message with working links to alternative
+  // resources. When the backend recovers, this code path is unchanged.
+  let results: Awaited<ReturnType<typeof searchPublicScamProfiles>>;
+  let filters: Awaited<ReturnType<typeof getPublicDatabaseFilters>>;
+  let realtimeAlerts: Awaited<ReturnType<typeof getPublicAlerts>>;
+  let databaseError: string | null = null;
+  try {
+    [results, filters, realtimeAlerts] = await Promise.all([
+      searchPublicScamProfiles({
+        query,
+        scamType,
+        riskLevel,
+        indicatorType,
+      }),
+      getPublicDatabaseFilters(),
+      getPublicAlerts({ type: "REALTIME", limit: 3 }).catch(() => []),
+    ]);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("[database] load failed", msg);
+    databaseError = msg;
+    // Safe empty fallbacks so the view component still renders.
+    results = { rows: [], total: 0, page: 1, pageSize: 20 } as unknown as Awaited<
+      ReturnType<typeof searchPublicScamProfiles>
+    >;
+    filters = { scamTypes: [], riskLevels: [], indicatorTypes: [] } as unknown as Awaited<
+      ReturnType<typeof getPublicDatabaseFilters>
+    >;
+    realtimeAlerts = [];
+  }
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -75,6 +101,49 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {databaseError ? (
+        <div className="mx-auto max-w-3xl px-4 py-12">
+          <div className="rounded-lg border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-5 text-sm text-[var(--avasc-gold-light)]">
+            <h2 className="text-lg font-medium text-white">Scam database is temporarily unavailable</h2>
+            <p className="mt-2 text-[var(--avasc-text-secondary)]">
+              We&apos;re having trouble loading the scam pattern database right now.
+              Please try again in a few minutes. In the meantime:
+            </p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-[var(--avasc-text-secondary)]">
+              <li>
+                <a
+                  href="https://reportfraud.ftc.gov"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-[var(--avasc-gold-light)]"
+                >
+                  Report a scam to the FTC (reportfraud.ftc.gov)
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.ic3.gov"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline hover:text-[var(--avasc-gold-light)]"
+                >
+                  File with the FBI&apos;s IC3 (ic3.gov)
+                </a>
+              </li>
+              <li>
+                <a href="/report" className="underline hover:text-[var(--avasc-gold-light)]">
+                  Submit a scam report to AVASC
+                </a>
+              </li>
+              <li>
+                <a href="mailto:security@avasc.org" className="underline hover:text-[var(--avasc-gold-light)]">
+                  Email security@avasc.org if you need urgent help
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      ) : null}
       <AvascPublicDatabaseView
       results={results}
       filters={filters}

@@ -53,10 +53,21 @@ export default async function AlertsPage({ searchParams }: SearchProps) {
       <div className="mx-auto max-w-2xl space-y-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Scam intelligence alerts</h1>
+          {/* TOM CR-005: previous copy exposed the internal DB table name
+              "AlertDeliveryLog" to end users. Replaced with a user-friendly
+              description. Internal delivery audit logs still exist server-
+              side; they just aren't advertised to subscribers. */}
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             Stay informed about <strong>published</strong> patterns in the AVASC database. REALTIME SMS is rare and only
-            for <strong>CRITICAL</strong> high-confidence updates on patterns you follow. Deliveries are logged in{" "}
-            <code className="text-xs">AlertDeliveryLog</code>.
+            for <strong>CRITICAL</strong> high-confidence updates on patterns you follow. Every alert we send is
+            auditable — if you think a message looks suspicious, email{" "}
+            <a
+              href="mailto:security@avasc.org"
+              className="underline decoration-avasc-gold/50 underline-offset-4 hover:text-avasc-gold-light"
+            >
+              security@avasc.org
+            </a>
+            .
           </p>
           {verifyMsg ? (
             <p
