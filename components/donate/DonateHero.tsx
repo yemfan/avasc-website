@@ -44,11 +44,21 @@ export function DonateHero({ title, subtitle, monthlyUrl, oneTimeUrl }: DonateHe
           />
         </div>
 
+        {/* TOM CR-002: the previous fallback copy exposed dev env-var names
+            ("Configure NEXT_PUBLIC_STRIPE_*") to production visitors. That's
+            both a trust hit and a minor info leak. The user-visible copy is
+            now a warm "processors are being set up" message; dev configuration
+            reminders live only in the build log. */}
         {(!monthlyUrl || !oneTimeUrl) && (
           <p className="mt-6 text-sm text-[var(--avasc-text-muted)]">
-            Configure <code className="rounded bg-white/5 px-1.5 py-0.5 text-xs">NEXT_PUBLIC_STRIPE_*</code> and{" "}
-            <code className="rounded bg-white/5 px-1.5 py-0.5 text-xs">NEXT_PUBLIC_PAYPAL_DONATE_URL</code> to enable
-            buttons.
+            Online donations are being set up. In the meantime, email{" "}
+            <a
+              href="mailto:give@avasc.org"
+              className="underline decoration-[var(--avasc-gold)]/60 underline-offset-4 hover:text-[var(--avasc-gold-light)]"
+            >
+              give@avasc.org
+            </a>{" "}
+            and we&apos;ll share a way to contribute directly.
           </p>
         )}
       </div>

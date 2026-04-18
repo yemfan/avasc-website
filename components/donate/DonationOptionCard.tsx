@@ -45,7 +45,18 @@ export function DonationOptionCard({
               : "w-full border-white/[0.14] bg-white/[0.03] text-[var(--avasc-text-primary)] hover:border-[var(--avasc-gold)]/35"
           }
         />
-        {!href && <p className="text-xs text-[var(--avasc-text-muted)]">Donation link not configured yet.</p>}
+        {!href && (
+          <p className="text-xs text-[var(--avasc-text-muted)]">
+            Coming soon — email{" "}
+            <a
+              href="mailto:give@avasc.org"
+              className="underline decoration-[var(--avasc-gold)]/60 underline-offset-4 hover:text-[var(--avasc-gold-light)]"
+            >
+              give@avasc.org
+            </a>{" "}
+            to give directly.
+          </p>
+        )}
       </CardFooter>
     </Card>
   );

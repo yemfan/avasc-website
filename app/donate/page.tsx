@@ -183,9 +183,16 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
             question="Is my payment secure?"
             answer="Yes. Donations are processed through trusted payment providers such as Stripe and PayPal."
           />
+          {/* TOM CR-003: previous answer was a dev instruction
+              ("Please display the appropriate tax language based on your
+              nonprofit registration and tax status") visible to donors.
+              Replaced with an honest, accurate status — AVASC's 501(c)(3)
+              application is pending, which means donations are NOT currently
+              tax-deductible. Update this copy the moment the IRS
+              determination letter arrives. */}
           <FAQItem
             question="Are donations tax-deductible?"
-            answer="Please display the appropriate tax language based on your nonprofit registration and tax status."
+            answer="AVASC is a California nonprofit currently applying for IRS 501(c)(3) tax-exempt status. Until the IRS issues a determination letter, donations are not tax-deductible for federal income-tax purposes. We will update this page the moment our 501(c)(3) status is confirmed. If tax deductibility is important to you, please wait to contribute, or email give@avasc.org for the current status."
           />
           <FAQItem
             question="Does AVASC guarantee recovery?"
