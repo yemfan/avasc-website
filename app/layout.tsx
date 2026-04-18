@@ -48,15 +48,51 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // TOM CR-004 + P2 recommendation: enrich the NonprofitOrganization schema
+  // with location, legal name, and nonprofit-status metadata so Google's
+  // Knowledge Panel surfaces real legitimacy signals. The 501(c)(3) Pending
+  // state is explicit — flip `"Nonprofit501c3"` to `true` once the IRS
+  // determination letter arrives.
   const jsonLdOrganization = {
     "@context": "https://schema.org",
-    "@type": "NonprofitOrganization",
+    "@type": "NGO",
     "name": "AVASC",
     "alternateName": "Association of Victims Against Cyber-Scams",
+    "legalName": "Association of Victims Against Cyber-Scams",
     "url": "https://avasc.org",
     "logo": "https://avasc.org/icon.png",
-    "description": "AVASC helps victims of cyber-scams report fraud, search scam indicators, compare patterns, and find recovery guidance.",
-    "sameAs": []
+    "description":
+      "AVASC helps victims of cyber-scams report fraud, search scam indicators, compare patterns, and find recovery guidance.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Los Angeles",
+      "addressRegion": "CA",
+      "addressCountry": "US",
+    },
+    "foundingLocation": {
+      "@type": "Place",
+      "name": "Los Angeles, California",
+    },
+    "nonprofitStatus": "Nonprofit501c3Pending",
+    "email": "hello@avasc.org",
+    "contactPoint": [
+      {
+        "@type": "ContactPoint",
+        "contactType": "Customer Support",
+        "email": "support@avasc.org",
+      },
+      {
+        "@type": "ContactPoint",
+        "contactType": "Donations",
+        "email": "give@avasc.org",
+      },
+      {
+        "@type": "ContactPoint",
+        "contactType": "Privacy",
+        "email": "privacy@avasc.org",
+      },
+    ],
+    "sameAs": [] as string[],
   };
 
   const jsonLdWebsite = {

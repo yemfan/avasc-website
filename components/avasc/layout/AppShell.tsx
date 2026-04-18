@@ -98,13 +98,45 @@ export function AppShell({ children }: { children: ReactNode }) {
               </p>
             </div>
           </div>
-          <div className="mt-12 flex flex-col gap-3 border-t border-white/[0.06] pt-8 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-xs text-[var(--avasc-text-muted)]">
-              © {new Date().getFullYear()} {brand.shortName} ({brand.legalName}). All rights reserved.
-            </p>
-            <Link href="/database" className="text-xs text-[var(--avasc-text-muted)] hover:text-[var(--avasc-gold-light)]">
-              Database & privacy notes
-            </Link>
+          {/* TOM CR-004: nonprofit legitimacy block — location, registration
+              status, EIN when assigned. Required by most state
+              charitable-solicitation registration laws and expected by
+              donors before they give. */}
+          <div className="mt-12 border-t border-white/[0.06] pt-8 space-y-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--avasc-text-muted)]">
+              <span>Los Angeles, California</span>
+              <span aria-hidden>·</span>
+              <span>California Registered Nonprofit</span>
+              <span aria-hidden>·</span>
+              <span
+                className="inline-flex items-center gap-1 rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-2 py-0.5 text-[10px] font-medium text-[var(--avasc-gold-light)]"
+                title="IRS 501(c)(3) application is pending. Donations are not currently tax-deductible. See the donate page FAQ for details."
+              >
+                501(c)(3) Pending
+              </span>
+              <span aria-hidden>·</span>
+              <span>avasc.org</span>
+            </div>
+            {/* TOM MJ-005: the single "Database & privacy notes" footer link
+                conflated a broken database route with privacy info. Split
+                into dedicated links — Privacy, Terms, and Database
+                (separate). */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-[var(--avasc-text-muted)]">
+                © {new Date().getFullYear()} {brand.shortName} ({brand.legalName}). All rights reserved.
+              </p>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--avasc-text-muted)]">
+                <Link href="/privacy" className="hover:text-[var(--avasc-gold-light)]">
+                  Privacy
+                </Link>
+                <Link href="/terms" className="hover:text-[var(--avasc-gold-light)]">
+                  Terms
+                </Link>
+                <Link href="/database" className="hover:text-[var(--avasc-gold-light)]">
+                  Scam Database
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
