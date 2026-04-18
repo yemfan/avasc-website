@@ -50,9 +50,13 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
   // graceful degraded view instead of crashing to a 500. Users see a useful
   // "temporarily unavailable" message with working links to alternative
   // resources. When the backend recovers, this code path is unchanged.
-  let results: Awaited<ReturnType<typeof searchPublicScamProfiles>>;
-  let filters: Awaited<ReturnType<typeof getPublicDatabaseFilters>>;
-  let realtimeAlerts: Awaited<ReturnType<typeof getPublicAlerts>>;
+  let results: Awaited<ReturnType<typeof searchPublicScamProfiles>> = [];
+  let filters: Awaited<ReturnType<typeof getPublicDatabaseFilters>> = {
+    scamTypes: [],
+    riskLevels: [],
+    indicatorTypes: [],
+  };
+  let realtimeAlerts: Awaited<ReturnType<typeof getPublicAlerts>> = [];
   let databaseError: string | null = null;
   try {
     [results, filters, realtimeAlerts] = await Promise.all([
@@ -69,14 +73,6 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error("[database] load failed", msg);
     databaseError = msg;
-    // Safe empty fallbacks so the view component still renders.
-    results = { rows: [], total: 0, page: 1, pageSize: 20 } as unknown as Awaited<
-      ReturnType<typeof searchPublicScamProfiles>
-    >;
-    filters = { scamTypes: [], riskLevels: [], indicatorTypes: [] } as unknown as Awaited<
-      ReturnType<typeof getPublicDatabaseFilters>
-    >;
-    realtimeAlerts = [];
   }
 
   const breadcrumbSchema = {
@@ -143,16 +139,17 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
             </ul>
           </div>
         </div>
-      ) : null}
-      <AvascPublicDatabaseView
-      results={results}
-      filters={filters}
-      query={query}
-      scamType={scamType}
-      riskLevel={riskLevel}
-      indicatorType={indicatorType}
-      realtimeAlerts={realtimeAlerts}
-    />
+      ) : (
+        <AvascPublicDatabaseView
+          results={results}
+          filters={filters}
+          query={query}
+          scamType={scamType}
+          riskLevel={riskLevel}
+          indicatorType={indicatorType}
+          realtimeAlerts={realtimeAlerts}
+        />
+      )}
       <section className="mt-12 border-t border-slate-200 pt-12">
         <h2 className="text-xl font-semibold text-slate-900 mb-6">Learn More</h2>
         <div className="grid gap-4 md:grid-cols-3">
