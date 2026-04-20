@@ -62,7 +62,24 @@ export function StoriesClient() {
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-slate-900">Community stories</h2>
         {stories.length === 0 ? (
-          <p className="text-sm text-slate-600">No approved stories yet.</p>
+          // TOM MJ-003: previous "No approved stories yet." read as broken
+          // or stalled. Reframe as active-moderation with clear next steps,
+          // matching the MJ-001 pattern elsewhere on the site.
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <p className="text-sm font-medium text-slate-900">
+              No published stories yet — yours could be the first.
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              AVASC reviews every submission before publication to protect
+              contributors and keep the record accurate. Use the form on the
+              right to share what happened to you — anonymously if you prefer.
+              If you&apos;d rather report the scam directly instead,{" "}
+              <Link href="/report" className="font-medium text-slate-900 underline underline-offset-2">
+                file a case
+              </Link>
+              .
+            </p>
+          </div>
         ) : (
           <ul className="space-y-4">
             {stories.map((s) => (

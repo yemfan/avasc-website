@@ -30,6 +30,11 @@ const DESKTOP_LINKS = [
 ] as const;
 
 function MobileMenu() {
+  // TOM MN-002: mobile viewport renders the gold "Report" CTA next to the
+  // hamburger already (see TopNavbar bottom-right on md- breakpoints). The
+  // menu listing "Report Case" inside as well surfaced as a duplicate.
+  // Drop /report from the mobile menu — the CTA covers the entry point.
+  const mobileMenuLinks = DESKTOP_LINKS.filter((link) => link.href !== "/report");
   return (
     <details className="group relative">
       <summary
@@ -43,7 +48,7 @@ function MobileMenu() {
       </summary>
       <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-64 rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
         <div className="flex flex-col gap-0.5">
-          {DESKTOP_LINKS.map(({ href, label }) => (
+          {mobileMenuLinks.map(({ href, label }) => (
             <Link key={href} href={href} className={mobileItemClass}>
               {label}
             </Link>
@@ -69,9 +74,14 @@ export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
           className="flex shrink-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)]"
           aria-label={`${brand.shortName}, ${brand.legalName} — home`}
         >
+          {/* TOM MN-003: the anchor's aria-label already supplies the
+              accessible name ("AVASC, …the full legal name… — home"), so
+              the image should be treated as decorative. Previously alt={brand.logoAltFull}
+              could double-read in screen readers that concatenate instead of
+              letting the link's aria-label override. */}
           <Image
             src={logoSrc}
-            alt={brand.logoAltFull}
+            alt=""
             width={320}
             height={80}
             className="h-12 w-auto max-w-[min(100%,16rem)] object-contain sm:h-14 md:h-16"
