@@ -42,8 +42,8 @@ export default function StoriesPage() {
     <div className="space-y-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Survivor stories</h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-600">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Survivor stories</h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
           Comments and posts are moderated. External links are blocked in comments for safety.
         </p>
       </div>

@@ -60,7 +60,7 @@ export function StoriesClient() {
   return (
     <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900">Community stories</h2>
+        <h2 className="text-lg font-semibold text-foreground">Community stories</h2>
         {stories.length === 0 ? (
           // TOM MJ-003: previous "No approved stories yet." read as broken
           // or stalled. Reframe as active-moderation with clear next steps,

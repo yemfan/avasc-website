@@ -2,7 +2,6 @@ import { ModerationStatus, type PrismaClient } from "@prisma/client";
 import { createClient } from "@/lib/supabase/server";
 import { syncUserProfile } from "@/lib/auth/sync-user-profile";
 import { getPrisma } from "@/lib/prisma";
-import { getServiceSupabase } from "@/lib/supabase/service-role";
 import { newRowId } from "@/lib/db/id";
 import type { CreatePublicStoryInput } from "./schemas";
 import { defaultStorySlug, slugifyStoryTitle } from "./slug";
@@ -26,21 +25,23 @@ export type PublicStoryDetail = {
 };
 
 export async function listApprovedPublicStories(limit = 50): Promise<PublicStoryListItem[]> {
-  const db = getServiceSupabase();
-  const { data, error } = await db
-    .from("Story")
-    .select("id, slug, title, body, isAnonymous, createdAt")
-    .eq("status", "approved")
-    .order("createdAt", { ascending: false })
-    .limit(limit);
-  if (error) throw error;
-  return (data ?? []).map((row) => ({
+  // Use Prisma against the real columns (moderationStatus / anonymityMode). The
+  // prior Supabase query selected non-existent `status` / `isAnonymous` columns,
+  // so the public feed always errored out.
+  const prisma = getPrisma();
+  const rows = await prisma.story.findMany({
+    where: { moderationStatus: ModerationStatus.APPROVED },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    select: { id: true, slug: true, title: true, body: true, anonymityMode: true, createdAt: true },
+  });
+  return rows.map((row) => ({
     id: row.id,
     slug: row.slug ?? defaultStorySlug(row.id),
     title: row.title,
     body: row.body,
-    isAnonymous: row.isAnonymous,
-    createdAt: row.createdAt,
+    isAnonymous: row.anonymityMode,
+    createdAt: row.createdAt.toISOString(),
   }));
 }
 

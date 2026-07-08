@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 
 import { isAnthropicConfigured } from "@/lib/ai/anthropic";
 import { generateGuidance, MAX_SITUATION_CHARS } from "@/lib/guides/ai";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
+
+// Public AI endpoint: cap per-IP requests as a cheap abuse/cost brake.
+const RATE_LIMIT = 5;
+const RATE_WINDOW_MS = 60_000;
 
 // The AI call can take a little while; give it headroom.
 export const maxDuration = 60;
@@ -16,6 +21,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "The AI guide is temporarily unavailable. Please try our guides below or report your case." },
       { status: 503 }
+    );
+  }
+
+  const rl = rateLimit(`guides-ai:${getClientIp(request)}`, RATE_LIMIT, RATE_WINDOW_MS);
+  if (!rl.ok) {
+    return NextResponse.json(
+      { ok: false, error: "You're sending requests a bit too quickly. Please wait a moment and try again." },
+      { status: 429, headers: { "Retry-After": String(rl.retryAfterSec) } }
     );
   }
 
