@@ -72,10 +72,30 @@ export default function AboutPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="border-slate-200 p-5 shadow-sm">
           <h2 className="text-lg font-semibold text-foreground">What we do</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground marker:text-[var(--avasc-gold-light)]">
             <li>Help victims submit secure, structured scam reports.</li>
             <li>Analyze scam indicators and cluster recurring patterns.</li>
             <li>Publish anonymized public scam profiles for prevention.</li>
+            <li>
+              Issue{" "}
+              <Link
+                href="/briefings"
+                className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
+              >
+                public scam alerts
+              </Link>{" "}
+              and a weekly &quot;This Week in Scams&quot; briefing.
+            </li>
+            <li>
+              Offer free{" "}
+              <Link
+                href="/guides"
+                className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
+              >
+                scam-prevention education
+              </Link>{" "}
+              — guides, resources, and an AI Scam Check.
+            </li>
             <li>Provide support-request workflows and recovery checklists.</li>
           </ul>
         </Card>
