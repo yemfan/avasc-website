@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${story.title} | Survivor story`,
       description: "Moderated survivor story from the AVASC community.",
       type: "article",
-      url: `https://avasc.org/stories/${slug}`,
+      url: `https://www.avasc.org/stories/${slug}`,
       images: ["/og-image.png"],
     },
     twitter: {
@@ -49,7 +49,7 @@ export default async function StoryDetailPage({ params }: PageProps) {
     headline: story.title,
     description: truncatedBody,
     datePublished: story.createdAt.toISOString(),
-    url: `https://avasc.org/stories/${slug}`,
+    url: `https://www.avasc.org/stories/${slug}`,
     author: {
       "@type": "Organization",
       name: "AVASC",
@@ -59,7 +59,7 @@ export default async function StoryDetailPage({ params }: PageProps) {
       name: "AVASC",
       logo: {
         "@type": "ImageObject",
-        url: "https://avasc.org/icon.png",
+        url: "https://www.avasc.org/icon.png",
       },
     },
   };
@@ -72,19 +72,19 @@ export default async function StoryDetailPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Stories",
-        item: "https://avasc.org/stories",
+        item: "https://www.avasc.org/stories",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: story.title,
-        item: `https://avasc.org/stories/${slug}`,
+        item: `https://www.avasc.org/stories/${slug}`,
       },
     ],
   };

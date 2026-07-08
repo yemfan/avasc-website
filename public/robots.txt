@@ -37,4 +37,4 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-Sitemap: https://avasc.org/sitemap.xml
+Sitemap: https://www.avasc.org/sitemap.xml

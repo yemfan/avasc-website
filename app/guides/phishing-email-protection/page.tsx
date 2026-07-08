@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to spot phishing emails, verify senders, check URLs, and secure your accounts with two-factor authentication. Protect yourself from credential theft.",
     type: "article",
-    url: "https://avasc.org/guides/phishing-email-protection",
+    url: "https://www.avasc.org/guides/phishing-email-protection",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function PhishingProtectionPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function PhishingProtectionPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "How to Protect Yourself from Phishing Emails and Fake Websites",
-        item: "https://avasc.org/guides/phishing-email-protection",
+        item: "https://www.avasc.org/guides/phishing-email-protection",
       },
     ],
   };

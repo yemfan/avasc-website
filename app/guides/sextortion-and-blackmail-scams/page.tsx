@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn about sextortion scams, how to report them, and where to find support.",
     type: "article",
-    url: "https://avasc.org/guides/sextortion-and-blackmail-scams",
+    url: "https://www.avasc.org/guides/sextortion-and-blackmail-scams",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function SextortionAndBlackmailScamsPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function SextortionAndBlackmailScamsPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Sextortion and Blackmail Scams",
-        item: "https://avasc.org/guides/sextortion-and-blackmail-scams",
+        item: "https://www.avasc.org/guides/sextortion-and-blackmail-scams",
       },
     ],
   };

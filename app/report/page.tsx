@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Report a Scam | AVASC",
     description: "Submit a scam report confidentially. Your report helps protect others.",
     type: "website",
-    url: "https://avasc.org/report",
+    url: "https://www.avasc.org/report",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -38,13 +38,13 @@ export default async function ReportPage({ searchParams }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Report a Scam",
-        item: "https://avasc.org/report",
+        item: "https://www.avasc.org/report",
       },
     ],
   };

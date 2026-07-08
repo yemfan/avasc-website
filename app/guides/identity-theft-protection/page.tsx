@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn how to protect your Social Security number, monitor credit, freeze your credit, detect data breaches, and monitor the dark web.",
     type: "article",
-    url: "https://avasc.org/guides/identity-theft-protection",
+    url: "https://www.avasc.org/guides/identity-theft-protection",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function IdentityTheftProtectionPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function IdentityTheftProtectionPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Identity Theft Protection",
-        item: "https://avasc.org/guides/identity-theft-protection",
+        item: "https://www.avasc.org/guides/identity-theft-protection",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn about pig butchering, fake exchanges, pump and dump schemes, and cryptocurrency investment fraud. Protect your crypto assets.",
     type: "article",
-    url: "https://avasc.org/guides/cryptocurrency-scam-types",
+    url: "https://www.avasc.org/guides/cryptocurrency-scam-types",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function CryptoScamPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function CryptoScamPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Cryptocurrency Scam Types",
-        item: "https://avasc.org/guides/cryptocurrency-scam-types",
+        item: "https://www.avasc.org/guides/cryptocurrency-scam-types",
       },
     ],
   };

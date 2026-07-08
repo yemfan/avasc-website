@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Recovery Center | AVASC",
     description: "Find guidance and resources for recovering from cyber-scams.",
     type: "website",
-    url: "https://avasc.org/recovery",
+    url: "https://www.avasc.org/recovery",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -67,13 +67,13 @@ export default function RecoveryPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Recovery Center",
-        item: "https://avasc.org/recovery",
+        item: "https://www.avasc.org/recovery",
       },
     ],
   };

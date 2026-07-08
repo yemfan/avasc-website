@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     description:
       "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
     type: "website",
-    url: "https://avasc.org/donate",
+    url: "https://www.avasc.org/donate",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -54,13 +54,13 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Donate",
-        item: "https://avasc.org/donate",
+        item: "https://www.avasc.org/donate",
       },
     ],
   };

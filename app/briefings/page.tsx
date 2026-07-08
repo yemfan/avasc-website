@@ -10,7 +10,7 @@ import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
 
-const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://avasc.org").replace(/\/$/, "");
+const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://www.avasc.org").replace(/\/$/, "");
 
 export const metadata: Metadata = {
   title: "This Week in Scams — Weekly Fraud Briefings",

@@ -222,7 +222,7 @@ function formatAlertDate(date: Date) {
  * Shared handler for `GET` JSON responses (e.g. `app/api/public-alerts/route.ts`).
  */
 export async function handlePublicAlertsRequest(url: string) {
-  const u = new URL(url, "https://avasc.org");
+  const u = new URL(url, "https://www.avasc.org");
   const typeRaw = u.searchParams.get("type");
   const limitRaw = u.searchParams.get("limit");
 

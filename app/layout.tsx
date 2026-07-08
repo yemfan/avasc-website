@@ -25,7 +25,7 @@ const frauncesDisplay = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://avasc.org"),
+  metadataBase: new URL("https://www.avasc.org"),
   title: {
     default: "AVASC — Anti-scam support & reporting",
     template: "%s | AVASC",
@@ -59,8 +59,8 @@ export default function RootLayout({
     "name": "AVASC",
     "alternateName": "Association of Victims Against Cyber-Scams",
     "legalName": "Association of Victims Against Cyber-Scams",
-    "url": "https://avasc.org",
-    "logo": "https://avasc.org/icon.png",
+    "url": "https://www.avasc.org",
+    "logo": "https://www.avasc.org/icon.png",
     "description":
       "AVASC helps victims of cyber-scams report fraud, search scam indicators, compare patterns, and find recovery guidance.",
     "address": {
@@ -99,10 +99,10 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "AVASC",
-    "url": "https://avasc.org",
+    "url": "https://www.avasc.org",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://avasc.org/database?q={search_term_string}",
+      "target": "https://www.avasc.org/database?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

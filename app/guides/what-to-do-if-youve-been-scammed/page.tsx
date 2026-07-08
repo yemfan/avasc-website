@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Immediate actions to take after a scam, how to report to authorities, document evidence, and access emotional support. Recovery starts now.",
     type: "article",
-    url: "https://avasc.org/guides/what-to-do-if-youve-been-scammed",
+    url: "https://www.avasc.org/guides/what-to-do-if-youve-been-scammed",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function WhatToDoIfScammedPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function WhatToDoIfScammedPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "What to Do If You've Been Scammed",
-        item: "https://avasc.org/guides/what-to-do-if-youve-been-scammed",
+        item: "https://www.avasc.org/guides/what-to-do-if-youve-been-scammed",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn the common red flags, pressure tactics, and suspicious offers that indicate you may be targeted by scammers. Essential knowledge to protect yourself.",
     type: "article",
-    url: "https://avasc.org/guides/how-to-identify-a-scam",
+    url: "https://www.avasc.org/guides/how-to-identify-a-scam",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function HowToIdentifyScamPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function HowToIdentifyScamPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "How to Identify a Scam",
-        item: "https://avasc.org/guides/how-to-identify-a-scam",
+        item: "https://www.avasc.org/guides/how-to-identify-a-scam",
       },
     ],
   };

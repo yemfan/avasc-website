@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: "Scam Survivor Stories | AVASC",
     description: "Read real stories from scam survivors and share your experience to help others.",
     type: "website",
-    url: "https://avasc.org/stories",
+    url: "https://www.avasc.org/stories",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -29,13 +29,13 @@ export default function StoriesPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Stories",
-        item: "https://avasc.org/stories",
+        item: "https://www.avasc.org/stories",
       },
     ],
   };

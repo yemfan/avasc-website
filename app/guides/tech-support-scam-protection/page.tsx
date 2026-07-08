@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to identify fake virus popups, scam phone calls claiming to be Microsoft or Apple, and remote access tricks. Protect your devices and data.",
     type: "article",
-    url: "https://avasc.org/guides/tech-support-scam-protection",
+    url: "https://www.avasc.org/guides/tech-support-scam-protection",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function TechSupportScamProtectionPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function TechSupportScamProtectionPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Tech Support Scam Protection",
-        item: "https://avasc.org/guides/tech-support-scam-protection",
+        item: "https://www.avasc.org/guides/tech-support-scam-protection",
       },
     ],
   };

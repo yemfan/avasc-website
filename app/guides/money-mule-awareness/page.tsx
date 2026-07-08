@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn what money mule scams are, how people get recruited, the legal consequences, and what to do if you've become involved.",
     type: "article",
-    url: "https://avasc.org/guides/money-mule-awareness",
+    url: "https://www.avasc.org/guides/money-mule-awareness",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function MoneyMuleAwarenessPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function MoneyMuleAwarenessPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Money Mule Awareness",
-        item: "https://avasc.org/guides/money-mule-awareness",
+        item: "https://www.avasc.org/guides/money-mule-awareness",
       },
     ],
   };

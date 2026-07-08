@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Scam Alerts | AVASC",
     description: "Subscribe to real-time scam alerts and stay informed about emerging threats.",
     type: "website",
-    url: "https://avasc.org/alerts",
+    url: "https://www.avasc.org/alerts",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -48,13 +48,13 @@ export default async function AlertsPage({ searchParams }: SearchProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Alerts",
-        item: "https://avasc.org/alerts",
+        item: "https://www.avasc.org/alerts",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to identify Ponzi schemes, unregistered investments, pressure-based tactics, and guaranteed return promises. Protect your money from investment fraud.",
     type: "article",
-    url: "https://avasc.org/guides/investment-scam-red-flags",
+    url: "https://www.avasc.org/guides/investment-scam-red-flags",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function InvestmentScamPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function InvestmentScamPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Investment Scam Red Flags",
-        item: "https://avasc.org/guides/investment-scam-red-flags",
+        item: "https://www.avasc.org/guides/investment-scam-red-flags",
       },
     ],
   };

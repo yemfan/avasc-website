@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${title} | AVASC`,
       description,
       type: "website",
-      url: `https://avasc.org${canonical}`,
+      url: `https://www.avasc.org${canonical}`,
       images: ["/og-image.png"],
     },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },

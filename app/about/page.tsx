@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description:
       "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
     type: "website",
-    url: "https://avasc.org/about",
+    url: "https://www.avasc.org/about",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,13 +34,13 @@ export default function AboutPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "About",
-        item: "https://avasc.org/about",
+        item: "https://www.avasc.org/about",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to identify fake websites, counterfeit products, and unsafe payment methods. Shop safely with tips for verifying sellers and protecting your financial information.",
     type: "article",
-    url: "https://avasc.org/guides/online-shopping-scam-prevention",
+    url: "https://www.avasc.org/guides/online-shopping-scam-prevention",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function OnlineShoppingScamPreventionPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function OnlineShoppingScamPreventionPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Online Shopping Scam Prevention",
-        item: "https://avasc.org/guides/online-shopping-scam-prevention",
+        item: "https://www.avasc.org/guides/online-shopping-scam-prevention",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to recognize fake giveaways, impersonation accounts, marketplace fraud, QR code scams, and clickbait links on social media platforms.",
     type: "article",
-    url: "https://avasc.org/guides/social-media-scams",
+    url: "https://www.avasc.org/guides/social-media-scams",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function SocialMediaScamsPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function SocialMediaScamsPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Social Media Scams",
-        item: "https://avasc.org/guides/social-media-scams",
+        item: "https://www.avasc.org/guides/social-media-scams",
       },
     ],
   };

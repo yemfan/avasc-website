@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn how scammers use email to commit CEO fraud, invoice fraud, and other business crimes.",
     type: "article",
-    url: "https://avasc.org/guides/business-email-compromise",
+    url: "https://www.avasc.org/guides/business-email-compromise",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function BusinessEmailCompromisePage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function BusinessEmailCompromisePage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Business Email Compromise",
-        item: "https://avasc.org/guides/business-email-compromise",
+        item: "https://www.avasc.org/guides/business-email-compromise",
       },
     ],
   };

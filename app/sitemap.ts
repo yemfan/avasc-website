@@ -3,7 +3,7 @@ import { listApprovedPublicStories } from "@/lib/public-stories/service";
 import { listPublishedBriefings } from "@/lib/briefings/queries";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://avasc.org";
+  const baseUrl = "https://www.avasc.org";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [

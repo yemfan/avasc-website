@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to recognize catfishing, love bombing, and financial manipulation in online dating. Protect yourself from romance scammers.",
     type: "article",
-    url: "https://avasc.org/guides/romance-scam-warning-signs",
+    url: "https://www.avasc.org/guides/romance-scam-warning-signs",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -33,7 +33,7 @@ export default function RomanceScamPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -50,19 +50,19 @@ export default function RomanceScamPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Romance Scam Warning Signs",
-        item: "https://avasc.org/guides/romance-scam-warning-signs",
+        item: "https://www.avasc.org/guides/romance-scam-warning-signs",
       },
     ],
   };

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Learn to identify fake charities and verify legitimate organizations before donating.",
     type: "article",
-    url: "https://avasc.org/guides/charity-scam-verification",
+    url: "https://www.avasc.org/guides/charity-scam-verification",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -34,7 +34,7 @@ export default function CharityScamVerificationPage() {
     author: {
       "@type": "Organization",
       name: "AVASC",
-      url: "https://avasc.org",
+      url: "https://www.avasc.org",
     },
     datePublished: "2025-01-01",
     publisher: {
@@ -51,19 +51,19 @@ export default function CharityScamVerificationPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://avasc.org/guides",
+        item: "https://www.avasc.org/guides",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: "Charity Scam Verification",
-        item: "https://avasc.org/guides/charity-scam-verification",
+        item: "https://www.avasc.org/guides/charity-scam-verification",
       },
     ],
   };

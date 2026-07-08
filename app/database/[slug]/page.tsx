@@ -57,19 +57,19 @@ export default async function PublicScamProfilePage({ params }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Scam Database",
-        item: "https://avasc.org/database",
+        item: "https://www.avasc.org/database",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: profile.title,
-        item: `https://avasc.org/database/${slug}`,
+        item: `https://www.avasc.org/database/${slug}`,
       },
     ],
   };

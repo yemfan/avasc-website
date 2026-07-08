@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: "AVASC — Anti-scam support & reporting",
     description:
       "Report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
-    url: "https://avasc.org",
+    url: "https://www.avasc.org",
     siteName: "AVASC",
     type: "website",
     images: ["/og-image.png"],

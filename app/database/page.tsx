@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description:
       "Privacy-safe search across published scam profiles — indicators are masked or staff-approved for public display.",
     type: "website",
-    url: "https://avasc.org/database",
+    url: "https://www.avasc.org/database",
     images: ["/og-image.png"],
   },
   twitter: {
@@ -85,13 +85,13 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://avasc.org",
+        item: "https://www.avasc.org",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Scam Database",
-        item: "https://avasc.org/database",
+        item: "https://www.avasc.org/database",
       },
     ],
   };
