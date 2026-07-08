@@ -482,6 +482,30 @@ model ScamStat {
   @@index([metric, year])
 }
 
+/**
+ * One auto-generated social post per day (themed weekly rotation). Generated +
+ * auto-posted to configured platforms by the daily social cron. `postDate` is
+ * unique so the cron is idempotent (won't double-post the same day).
+ */
+model SocialDailyPost {
+  id        String   @id @default(uuid()) @db.Uuid
+  postDate  DateTime @db.Date
+  /** Rotation theme key, e.g. "scam_spotlight" | "red_flag" | "stat" | ... */
+  theme     String
+  /** Generated platform copy: SocialPost[] = [{ platform, body, hashtags }]. */
+  posts     Json
+  linkUrl   String?
+  /** generated | posted | partial | failed | skipped */
+  status    String   @default("generated")
+  /** Per-platform posting result, e.g. { x: {ok,id}, facebook: {ok,id} }. */
+  results   Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([postDate])
+  @@index([postDate])
+}
+
 model Donation {
   id                        String          @id @default(uuid()) @db.Uuid
   donorName                 String?
