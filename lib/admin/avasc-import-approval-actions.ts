@@ -195,3 +195,18 @@ export async function editImportedAlertAction(input: unknown) {
   revalidatePath("/database");
   return { success: true as const };
 }
+
+/**
+ * <form action> wrapper: pulls the edit fields off FormData and delegates to
+ * editImportedAlertAction. Returns void so it's a valid form action.
+ */
+export async function editImportedAlertFormAction(formData: FormData): Promise<void> {
+  const scamClusterId = formData.get("scamClusterId");
+  await editImportedAlertAction({
+    alertId: formData.get("alertId"),
+    title: formData.get("title"),
+    message: formData.get("message"),
+    scamClusterId:
+      scamClusterId === null || scamClusterId === "" ? null : String(scamClusterId),
+  });
+}

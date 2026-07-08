@@ -1,7 +1,7 @@
 import type { Briefing } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
-import type { BriefingSection, BriefingSource } from "@/lib/briefings/generate";
+import type { BriefingKind, BriefingSection, BriefingSource } from "@/lib/briefings/generate";
 
 /** Normalized, render-ready view of a Briefing's structured body + sources. */
 export type BriefingView = {
@@ -10,6 +10,7 @@ export type BriefingView = {
   title: string;
   dek: string | null;
   category: string;
+  status: string;
   summary: string | null;
   periodLabel: string | null;
   publishedAt: Date;
@@ -62,6 +63,7 @@ function toView(row: Briefing): BriefingView {
     title: row.title,
     dek: row.dek,
     category: row.category,
+    status: row.status,
     summary: row.summary,
     periodLabel: row.periodLabel,
     publishedAt: row.publishedAt,
@@ -78,6 +80,19 @@ export async function listPublishedBriefings(limit = 50): Promise<BriefingView[]
   const rows = await prisma.briefing.findMany({
     where: { status: "published" },
     orderBy: { publishedAt: "desc" },
+    take: limit,
+  });
+  return rows.map(toView);
+}
+
+/**
+ * Briefings of a given cadence (category = kind), newest first — for the admin
+ * management lists. Includes non-published rows so admins see the full history.
+ */
+export async function listBriefings(kind: BriefingKind, limit = 30): Promise<BriefingView[]> {
+  const rows = await prisma.briefing.findMany({
+    where: { category: kind },
+    orderBy: [{ publishedAt: "desc" }, { updatedAt: "desc" }],
     take: limit,
   });
   return rows.map(toView);

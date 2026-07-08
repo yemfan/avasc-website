@@ -5,7 +5,7 @@ import { isAnthropicConfigured } from "@/lib/ai/anthropic";
 import { publishBriefing } from "@/lib/briefings/generate";
 
 /**
- * Generate + publish the weekly "This Week in Scams" briefing.
+ * Generate + publish the daily "Today in Scams" briefing.
  * Auth: `Authorization: Bearer $CRON_SECRET` (Vercel Cron / manual runs).
  * This is ADDITIVE — it does not touch the existing alert/digest send pipeline.
  */
@@ -24,7 +24,7 @@ async function run(request: Request) {
     );
   }
 
-  const slug = await publishBriefing("weekly");
+  const slug = await publishBriefing("daily");
   if (!slug) {
     return NextResponse.json(
       { ok: false, error: "Briefing generation failed" },

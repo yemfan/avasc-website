@@ -27,6 +27,20 @@ function formatDate(d: Date): string {
   return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 }
 
+/** Small cadence label for cards so Weekly vs Daily briefings are distinguishable. */
+function kindLabel(category: string): string | null {
+  switch (category) {
+    case "weekly":
+      return "Weekly";
+    case "daily":
+      return "Daily";
+    case "trend_report":
+      return "Trend report";
+    default:
+      return null;
+  }
+}
+
 export default async function BriefingsIndexPage() {
   let briefings: Awaited<ReturnType<typeof listPublishedBriefings>> = [];
   let loadError = false;
@@ -114,9 +128,9 @@ export default async function BriefingsIndexPage() {
             >
               <div className="flex items-center gap-2 text-xs text-[var(--avasc-text-muted)]">
                 <span>{b.periodLabel ?? formatDate(b.publishedAt)}</span>
-                {b.category === "trend_report" ? (
+                {kindLabel(b.category) ? (
                   <span className="rounded-full border border-[var(--avasc-border)] px-2 py-0.5 text-[10px] uppercase tracking-wide text-[var(--avasc-text-secondary)]">
-                    Trend report
+                    {kindLabel(b.category)}
                   </span>
                 ) : null}
               </div>

@@ -11,12 +11,18 @@ import { prisma } from "@/lib/prisma";
 import { slugifyBriefingTitle } from "@/lib/briefings/slug";
 
 /**
- * "This Week in Scams" weekly briefings generator.
+ * AVASC scam briefings generator — ONE engine, two cadences.
  *
- * Grounds an authoritative, victim-centered weekly briefing in (a) AVASC's OWN
+ * Grounds an authoritative, victim-centered scam briefing in (a) AVASC's OWN
  * public-safe data (PUBLISHED clusters, isPublic indicators, PUBLIC incidents) and
  * (b) authoritative external sources via Claude's web_search tool (FTC, FBI IC3,
  * CISA, FinCEN, state AGs). Public-safe only — never a how-to for scammers.
+ *
+ * Two kinds share this engine:
+ *  - "weekly" = "This Week in Scams" — a broad weekly roundup (the original behavior).
+ *  - "daily"  = "Today in Scams" — a tighter, more urgent same-day brief on what is
+ *    active/breaking today (fewer items).
+ * The `kind` is stored on `Briefing.category` ("weekly" | "daily").
  *
  * Hard-won config (do NOT regress):
  *  - STREAM via `client.messages.stream({...}).finalMessage()` — a large max_tokens
@@ -26,6 +32,9 @@ import { slugifyBriefingTitle } from "@/lib/briefings/slug";
  *    write the final JSON after searching.
  *  - pause_turn continuation loop + JSON-fence extraction + a repair fallback.
  */
+
+/** Briefing cadence. Persisted verbatim to `Briefing.category`. */
+export type BriefingKind = "weekly" | "daily";
 
 const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 32000;
@@ -80,12 +89,13 @@ type PublicSafeSnapshot = {
   }>;
 };
 
-function currentPeriodLabel(now = new Date()): string {
-  return `Week of ${now.toLocaleDateString("en-US", {
+function currentPeriodLabel(kind: BriefingKind, now = new Date()): string {
+  const dateStr = now.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  })}`;
+  });
+  return kind === "daily" ? `Daily brief — ${dateStr}` : `Week of ${dateStr}`;
 }
 
 /**
@@ -139,7 +149,7 @@ function loadIncidents() {
   });
 }
 
-async function loadPublicSafeSnapshot(): Promise<PublicSafeSnapshot> {
+async function loadPublicSafeSnapshot(kind: BriefingKind): Promise<PublicSafeSnapshot> {
   const since = new Date(Date.now() - CLUSTER_WINDOW_DAYS * 24 * 60 * 60 * 1000);
 
   // Proprietary data is a BONUS, not a requirement: if it's unavailable (sparse
@@ -162,7 +172,7 @@ async function loadPublicSafeSnapshot(): Promise<PublicSafeSnapshot> {
 
   return {
     generatedAtIso: new Date().toISOString(),
-    periodLabel: currentPeriodLabel(),
+    periodLabel: currentPeriodLabel(kind),
     clusters: clusters.map((c) => ({
       title: c.title,
       scamType: c.scamType,
@@ -193,18 +203,57 @@ async function loadPublicSafeSnapshot(): Promise<PublicSafeSnapshot> {
   };
 }
 
-const SYSTEM_PROMPT = `You are a senior scam-intelligence editor for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims. You write "This Week in Scams" — an authoritative, victim-centered weekly briefing for a general audience that includes people who have already been defrauded.
+/** Column name / editorial framing that differs per cadence. */
+const KIND_COPY: Record<
+  BriefingKind,
+  { column: string; cadence: string; audience: string }
+> = {
+  weekly: {
+    column: "This Week in Scams",
+    cadence: "weekly briefing",
+    audience: "a general audience that includes people who have already been defrauded",
+  },
+  daily: {
+    column: "Today in Scams",
+    cadence: "daily brief",
+    audience: "a general audience that includes people who have already been defrauded",
+  },
+};
+
+function buildSystemPrompt(kind: BriefingKind): string {
+  const { column, cadence, audience } = KIND_COPY[kind];
+  return `You are a senior scam-intelligence editor for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims. You write "${column}" — an authoritative, victim-centered ${cadence} for ${audience}.
 
 Non-negotiable editorial rules:
 - Accurate, cited, non-sensational, plain-English, and protective. Never alarmist or fear-mongering.
 - Victim-centered and non-judgmental: victims are not stupid; the shame is on the scammer.
 - NEVER write a how-to for scammers. Describe only public-safe indicators and protective guidance — what the public can watch for and do, not operational detail that would help a fraudster.
 - EVERY external factual claim must be backed by a real, verifiable source URL you found via web_search. Do not invent sources, statistics, URLs, or enforcement actions. If you cannot verify a claim, leave it out.
-- Ground specifics in BOTH (a) AVASC's own public data provided to you (what our database is seeing this period) AND (b) this week's authoritative external reporting (FTC Consumer Sentinel, FBI IC3, CISA, FinCEN, state Attorneys General, reputable press).
+- Ground specifics in BOTH (a) AVASC's own public data provided to you (what our database is seeing this period) AND (b) authoritative external reporting (FTC Consumer Sentinel, FBI IC3, CISA, FinCEN, state Attorneys General, reputable press).
 - The AVASC indicator "examples" you are given are already masked/public-safe. You may reference the CATEGORY of indicator (e.g. "spoofed phone numbers", "lookalike domains") but do not present masked fragments as actionable.`;
+}
 
-function buildUserPrompt(snapshot: PublicSafeSnapshot): string {
-  return `Write this week's "This Week in Scams" briefing.
+function buildUserPrompt(kind: BriefingKind, snapshot: PublicSafeSnapshot): string {
+  const { column } = KIND_COPY[kind];
+
+  // Cadence-specific scope + search instructions. Weekly = broad roundup; daily =
+  // tighter, fewer items, focused on what is active/breaking TODAY.
+  const scope =
+    kind === "daily"
+      ? `Write today's "${column}" brief — a tight, urgent, same-day read. Focus on what is ACTIVE or BREAKING right now: the 2-4 most important scam developments today. Keep it short and skimmable; fewer, sharper items beat a long roundup.`
+      : `Write this week's "${column}" briefing — a broad roundup of the week's most important scam activity and warnings.`;
+
+  const searchStep =
+    kind === "daily"
+      ? `Use web_search to find TODAY'S (or the last 24-48 hours') authoritative fraud news, warnings, and enforcement (FTC, FBI IC3, CISA, FinCEN, state AGs, reputable outlets). Strongly prefer the most recent, dated, official sources; skip anything stale.`
+      : `Use web_search to find this week's authoritative fraud news, warnings, and enforcement (FTC, FBI IC3, CISA, FinCEN, state AGs, reputable outlets). Prefer the most recent, official sources.`;
+
+  const sectionsHint =
+    kind === "daily"
+      ? `2-3 short sections`
+      : `several sections covering the week's notable threats`;
+
+  return `${scope}
 
 AVASC PUBLIC-SAFE DATA (${snapshot.periodLabel}, generated ${snapshot.generatedAtIso}):
 ${JSON.stringify(
@@ -214,7 +263,7 @@ ${JSON.stringify(
 )}
 
 TASK:
-1. Use web_search to find this week's authoritative fraud news, warnings, and enforcement (FTC, FBI IC3, CISA, FinCEN, state AGs, reputable outlets). Prefer the most recent, official sources.
+1. ${searchStep}
 2. Weave together what AVASC's database is seeing (above) with the external reporting. Where the two align, say so; where AVASC is seeing something notable, surface it as "what we're seeing."
 3. Keep it protective and public-safe: highlight indicators the public can recognize and concrete steps to stay safe or recover.
 
@@ -224,7 +273,7 @@ Return ONLY a single JSON object (no prose before or after, no markdown fences) 
   "dek": string,              // one-sentence standfirst
   "periodLabel": string,      // e.g. "${snapshot.periodLabel}"
   "summary": string,          // 1-2 sentence plain summary for cards/SEO
-  "sections": [ { "heading": string, "paragraphs": [string, ...] }, ... ],
+  "sections": [ { "heading": string, "paragraphs": [string, ...] }, ... ], // ${sectionsHint}
   "keyPoints": [string, ...], // 3-6 concise takeaways
   "protectYourself": [string, ...], // 3-6 concrete protective actions
   "sources": [ { "title": string, "url": string, "publisher": string }, ... ] // real URLs only
@@ -277,7 +326,7 @@ function coerceStringArray(value: unknown): string[] {
     .filter((v) => v.length > 0);
 }
 
-function coerceBriefing(raw: unknown): GeneratedBriefing | null {
+function coerceBriefing(kind: BriefingKind, raw: unknown): GeneratedBriefing | null {
   if (!raw || typeof raw !== "object") return null;
   const o = raw as Record<string, unknown>;
 
@@ -319,7 +368,7 @@ function coerceBriefing(raw: unknown): GeneratedBriefing | null {
   return {
     title: title.slice(0, 120),
     dek: cleanText(o.dek),
-    periodLabel: typeof o.periodLabel === "string" && o.periodLabel.trim() ? o.periodLabel.trim() : currentPeriodLabel(),
+    periodLabel: typeof o.periodLabel === "string" && o.periodLabel.trim() ? o.periodLabel.trim() : currentPeriodLabel(kind),
     summary: cleanText(o.summary),
     sections,
     keyPoints: coerceStringArray(o.keyPoints),
@@ -334,6 +383,7 @@ function coerceBriefing(raw: unknown): GeneratedBriefing | null {
  */
 async function runAgentLoop(
   client: Anthropic,
+  systemPrompt: string,
   messages: Anthropic.MessageParam[]
 ): Promise<string> {
   let lastText = "";
@@ -342,7 +392,7 @@ async function runAgentLoop(
     const stream = client.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt,
       messages,
       tools: [WEB_SEARCH_TOOL],
     });
@@ -372,20 +422,21 @@ async function runAgentLoop(
 }
 
 /**
- * Generate a weekly briefing. Returns null on failure (never throws to the caller
- * beyond a missing API key, which surfaces from getAnthropicClient()).
+ * Generate a briefing for the given cadence. Returns null on failure (never throws
+ * to the caller beyond a missing API key, which surfaces from getAnthropicClient()).
  */
-export async function generateWeeklyBriefing(): Promise<GeneratedBriefing | null> {
+export async function generateBriefing(kind: BriefingKind): Promise<GeneratedBriefing | null> {
   const client = getAnthropicClient();
-  const snapshot = await loadPublicSafeSnapshot();
+  const systemPrompt = buildSystemPrompt(kind);
+  const snapshot = await loadPublicSafeSnapshot(kind);
 
   const messages: Anthropic.MessageParam[] = [
-    { role: "user", content: buildUserPrompt(snapshot) },
+    { role: "user", content: buildUserPrompt(kind, snapshot) },
   ];
 
   let text: string;
   try {
-    text = await runAgentLoop(client, messages);
+    text = await runAgentLoop(client, systemPrompt, messages);
   } catch (err) {
     console.error("[briefings] generation failed", err instanceof Error ? err.message : err);
     return null;
@@ -407,7 +458,7 @@ export async function generateWeeklyBriefing(): Promise<GeneratedBriefing | null
         .stream({
           model: MODEL,
           max_tokens: MAX_TOKENS,
-          system: SYSTEM_PROMPT,
+          system: systemPrompt,
           messages: [
             ...messages,
             {
@@ -427,7 +478,7 @@ export async function generateWeeklyBriefing(): Promise<GeneratedBriefing | null
     }
   }
 
-  const briefing = coerceBriefing(parsed);
+  const briefing = coerceBriefing(kind, parsed);
   if (!briefing) {
     console.error("[briefings] parsed JSON did not match the expected briefing shape");
   }
@@ -435,11 +486,19 @@ export async function generateWeeklyBriefing(): Promise<GeneratedBriefing | null
 }
 
 /**
- * Generate a weekly briefing and upsert it as a published `Briefing` row
- * (category "this_week"). Best-effort — returns the slug on success, else null.
+ * Back-compat alias for the original weekly-only entry point.
+ * @deprecated Use `generateBriefing("weekly")`.
  */
-export async function publishBriefing(): Promise<string | null> {
-  const briefing = await generateWeeklyBriefing();
+export function generateWeeklyBriefing(): Promise<GeneratedBriefing | null> {
+  return generateBriefing("weekly");
+}
+
+/**
+ * Generate a briefing and upsert it as a published `Briefing` row. `category` is the
+ * cadence ("weekly" | "daily"). Best-effort — returns the slug on success, else null.
+ */
+export async function publishBriefing(kind: BriefingKind): Promise<string | null> {
+  const briefing = await generateBriefing(kind);
   if (!briefing) return null;
 
   const slug = slugifyBriefingTitle(briefing.title, new Date());
@@ -451,7 +510,7 @@ export async function publishBriefing(): Promise<string | null> {
         slug,
         title: briefing.title,
         dek: briefing.dek || null,
-        category: "this_week",
+        category: kind,
         summary: briefing.summary || null,
         bodyJson: {
           sections: briefing.sections,
@@ -465,6 +524,7 @@ export async function publishBriefing(): Promise<string | null> {
       update: {
         title: briefing.title,
         dek: briefing.dek || null,
+        category: kind,
         summary: briefing.summary || null,
         bodyJson: {
           sections: briefing.sections,

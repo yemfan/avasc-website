@@ -34,7 +34,7 @@ function TableRow({ className, ...props }: React.HTMLAttributes<HTMLTableRowElem
   );
 }
 
-function TableHead({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) {
+function TableHead({ className, ...props }: React.ThHTMLAttributes<HTMLTableCellElement>) {
   return (
     <th
       className={cn(
@@ -46,7 +46,7 @@ function TableHead({ className, ...props }: React.HTMLAttributes<HTMLTableCellEl
   );
 }
 
-function TableCell({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) {
+function TableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
   return <td className={cn("p-4 align-middle text-foreground", className)} {...props} />;
 }
 
