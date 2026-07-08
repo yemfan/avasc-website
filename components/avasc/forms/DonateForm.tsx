@@ -35,13 +35,25 @@ export function DonateForm({ showThanks }: DonateFormProps) {
         donorName: String(fd.get("donorName") ?? ""),
         donorEmail: String(fd.get("donorEmail") ?? ""),
       };
+
+      // For one-time gifts, catch a missing/invalid amount with a clear message
+      // (otherwise Number("") -> NaN surfaces Zod's raw "expected number, received NaN").
+      if (dt !== "monthly") {
+        const amountNum = Number(amountRaw);
+        if (amountRaw === "" || !Number.isFinite(amountNum) || amountNum < 1) {
+          setFieldErrors({ amount: "Enter a donation amount of at least $1." });
+          setFormError("Please enter a donation amount before continuing.");
+          return;
+        }
+      }
+
       const payload =
         dt === "monthly"
           ? { ...base, donationType: "monthly" as const }
           : {
               ...base,
               donationType: "one_time" as const,
-              amount: amountRaw === "" ? NaN : Number(amountRaw),
+              amount: Number(amountRaw),
             };
 
       const parsed = donateCheckoutRequestSchema.safeParse(payload);
@@ -156,6 +168,7 @@ export function DonateForm({ showThanks }: DonateFormProps) {
               step="0.01"
               inputMode="decimal"
               placeholder="100"
+              defaultValue="100"
               disabled={donationType === "monthly"}
               className={donationType === "monthly" ? "opacity-60" : undefined}
             />
