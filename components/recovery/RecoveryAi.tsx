@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import { LifeBuoy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { GuidanceView } from "@/components/guidance/GuidanceView";
 import { MAX_SITUATION_CHARS, type Guidance } from "@/lib/guides/types";
 
-export function AiGuide() {
+/**
+ * AI recovery plan. Reuses the shared guidance engine (/api/guides/ai) in
+ * "recovery" mode — a prioritized, victim-centered recovery plan from a plain
+ * description. On-demand, not persisted.
+ */
+export function RecoveryAi() {
   const [situation, setSituation] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,11 +28,9 @@ export function AiGuide() {
       const res = await fetch("/api/guides/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ situation: situation.trim() }),
+        body: JSON.stringify({ situation: situation.trim(), mode: "recovery" }),
       });
-      const data = (await res.json()) as
-        | { ok: true; guidance: Guidance }
-        | { ok: false; error: string };
+      const data = (await res.json()) as { ok: true; guidance: Guidance } | { ok: false; error: string };
       if (data.ok) setGuidance(data.guidance);
       else setError(data.error);
     } catch {
@@ -38,27 +41,28 @@ export function AiGuide() {
   }
 
   return (
-    <section className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-bg-soft)] p-6 shadow-sm">
+    <section className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-bg-card)] p-6 shadow-sm">
       <div className="flex items-center gap-2">
-        <Sparkles className="h-5 w-5 text-[var(--avasc-gold-light)]" aria-hidden />
-        <h2 className="text-lg font-semibold text-foreground">AI Guide — describe your situation</h2>
+        <LifeBuoy className="h-5 w-5 text-[var(--avasc-gold-light)]" aria-hidden />
+        <h2 className="text-lg font-semibold text-foreground">AI recovery plan — tell us what happened</h2>
       </div>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Not sure which guide fits? Tell us what happened in your own words and we&apos;ll give you
-        tailored, practical next steps. This is general guidance, not legal or financial advice.
+        Describe your situation and we&apos;ll build a prioritized, step-by-step recovery plan —
+        what to do first, where to report, and how to avoid being targeted again. This is general
+        guidance, not legal or financial advice.
       </p>
 
       <div className="mt-4">
-        <label htmlFor="ai-situation" className="sr-only">
-          Describe your situation
+        <label htmlFor="recovery-situation" className="sr-only">
+          Describe what happened
         </label>
         <textarea
-          id="ai-situation"
+          id="recovery-situation"
           value={situation}
           onChange={(e) => setSituation(e.target.value.slice(0, MAX_SITUATION_CHARS))}
           disabled={loading}
           rows={5}
-          placeholder="e.g. Someone I met online convinced me to invest in a crypto app. I sent $3,000 and now they want more before I can withdraw…"
+          placeholder="e.g. I wired $5,000 to what I thought was my bank's fraud department after a call. I gave them a code from a text. What do I do now?"
           className="w-full rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg)] px-4 py-3 text-sm text-foreground placeholder:text-[var(--avasc-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--avasc-gold)]"
         />
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
@@ -73,7 +77,7 @@ export function AiGuide() {
 
       <div className="mt-4">
         <Button type="button" variant="gold" onClick={onSubmit} disabled={loading || tooShort}>
-          {loading ? "Thinking…" : "Get guidance"}
+          {loading ? "Building your plan…" : "Get my recovery plan"}
         </Button>
       </div>
 

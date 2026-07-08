@@ -41,6 +41,7 @@ export async function POST(request: Request) {
 
   const situationRaw = (body as { situation?: unknown })?.situation;
   const situation = typeof situationRaw === "string" ? situationRaw.trim() : "";
+  const mode = (body as { mode?: unknown })?.mode === "recovery" ? "recovery" : "guide";
 
   if (situation.length < 10) {
     return NextResponse.json(
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const guidance = await generateGuidance(situation);
+    const guidance = await generateGuidance(situation, mode);
     if (!guidance) {
       return NextResponse.json(
         { ok: false, error: "We couldn't generate guidance just now. Please try again or report your case." },

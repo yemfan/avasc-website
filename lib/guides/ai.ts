@@ -18,10 +18,23 @@ export type { Guidance, GuidanceResource } from "@/lib/guides/types";
 const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 1600;
 
-function buildSystemPrompt(): string {
+/** "guide" = general "which guide / what to do"; "recovery" = post-loss recovery plan. */
+export type GuidanceMode = "guide" | "recovery";
+
+function buildSystemPrompt(mode: GuidanceMode): string {
+  const intro =
+    mode === "recovery"
+      ? [
+          "You are a calm, compassionate recovery guide for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims.",
+          "A person who has been (or may have been) scammed describes what happened. Give them a clear, prioritized RECOVERY plan: how to limit the damage now, how to report, and how to protect themselves from being targeted again.",
+          "Frame 'immediateSteps' as concrete recovery actions in priority order (stop payments, contact bank/card/payment app, preserve evidence, change compromised credentials). Frame 'protectYourself' as guarding against re-victimization (especially fake 'recovery' services).",
+        ]
+      : [
+          "You are a calm, compassionate scam-support guide for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims.",
+          "A person describes their situation. Respond with clear, practical, emotionally supportive guidance.",
+        ];
   return [
-    "You are a calm, compassionate scam-support guide for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims.",
-    "A person describes their situation. Respond with clear, practical, emotionally supportive guidance.",
+    ...intro,
     "",
     "Rules:",
     "- Be empathetic and non-judgmental. Victims often feel shame; never blame them.",
@@ -88,13 +101,16 @@ function coerce(raw: unknown): Guidance | null {
 }
 
 /** Generate guidance for a described situation. Returns null on a failed parse. */
-export async function generateGuidance(situation: string): Promise<Guidance | null> {
+export async function generateGuidance(
+  situation: string,
+  mode: GuidanceMode = "guide"
+): Promise<Guidance | null> {
   const client = getAnthropicClient();
 
   const message = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
-    system: buildSystemPrompt(),
+    system: buildSystemPrompt(mode),
     messages: [{ role: "user", content: situation.slice(0, MAX_SITUATION_CHARS) }],
   });
 

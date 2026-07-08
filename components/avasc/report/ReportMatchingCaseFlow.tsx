@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { MarketingPageHeader } from "@/components/marketing/MarketingPageHeader";
 import { createCaseBodySchema, type CreateCaseBody } from "@/lib/report/case-submission";
+import { ReportAiAssist } from "@/components/avasc/report/ReportAiAssist";
+import { SCAM_TYPES, type ReportFieldSuggestion } from "@/lib/report/scam-types";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -97,6 +99,20 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
 
   function updateField<K extends keyof ReportFormState>(key: K, value: ReportFormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  /** Merge AI-suggested fields into the form (only non-empty suggestions; reporter reviews/edits). */
+  function applyAiFill(fields: ReportFieldSuggestion) {
+    setForm((prev) => ({
+      ...prev,
+      title: fields.title || prev.title,
+      scamType: fields.scamType || prev.scamType,
+      description: fields.description || prev.description,
+      amountLost: fields.amountLost || prev.amountLost,
+      contactMethod: fields.contactMethod || prev.contactMethod,
+      evidence: fields.evidence || prev.evidence,
+    }));
+    setFieldErrors({});
   }
 
   function next() {
@@ -241,7 +257,7 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
       <Progress step={step} />
 
       {step === 1 ? (
-        <Step1 form={form} fieldErrors={fieldErrors} updateField={updateField} onNext={next} />
+        <Step1 form={form} fieldErrors={fieldErrors} updateField={updateField} onAiFill={applyAiFill} onNext={next} />
       ) : null}
       {step === 2 ? (
         <Step2 form={form} fieldErrors={fieldErrors} updateField={updateField} onNext={next} onBack={back} />
@@ -279,16 +295,20 @@ function Step1({
   form,
   fieldErrors,
   updateField,
+  onAiFill,
   onNext,
 }: {
   form: ReportFormState;
   fieldErrors: Partial<Record<string, string>>;
   updateField: <K extends keyof ReportFormState>(key: K, value: ReportFormState[K]) => void;
+  onAiFill: (fields: ReportFieldSuggestion) => void;
   onNext: () => void;
 }) {
   return (
     <div className="mt-8 space-y-6">
       <h2 className="font-display text-xl font-medium text-white">Step 1: What happened?</h2>
+
+      <ReportAiAssist onFill={onAiFill} />
 
       <div>
         <label className={labelClass} htmlFor="report-title">
@@ -315,12 +335,11 @@ function Step1({
           className={fieldClass}
         >
           <option value="">Select a scam type</option>
-          <option value="Fake Crypto Investment">Fake Crypto Investment</option>
-          <option value="Romance Scam">Romance Scam</option>
-          <option value="Fake Recovery Scam">Fake Recovery Scam</option>
-          <option value="Phishing">Phishing</option>
-          <option value="Impersonation Scam">Impersonation Scam</option>
-          <option value="Other">Other</option>
+          {SCAM_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
         </select>
         {fieldErrors.scamType ? <p className="mt-1 text-sm text-red-400">{fieldErrors.scamType}</p> : null}
       </div>

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { RecoveryAi } from "@/components/recovery/RecoveryAi";
+
 export const metadata: Metadata = {
   title: "Recovery Center | AVASC",
   description: "Find guidance and resources for recovering from cyber-scams.",
@@ -94,6 +96,9 @@ export default function RecoveryPage() {
           so our team can triage and match patterns safely.
         </p>
       </header>
+
+      <RecoveryAi />
+
       <div className="grid gap-6 md:grid-cols-2">
         {modules.map((m) => (
           <section
