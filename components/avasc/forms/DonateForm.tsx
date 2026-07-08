@@ -15,6 +15,7 @@ export type DonateFormProps = {
 
 export function DonateForm({ showThanks }: DonateFormProps) {
   const [donationType, setDonationType] = useState<"one_time" | "monthly">("one_time");
+  const [amount, setAmount] = useState("100");
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
   const [notice, setNotice] = useState<string | null>(null);
@@ -29,32 +30,23 @@ export function DonateForm({ showThanks }: DonateFormProps) {
 
     try {
       const fd = new FormData(e.currentTarget);
-      const dt = String(fd.get("donationType") ?? "one_time");
-      const amountRaw = String(fd.get("amount") ?? "").trim();
+      const dt = String(fd.get("donationType") ?? "one_time") === "monthly" ? "monthly" : "one_time";
       const base = {
         donorName: String(fd.get("donorName") ?? ""),
         donorEmail: String(fd.get("donorEmail") ?? ""),
       };
 
-      // For one-time gifts, catch a missing/invalid amount with a clear message
-      // (otherwise Number("") -> NaN surfaces Zod's raw "expected number, received NaN").
-      if (dt !== "monthly") {
-        const amountNum = Number(amountRaw);
-        if (amountRaw === "" || !Number.isFinite(amountNum) || amountNum < 1) {
-          setFieldErrors({ amount: "Enter a donation amount of at least $1." });
-          setFormError("Please enter a donation amount before continuing.");
-          return;
-        }
+      // Amount is required for both one-time and monthly. Catch an empty/invalid
+      // amount with a clear message (otherwise Number("") -> NaN surfaces Zod's
+      // raw "expected number, received NaN").
+      const amountNum = Number(amount.trim());
+      if (amount.trim() === "" || !Number.isFinite(amountNum) || amountNum < 1) {
+        setFieldErrors({ amount: "Enter a donation amount of at least $1." });
+        setFormError("Please enter a donation amount before continuing.");
+        return;
       }
 
-      const payload =
-        dt === "monthly"
-          ? { ...base, donationType: "monthly" as const }
-          : {
-              ...base,
-              donationType: "one_time" as const,
-              amount: Number(amountRaw),
-            };
+      const payload = { ...base, donationType: dt as "one_time" | "monthly", amount: amountNum };
 
       const parsed = donateCheckoutRequestSchema.safeParse(payload);
       if (!parsed.success) {
@@ -154,12 +146,36 @@ export function DonateForm({ showThanks }: DonateFormProps) {
           </FormField>
 
           <FormField
-            label="Amount (USD)"
+            label={donationType === "monthly" ? "Amount (USD / month)" : "Amount (USD)"}
             htmlFor="amount"
-            required={donationType === "one_time"}
-            hint="For one-time gifts, enter your donation in USD. Monthly amount is chosen on Stripe’s page."
+            required
+            hint={
+              donationType === "monthly"
+                ? "Choose a monthly amount or enter your own. You can cancel anytime."
+                : "Choose an amount or enter your own."
+            }
             error={fieldErrors.amount}
           >
+            <div className="flex flex-wrap gap-2">
+              {[10, 25, 50, 100].map((preset) => {
+                const selected = amount.trim() === String(preset);
+                return (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setAmount(String(preset))}
+                    className={
+                      selected
+                        ? "rounded-lg border border-[var(--avasc-gold)] bg-[var(--avasc-gold)]/15 px-3.5 py-2 text-sm font-semibold text-[var(--avasc-gold-light)]"
+                        : "rounded-lg border border-[var(--avasc-border)] px-3.5 py-2 text-sm font-medium text-[var(--avasc-text-secondary)] transition hover:border-[var(--avasc-gold)]/50 hover:text-white"
+                    }
+                  >
+                    ${preset}
+                    {donationType === "monthly" ? "/mo" : ""}
+                  </button>
+                );
+              })}
+            </div>
             <TextInput
               id="amount"
               name="amount"
@@ -167,10 +183,10 @@ export function DonateForm({ showThanks }: DonateFormProps) {
               min={1}
               step="0.01"
               inputMode="decimal"
-              placeholder="100"
-              defaultValue="100"
-              disabled={donationType === "monthly"}
-              className={donationType === "monthly" ? "opacity-60" : undefined}
+              placeholder="Custom amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="mt-2"
             />
           </FormField>
         </div>

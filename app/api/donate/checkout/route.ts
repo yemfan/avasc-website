@@ -38,14 +38,53 @@ export async function POST(req: NextRequest) {
   const origin = getOrigin(req);
 
   if (data.donationType === "monthly") {
-    const url = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_URL?.trim();
-    if (!url) {
-      return NextResponse.json(
-        { ok: false, error: "Monthly giving is not configured yet. Please try again later." },
-        { status: 503 }
-      );
+    const unitAmount = Math.round(data.amount * 100);
+    if (unitAmount < 100) {
+      return NextResponse.json({ ok: false, error: "Minimum monthly amount is 1.00." }, { status: 400 });
     }
-    return NextResponse.json({ ok: true as const, url });
+
+    // No secret key configured → fall back to the fixed monthly payment link.
+    if (!stripe) {
+      const url = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_URL?.trim();
+      if (!url) {
+        return NextResponse.json(
+          { ok: false, error: "Monthly giving is not configured yet. Please try again later." },
+          { status: 503 }
+        );
+      }
+      return NextResponse.json({ ok: true as const, url });
+    }
+
+    try {
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        customer_email: data.donorEmail,
+        line_items: [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              unit_amount: unitAmount,
+              recurring: { interval: "month" },
+              product_data: { name: "Monthly donation to AVASC" },
+            },
+          },
+        ],
+        success_url: `${origin}/donate?thanks=1&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${origin}/donate`,
+        metadata: {
+          donationType: "monthly",
+          donorName: data.donorName?.trim() || "",
+        },
+      });
+      if (!session.url) {
+        return NextResponse.json({ ok: false, error: "Could not start checkout." }, { status: 500 });
+      }
+      return NextResponse.json({ ok: true as const, url: session.url });
+    } catch (e) {
+      console.error("Stripe subscription session error:", e);
+      return NextResponse.json({ ok: false, error: "Payment provider error. Please try again." }, { status: 502 });
+    }
   }
 
   if (!stripe) {
