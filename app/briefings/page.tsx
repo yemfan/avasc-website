@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { listPublishedBriefings } from "@/lib/briefings/queries";
 import { getScamStatSeries } from "@/lib/scam-stats/queries";
 import { ScamTrendChart } from "@/components/scam-stats/ScamTrendChart";
+import { ScamHighlights } from "@/components/scam-stats/ScamHighlights";
 import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
@@ -97,6 +98,8 @@ export default async function BriefingsIndexPage() {
           Attorneys General. Every briefing links out to its sources.
         </p>
       </header>
+
+      <ScamHighlights />
 
       {scamTrend ? <ScamTrendChart series={scamTrend} /> : null}
 
