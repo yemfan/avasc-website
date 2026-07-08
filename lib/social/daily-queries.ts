@@ -1,6 +1,16 @@
 import { prisma } from "@/lib/prisma";
 import type { SocialPost } from "@/lib/social/types";
 
+export type AdminDailyPost = {
+  id: string;
+  date: string;
+  theme: string;
+  themeLabel: string;
+  status: string;
+  linkUrl: string | null;
+  posts: SocialPost[];
+};
+
 export type BlogPostItem = {
   id: string;
   date: string;
@@ -25,9 +35,10 @@ export function dailyThemeLabel(theme: string): string {
   return THEME_LABELS[theme] ?? theme;
 }
 
-/** Recent daily posts for the public Blog feed (longest platform copy per day). */
+/** Recent daily posts for the public Blog feed (published only; longest copy per day). */
 export async function listRecentDailyPosts(limit = 60): Promise<BlogPostItem[]> {
   const rows = await prisma.socialDailyPost.findMany({
+    where: { status: { notIn: ["pending", "rejected"] } },
     orderBy: { postDate: "desc" },
     take: limit,
   });
@@ -52,4 +63,18 @@ export async function listRecentDailyPosts(limit = 60): Promise<BlogPostItem[]> 
       };
     })
     .filter((x) => x.body.length > 0);
+}
+
+/** Recent daily posts for the admin queue (all statuses, full platform copy). */
+export async function listDailyPostsForAdmin(limit = 30): Promise<AdminDailyPost[]> {
+  const rows = await prisma.socialDailyPost.findMany({ orderBy: { postDate: "desc" }, take: limit });
+  return rows.map((r) => ({
+    id: r.id,
+    date: r.postDate.toISOString().slice(0, 10),
+    theme: r.theme,
+    themeLabel: dailyThemeLabel(r.theme),
+    status: r.status,
+    linkUrl: r.linkUrl,
+    posts: Array.isArray(r.posts) ? (r.posts as unknown as SocialPost[]) : [],
+  }));
 }

@@ -5,6 +5,7 @@ import { requireRole } from "@/lib/auth/require-role";
 import { listPublishedBriefings } from "@/lib/briefings/queries";
 
 import { SocialGenerator } from "./SocialGenerator";
+import { DailyAutopilotAdmin } from "./DailyAutopilotAdmin";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,12 @@ export default async function SocialAdminPage() {
         </p>
       </div>
 
+      <DailyAutopilotAdmin />
+
+      <div className="border-t border-slate-200 pt-8">
+        <h2 className="text-lg font-semibold text-slate-900">On-demand: turn a briefing into social copy</h2>
+        <p className="mt-1 text-sm text-slate-500">Separate from the daily rotation — generate shareable copy from any briefing.</p>
+      </div>
       <SocialGenerator briefings={options} />
     </div>
   );

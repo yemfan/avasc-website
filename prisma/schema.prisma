@@ -506,6 +506,13 @@ model SocialDailyPost {
   @@index([postDate])
 }
 
+/** Generic key/value app settings (e.g. social auto-post mode). */
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
+
 model Donation {
   id                        String          @id @default(uuid()) @db.Uuid
   donorName                 String?
