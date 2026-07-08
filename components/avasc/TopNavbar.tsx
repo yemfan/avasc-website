@@ -49,6 +49,7 @@ const DESKTOP_LINKS = [
   { href: "/stories", label: "Stories" },
   { href: "/guides", label: "Guides" },
   { href: "/recovery", label: "Recovery" },
+  { href: "/resources", label: "Resources" },
   { href: "/about", label: "About" },
 ] as const;
 

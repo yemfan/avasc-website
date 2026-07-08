@@ -57,6 +57,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                     Recovery center
                   </Link>
                 </li>
+                <li>
+                  <Link href="/resources" className={footerLink}>
+                    Resources
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
