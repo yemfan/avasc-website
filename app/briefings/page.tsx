@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { listPublishedBriefings } from "@/lib/briefings/queries";
+import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
 
@@ -148,6 +149,8 @@ export default async function BriefingsIndexPage() {
           ))}
         </div>
       )}
+
+      <ReportCta />
 
       <div className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-soft)] p-6 text-sm text-[var(--avasc-text-secondary)]">
         This is public-safe intelligence: briefings surface only indicators and patterns that are already

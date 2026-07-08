@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 
 import { getPublishedBriefingBySlug } from "@/lib/briefings/queries";
+import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
 
@@ -190,6 +191,8 @@ export default async function BriefingArticlePage({ params }: PageProps) {
           </ul>
         </section>
       ) : null}
+
+      <ReportCta />
 
       <section className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-soft)] p-6 text-sm text-[var(--avasc-text-secondary)]">
         This briefing is public-safe intelligence: it surfaces only indicators and patterns that are already
