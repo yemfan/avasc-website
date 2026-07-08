@@ -8,7 +8,7 @@ import { createHmac, randomBytes } from "node:crypto";
  * Env required to actually post:
  *   X (Twitter):  X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
  *   Facebook:     FACEBOOK_PAGE_ID, FACEBOOK_PAGE_ACCESS_TOKEN
- * Instagram is text-incompatible (requires a hosted image) — a follow-up.
+ *   Instagram:    INSTAGRAM_USER_ID (+ INSTAGRAM_ACCESS_TOKEN, or reuse FACEBOOK_PAGE_ACCESS_TOKEN)
  */
 
 export type PostResult = { ok: boolean; id?: string; error?: string; skipped?: boolean };
@@ -92,5 +92,48 @@ export async function postToFacebook(message: string, link?: string): Promise<Po
     return { ok: true, id: json.id };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Facebook request failed" };
+  }
+}
+
+/**
+ * Post to Instagram via the Graph API (2 steps: create media container from a
+ * public JPEG image_url + caption, then publish it). Requires a business/creator
+ * IG account linked to a Facebook Page.
+ */
+export async function postToInstagram(imageUrl: string, caption: string): Promise<PostResult> {
+  const igUserId = process.env.INSTAGRAM_USER_ID?.trim();
+  const token = (process.env.INSTAGRAM_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN)?.trim();
+  if (!igUserId || !token) {
+    return { ok: false, skipped: true, error: "Instagram not configured" };
+  }
+
+  const base = `https://graph.facebook.com/v21.0/${encodeURIComponent(igUserId)}`;
+  try {
+    // 1) Create the media container.
+    const createBody = new URLSearchParams({ image_url: imageUrl, caption: caption.slice(0, 2200), access_token: token });
+    const cRes = await fetch(`${base}/media`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: createBody,
+    });
+    const cJson = (await cRes.json().catch(() => ({}))) as { id?: string; error?: { message?: string } };
+    if (!cRes.ok || !cJson.id) {
+      return { ok: false, error: cJson.error?.message || `Instagram container error ${cRes.status}` };
+    }
+
+    // 2) Publish the container.
+    const pubBody = new URLSearchParams({ creation_id: cJson.id, access_token: token });
+    const pRes = await fetch(`${base}/media_publish`, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: pubBody,
+    });
+    const pJson = (await pRes.json().catch(() => ({}))) as { id?: string; error?: { message?: string } };
+    if (!pRes.ok || !pJson.id) {
+      return { ok: false, error: pJson.error?.message || `Instagram publish error ${pRes.status}` };
+    }
+    return { ok: true, id: pJson.id };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Instagram request failed" };
   }
 }

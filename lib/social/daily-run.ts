@@ -1,8 +1,9 @@
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
+import { appBaseUrl } from "@/lib/subscriptions/links";
 import { buildDailyContext, generateDailyPosts } from "@/lib/social/daily";
-import { postToX, postToFacebook, type PostResult } from "@/lib/social/post";
+import { postToX, postToFacebook, postToInstagram, type PostResult } from "@/lib/social/post";
 import { getSocialAutopilot } from "@/lib/social/settings";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -24,10 +25,12 @@ function utcDateOnly(d = new Date()): Date {
 /** Post a day's copy to the configured platforms and compute the resulting status. */
 async function attemptPost(
   posts: SocialPost[],
-  linkUrl: string | null
+  linkUrl: string | null,
+  postId: string
 ): Promise<{ status: string; results: Record<string, PostResult> }> {
   const xPost = posts.find((p) => p.platform === "x");
   const fbPost = posts.find((p) => p.platform === "facebook");
+  const igPost = posts.find((p) => p.platform === "instagram");
 
   const results: Record<string, PostResult> = {};
   if (xPost) {
@@ -37,6 +40,11 @@ async function attemptPost(
   }
   if (fbPost) {
     results.facebook = await postToFacebook(fbPost.body, linkUrl ?? undefined);
+  }
+  if (igPost) {
+    // IG needs a public JPEG; the daily-image route renders one from this post.
+    const imageUrl = `${appBaseUrl()}/api/social/daily-image/${postId}`;
+    results.instagram = await postToInstagram(imageUrl, igPost.body);
   }
 
   const attempted = Object.values(results).filter((r) => !r.skipped);
@@ -96,7 +104,7 @@ export async function runDailySocialPost(opts?: { force?: boolean; date?: Date }
     return { ok: true, date: dateStr, theme: ctx.theme.key, status: "pending", mode: "approval" };
   }
 
-  const { status, results } = await attemptPost(posts, ctx.linkUrl);
+  const { status, results } = await attemptPost(posts, ctx.linkUrl, row.id);
   await prisma.socialDailyPost.update({
     where: { id: row.id },
     data: { status, results: results as unknown as Prisma.InputJsonValue },
@@ -112,7 +120,7 @@ export async function postSavedDailyPost(id: string): Promise<{ ok: boolean; sta
   const posts = Array.isArray(row.posts) ? (row.posts as unknown as SocialPost[]) : [];
   if (!posts.length) return { ok: false, error: "This post has no content." };
 
-  const { status, results } = await attemptPost(posts, row.linkUrl);
+  const { status, results } = await attemptPost(posts, row.linkUrl, row.id);
   await prisma.socialDailyPost.update({
     where: { id },
     data: { status, results: results as unknown as Prisma.InputJsonValue },
