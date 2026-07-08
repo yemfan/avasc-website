@@ -18,8 +18,17 @@ const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 8000;
 const MAX_TOOL_ROUNDS = 10;
 const WEB_SEARCH_MAX_USES = 4;
-const METRIC = "ic3_losses_usd";
-const SOURCE = "FBI IC3";
+
+const METRICS: Record<string, { source: string; label: string }> = {
+  ic3_losses_usd: {
+    source: "FBI IC3",
+    label: "FBI Internet Crime Complaint Center (IC3) TOTAL reported losses",
+  },
+  ftc_losses_usd: {
+    source: "FTC",
+    label: "FTC Consumer Sentinel Network TOTAL reported fraud losses",
+  },
+};
 
 const WEB_SEARCH_TOOL = {
   type: "web_search_20250305" as const,
@@ -68,42 +77,46 @@ async function runAgentLoop(
 
 const SYSTEM_PROMPT = [
   "You are a careful data researcher for AVASC, a nonprofit anti-scam organization.",
-  "Task: find the FBI Internet Crime Complaint Center (IC3) TOTAL reported losses for each year from 2019 through the most recent year for which an IC3 Annual Internet Crime Report has been published.",
-  "Use web_search against ic3.gov and the FBI, and reputable summaries only. Report each year's official total losses in USD BILLIONS (e.g. 16.6 for $16.6 billion).",
-  "Include the newest year if its annual report is out; omit any year whose report is not yet published. Do NOT invent, estimate, or extrapolate figures — only report values you can verify from a real source, and give that source's URL.",
-  'Return ONLY a JSON object: {"series":[{"year":2024,"valueBillions":16.6,"sourceUrl":"https://..."}, ...]}. No text outside the JSON.',
+  "Task: find TWO year-over-year loss series, each year from 2019 through the most recent year for which an official annual report is published:",
+  '  - metric "ic3_losses_usd": FBI Internet Crime Complaint Center (IC3) TOTAL reported losses (search ic3.gov / FBI).',
+  '  - metric "ftc_losses_usd": FTC Consumer Sentinel Network TOTAL reported fraud losses (search ftc.gov).',
+  "Report each year's official total in USD BILLIONS (e.g. 16.6 for $16.6 billion).",
+  "Include the newest year for a metric only if its annual report/data book is published; omit years that are not yet published. Do NOT invent, estimate, or extrapolate — only report values you can verify from a real source, and give that source's URL.",
+  'Return ONLY a JSON object: {"points":[{"metric":"ic3_losses_usd","year":2024,"valueBillions":16.6,"sourceUrl":"https://..."},{"metric":"ftc_losses_usd","year":2024,"valueBillions":12.5,"sourceUrl":"https://..."}, ...]}. No text outside the JSON.',
 ].join("\n");
 
-type Point = { year: number; valueBillions: number; sourceUrl: string };
+type Point = { metric: string; year: number; valueBillions: number; sourceUrl: string };
 
 function coerce(raw: unknown): Point[] {
-  const obj = raw as { series?: unknown };
-  const arr = Array.isArray(obj?.series) ? obj.series : [];
+  const obj = raw as { points?: unknown; series?: unknown };
+  const arr = Array.isArray(obj?.points) ? obj.points : Array.isArray(obj?.series) ? obj.series : [];
   const out: Point[] = [];
   for (const item of arr) {
     if (!item || typeof item !== "object") continue;
     const o = item as Record<string, unknown>;
+    const metric = typeof o.metric === "string" ? o.metric.trim() : "ic3_losses_usd";
+    if (!(metric in METRICS)) continue;
     const year = typeof o.year === "number" ? Math.trunc(o.year) : Number(o.year);
     const valueBillions = typeof o.valueBillions === "number" ? o.valueBillions : Number(o.valueBillions);
     const sourceUrl = typeof o.sourceUrl === "string" ? o.sourceUrl.trim() : "";
     if (!Number.isFinite(year) || year < 2000 || year > 2100) continue;
     if (!Number.isFinite(valueBillions) || valueBillions <= 0 || valueBillions > 1000) continue;
     if (!/^https?:\/\//i.test(sourceUrl)) continue;
-    out.push({ year, valueBillions: Math.round(valueBillions * 100) / 100, sourceUrl });
+    out.push({ metric, year, valueBillions: Math.round(valueBillions * 100) / 100, sourceUrl });
   }
   return out;
 }
 
 export type RefreshResult = { ok: boolean; upserted: number; years: number[]; error?: string };
 
-/** Research + upsert the IC3 loss series. Only overwrites with verified, sourced values. */
+/** Research + upsert the IC3 and FTC loss series. Only overwrites with verified, sourced values. */
 export async function refreshScamStats(): Promise<RefreshResult> {
   const client = getAnthropicClient();
 
   let text: string;
   try {
     text = await runAgentLoop(client, SYSTEM_PROMPT, [
-      { role: "user", content: "Find the IC3 total reported losses per year and return the JSON series." },
+      { role: "user", content: "Find the IC3 and FTC total reported losses per year and return the JSON points." },
     ]);
   } catch (err) {
     return { ok: false, upserted: 0, years: [], error: err instanceof Error ? err.message : "AI call failed" };
@@ -120,15 +133,16 @@ export async function refreshScamStats(): Promise<RefreshResult> {
   }
   if (points.length === 0) return { ok: false, upserted: 0, years: [], error: "No valid data points" };
 
-  const years: number[] = [];
+  const years = new Set<number>();
   for (const p of points) {
+    const source = METRICS[p.metric].source;
     await prisma.scamStat.upsert({
-      where: { metric_year: { metric: METRIC, year: p.year } },
-      create: { metric: METRIC, year: p.year, valueBillions: p.valueBillions, source: SOURCE, sourceUrl: p.sourceUrl },
-      update: { valueBillions: p.valueBillions, source: SOURCE, sourceUrl: p.sourceUrl },
+      where: { metric_year: { metric: p.metric, year: p.year } },
+      create: { metric: p.metric, year: p.year, valueBillions: p.valueBillions, source, sourceUrl: p.sourceUrl },
+      update: { valueBillions: p.valueBillions, source, sourceUrl: p.sourceUrl },
     });
-    years.push(p.year);
+    years.add(p.year);
   }
 
-  return { ok: true, upserted: years.length, years: years.sort((a, b) => a - b) };
+  return { ok: true, upserted: points.length, years: [...years].sort((a, b) => a - b) };
 }

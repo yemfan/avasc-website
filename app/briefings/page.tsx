@@ -55,7 +55,10 @@ export default async function BriefingsIndexPage() {
     loadError = true;
   }
 
-  const scamTrend = await getScamStatSeries("ic3_losses_usd");
+  const [scamTrend, ftcTrend] = await Promise.all([
+    getScamStatSeries("ic3_losses_usd"),
+    getScamStatSeries("ftc_losses_usd"),
+  ]);
 
   const collectionSchema = {
     "@context": "https://schema.org",
@@ -101,7 +104,7 @@ export default async function BriefingsIndexPage() {
 
       <ScamHighlights />
 
-      {scamTrend ? <ScamTrendChart series={scamTrend} /> : null}
+      {scamTrend ? <ScamTrendChart series={scamTrend} overlay={ftcTrend} /> : null}
 
       {loadError ? (
         <div className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-6 text-sm text-[var(--avasc-text-secondary)]">
