@@ -430,6 +430,37 @@ model ScamAlert {
   @@index([publishedAt])
 }
 
+/**
+ * Published editorial briefing ("This Week in Scams" weekly report / trend report).
+ * A saved, public-safe article generated from AVASC public data + cited external
+ * sources. Distinct from `Alert`/`ScamAlert` (the outbound alert/announcement pipeline).
+ */
+model Briefing {
+  id            String   @id @default(uuid()) @db.Uuid
+  slug          String   @unique
+  title         String
+  /** Standfirst / deck shown under the title. */
+  dek           String?
+  /** e.g. "this_week" | "trend_report" */
+  category      String   @default("this_week")
+  /** One-line summary for cards, meta description, and JSON-LD. */
+  summary       String?
+  /** Structured body: { sections: [{heading, paragraphs[]}], keyPoints: [], protectYourself: [] } */
+  bodyJson      Json
+  /** External citations: [{ title, url, publisher }] */
+  sources       Json?
+  coverImageUrl String?
+  /** Human label for the reporting window, e.g. "Week of July 1, 2026". */
+  periodLabel   String?
+  status        String   @default("published")
+  publishedAt   DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([category, publishedAt(sort: Desc)])
+  @@index([status])
+}
+
 model Donation {
   id                        String          @id @default(uuid()) @db.Uuid
   donorName                 String?

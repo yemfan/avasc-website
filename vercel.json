@@ -32,6 +32,10 @@
     {
       "path": "/api/cron/import-onedrive-weekly",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/briefings/weekly",
+      "schedule": "0 15 * * 1"
     }
   ]
 }
