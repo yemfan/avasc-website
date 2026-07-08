@@ -88,6 +88,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/blog" className={footerLink}>
+                    Blog
+                  </Link>
+                </li>
+                <li>
                   <Link href="/donate" className={footerLink}>
                     Donate
                   </Link>

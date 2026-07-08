@@ -46,6 +46,7 @@ const DESKTOP_LINKS = [
   { href: "/database", label: "Scam Database" },
   { href: "/report", label: "Report Case" },
   { href: "/briefings", label: "Scam News" },
+  { href: "/blog", label: "Blog" },
   { href: "/stories", label: "Stories" },
   { href: "/guides", label: "Guides" },
   { href: "/recovery", label: "Recovery" },
