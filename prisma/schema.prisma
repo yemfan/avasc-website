@@ -461,6 +461,27 @@ model Briefing {
   @@index([status])
 }
 
+/**
+ * Year-over-year scam/fraud statistics for the public trend chart. One row per
+ * (metric, year). Refreshed by the scam-stats cron (Claude + web_search) and
+ * seeded with verified FBI IC3 / FTC annual figures.
+ */
+model ScamStat {
+  id            String   @id @default(uuid()) @db.Uuid
+  /** Series key, e.g. "ic3_losses_usd" (FBI IC3) or "ftc_losses_usd" (FTC). */
+  metric        String
+  year          Int
+  /** Reported losses in USD billions, e.g. 16.6. */
+  valueBillions Float
+  source        String
+  sourceUrl     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([metric, year])
+  @@index([metric, year])
+}
+
 model Donation {
   id                        String          @id @default(uuid()) @db.Uuid
   donorName                 String?

@@ -45,7 +45,7 @@ type TopNavbarProps = {
 const DESKTOP_LINKS = [
   { href: "/database", label: "Scam Database" },
   { href: "/report", label: "Report Case" },
-  { href: "/briefings", label: "This Week" },
+  { href: "/briefings", label: "Scam News" },
   { href: "/stories", label: "Stories" },
   { href: "/guides", label: "Guides" },
   { href: "/recovery", label: "Recovery" },

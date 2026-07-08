@@ -84,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </li>
                 <li>
                   <Link href="/briefings" className={footerLink}>
-                    This Week in Scams
+                    Scam News
                   </Link>
                 </li>
                 <li>

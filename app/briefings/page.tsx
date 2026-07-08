@@ -3,6 +3,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 import { listPublishedBriefings } from "@/lib/briefings/queries";
+import { getScamStatSeries } from "@/lib/scam-stats/queries";
+import { ScamTrendChart } from "@/components/scam-stats/ScamTrendChart";
 import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
@@ -52,6 +54,8 @@ export default async function BriefingsIndexPage() {
     loadError = true;
   }
 
+  const scamTrend = await getScamStatSeries("ic3_losses_usd");
+
   const collectionSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -84,7 +88,7 @@ export default async function BriefingsIndexPage() {
 
       <header className="space-y-4">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--avasc-gold-light)]/90">
-          This Week in Scams
+          Scam News
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Weekly Fraud Briefings</h1>
         <p className="max-w-2xl text-base leading-relaxed text-[var(--avasc-text-secondary)]">
@@ -93,6 +97,8 @@ export default async function BriefingsIndexPage() {
           Attorneys General. Every briefing links out to its sources.
         </p>
       </header>
+
+      {scamTrend ? <ScamTrendChart series={scamTrend} /> : null}
 
       {loadError ? (
         <div className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-6 text-sm text-[var(--avasc-text-secondary)]">
