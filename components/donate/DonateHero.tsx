@@ -4,10 +4,9 @@ type DonateHeroProps = {
   title: string;
   subtitle: string;
   monthlyUrl?: string;
-  oneTimeUrl?: string;
 };
 
-export function DonateHero({ title, subtitle, monthlyUrl, oneTimeUrl }: DonateHeroProps) {
+export function DonateHero({ title, subtitle, monthlyUrl }: DonateHeroProps) {
   return (
     <section className="relative overflow-hidden border-b border-white/[0.06] bg-[linear-gradient(165deg,var(--avasc-bg-soft)_0%,#0a1628_40%,var(--avasc-blue)_100%)]">
       <div
@@ -30,37 +29,21 @@ export function DonateHero({ title, subtitle, monthlyUrl, oneTimeUrl }: DonateHe
         </p>
 
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
+          {/* Monthly: a fixed Stripe payment link when configured, else scroll to the form. */}
           <DonateLinkButton
-            href={monthlyUrl}
+            href={monthlyUrl ?? "#donate-form"}
             label="Become a monthly supporter"
             variant="gold"
             className="min-w-[220px] shadow-[0_12px_40px_-12px_rgba(201,148,60,0.5)]"
           />
+          {/* One-time: scroll to the amount form (dynamic Stripe Checkout handles it). */}
           <DonateLinkButton
-            href={oneTimeUrl}
+            href="#donate-form"
             label="One-time gift"
             variant="outline"
             className="min-w-[220px] border-white/[0.14] bg-white/[0.03] text-[var(--avasc-text-primary)] hover:border-[var(--avasc-gold)]/35 hover:bg-white/[0.06]"
           />
         </div>
-
-        {/* TOM CR-002: the previous fallback copy exposed dev env-var names
-            ("Configure NEXT_PUBLIC_STRIPE_*") to production visitors. That's
-            both a trust hit and a minor info leak. The user-visible copy is
-            now a warm "processors are being set up" message; dev configuration
-            reminders live only in the build log. */}
-        {(!monthlyUrl || !oneTimeUrl) && (
-          <p className="mt-6 text-sm text-[var(--avasc-text-muted)]">
-            Online donations are being set up. In the meantime, email{" "}
-            <a
-              href="mailto:give@avasc.org"
-              className="underline decoration-[var(--avasc-gold)]/60 underline-offset-4 hover:text-[var(--avasc-gold-light)]"
-            >
-              give@avasc.org
-            </a>{" "}
-            and we&apos;ll share a way to contribute directly.
-          </p>
-        )}
       </div>
     </section>
   );

@@ -27,6 +27,19 @@ export function DonateLinkButton({
     );
   }
 
+  // Same-page anchor (#…): render a native <a> so the browser scrolls to the
+  // element (Next <Link> to a hash doesn't reliably scroll). External payment
+  // links (Stripe/PayPal) open in a new tab via Next <Link>.
+  if (href.startsWith("#")) {
+    return (
+      <Button asChild variant={variant} size={size} className={className}>
+        <a href={href} aria-label={label}>
+          {label}
+        </a>
+      </Button>
+    );
+  }
+
   return (
     <Button asChild variant={variant} size={size} className={className}>
       <Link href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>

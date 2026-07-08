@@ -72,12 +72,11 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         title="Support Scam Victims. Help Stop the Next Scam."
         subtitle="Your donation helps AVASC support victims, build scam intelligence tools, and expand public awareness."
         monthlyUrl={STRIPE_MONTHLY_URL || undefined}
-        oneTimeUrl={STRIPE_DONATE_URL || undefined}
       />
 
       <TrustStrip items={["Secure donation options", "Victim-centered mission", "Privacy and dignity first"]} />
 
-      <section className="mx-auto max-w-2xl py-12 sm:py-14">
+      <section id="donate-form" className="mx-auto max-w-2xl scroll-mt-24 py-12 sm:py-14">
         <h2 className="font-display text-2xl font-medium tracking-tight text-white">Custom amount</h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
           Choose one-time or monthly, then continue to our secure payment provider.
@@ -155,7 +154,7 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
             title="One-Time Donation"
             description="Make a direct contribution to support platform development and victim resources."
             buttonLabel="Donate Once"
-            href={STRIPE_DONATE_URL || undefined}
+            href={STRIPE_DONATE_URL || "#donate-form"}
           />
           <DonationOptionCard
             title="Donate with PayPal"
@@ -211,7 +210,7 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
         title="Help us turn pain into protection."
         subtitle="Too many scam victims face fraud alone. Your support helps build a better response."
         monthlyUrl={STRIPE_MONTHLY_URL || null}
-        oneTimeUrl={STRIPE_DONATE_URL || null}
+        oneTimeUrl={STRIPE_DONATE_URL || "#donate-form"}
       />
 
       <section className="border-t border-white/[0.06]">
