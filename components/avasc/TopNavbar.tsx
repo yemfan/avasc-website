@@ -5,7 +5,7 @@ import { brand, brandImages } from "@/lib/brand-images";
 import { cn } from "@/lib/utils/cn";
 
 const navLinkClass =
-  "text-sm text-[var(--avasc-text-secondary)] transition-colors duration-150 hover:text-[var(--avasc-text-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)] rounded-md";
+  "text-sm font-medium text-[var(--avasc-text-primary)] transition-colors duration-150 hover:text-[var(--avasc-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)] rounded-md";
 
 const ctaOutlineClass =
   "inline-flex items-center justify-center rounded-lg border border-[var(--avasc-border)] px-4 py-2 text-sm font-medium text-[var(--avasc-text-primary)] transition-colors duration-150 hover:border-[var(--avasc-gold)]/50 hover:text-[var(--avasc-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)]";

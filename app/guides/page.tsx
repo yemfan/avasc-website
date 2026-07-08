@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Card } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
+
+import { AiGuide } from "./AiGuide";
 
 export const metadata: Metadata = {
   title: "Scam Prevention & Education Guides | AVASC",
@@ -146,11 +147,13 @@ export default function GuidesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       <header className="space-y-4">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Scam Prevention Guides</h1>
-        <p className="max-w-2xl text-base leading-relaxed text-slate-600">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Scam Prevention Guides</h1>
+        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
           Knowledge is your best defense against fraud. Explore our comprehensive guides to learn how to identify common scams, protect yourself, and recover if you've been victimized. Each guide provides actionable insights based on real scam patterns.
         </p>
       </header>
+
+      <AiGuide />
 
       <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
         {guides.map((guide) => (
