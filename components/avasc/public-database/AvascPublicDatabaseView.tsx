@@ -169,15 +169,15 @@ export function AvascPublicDatabaseView({
       <div className="pb-4 pt-0 sm:pb-6">
         <AlertStripCompact items={realtimeAlerts} />
 
-        <div className="mt-6 space-y-8 sm:space-y-10">
-          <MarketingPageHeader
-            eyebrow="Public scam database"
-            title="Search published scam patterns"
-            description="Explore staff-reviewed profiles using public-safe indicators—domains, wallets, emails, aliases, platforms, and scam types. Your search stays private."
-          />
-
+        <div className="mt-6">
           <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
           <div className="space-y-6">
+            <MarketingPageHeader
+              eyebrow="Public scam database"
+              title="Search published scam patterns"
+              description="Explore staff-reviewed profiles using public-safe indicators—domains, wallets, emails, aliases, platforms, and scam types. Your search stays private."
+            />
+
             <PublicDatabaseSearchFilters
               filters={filters}
               query={query}
