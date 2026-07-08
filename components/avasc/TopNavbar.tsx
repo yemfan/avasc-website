@@ -1,11 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { brand, brandImages } from "@/lib/brand-images";
 import { cn } from "@/lib/utils/cn";
 
-const navLinkClass =
-  "text-sm font-medium text-[var(--avasc-text-primary)] transition-colors duration-150 hover:text-[var(--avasc-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)] rounded-md";
+const navLinkBase =
+  "text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)] rounded-md";
+
+/** True when `href` is the current route (exact, or a section prefix like /database/…). */
+function isActivePath(pathname: string | null, href: string): boolean {
+  if (!pathname) return false;
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/** Desktop nav link: gold + underline when active, otherwise light with gold hover. */
+function desktopNavClass(active: boolean): string {
+  return cn(
+    navLinkBase,
+    active
+      ? "text-[var(--avasc-gold-light)] underline decoration-2 underline-offset-[6px] decoration-[var(--avasc-gold)]"
+      : "text-[var(--avasc-text-primary)] hover:text-[var(--avasc-gold-light)]"
+  );
+}
+
+const navLinkClass = cn(navLinkBase, "text-[var(--avasc-text-primary)] hover:text-[var(--avasc-gold-light)]");
 
 const ctaOutlineClass =
   "inline-flex items-center justify-center rounded-lg border border-[var(--avasc-border)] px-4 py-2 text-sm font-medium text-[var(--avasc-text-primary)] transition-colors duration-150 hover:border-[var(--avasc-gold)]/50 hover:text-[var(--avasc-gold-light)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--avasc-gold)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--avasc-bg)]";
@@ -30,7 +52,15 @@ const DESKTOP_LINKS = [
   { href: "/about", label: "About" },
 ] as const;
 
+function mobileItemActiveClass(active: boolean): string {
+  return cn(
+    mobileItemClass,
+    active && "bg-[var(--avasc-bg-soft)] font-semibold text-[var(--avasc-gold-light)]"
+  );
+}
+
 function MobileMenu() {
+  const pathname = usePathname();
   // TOM MN-002: mobile viewport renders the gold "Report" CTA next to the
   // hamburger already (see TopNavbar bottom-right on md- breakpoints). The
   // menu listing "Report Case" inside as well surfaced as a duplicate.
@@ -49,11 +79,19 @@ function MobileMenu() {
       </summary>
       <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-64 rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
         <div className="flex flex-col gap-0.5">
-          {mobileMenuLinks.map(({ href, label }) => (
-            <Link key={href} href={href} className={mobileItemClass}>
-              {label}
-            </Link>
-          ))}
+          {mobileMenuLinks.map(({ href, label }) => {
+            const active = isActivePath(pathname, href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={mobileItemActiveClass(active)}
+              >
+                {label}
+              </Link>
+            );
+          })}
           <Link href="/donate" className={mobileItemClass}>
             Donate
           </Link>
@@ -67,6 +105,7 @@ function MobileMenu() {
 }
 
 export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
+  const pathname = usePathname();
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[rgba(5,9,18,0.78)] shadow-[0_1px_0_rgba(255,255,255,0.04)_inset] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(5,9,18,0.72)]">
       <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:min-h-[5rem] sm:px-6 lg:px-8">
@@ -91,11 +130,19 @@ export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
         </Link>
 
         <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Primary">
-          {DESKTOP_LINKS.map(({ href, label }) => (
-            <Link key={href} href={href} className={navLinkClass}>
-              {label}
-            </Link>
-          ))}
+          {DESKTOP_LINKS.map(({ href, label }) => {
+            const active = isActivePath(pathname, href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? "page" : undefined}
+                className={desktopNavClass(active)}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">

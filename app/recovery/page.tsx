@@ -79,16 +79,16 @@ export default function RecoveryPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Link
         href="/"
-        className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-[var(--avasc-gold-light)]"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         Back to home
       </Link>
       <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Recovery center</h1>
-        <p className="mt-4 text-slate-600 leading-relaxed">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Recovery center</h1>
+        <p className="mt-4 text-muted-foreground leading-relaxed">
           Grounded first steps and warnings — not legal advice. Pair this with a structured{" "}
-          <Link href="/report" className="font-medium text-slate-900 underline underline-offset-2">
+          <Link href="/report" className="font-medium text-[var(--avasc-gold-light)] underline underline-offset-2">
             scam report
           </Link>{" "}
           so our team can triage and match patterns safely.
@@ -165,32 +165,32 @@ export default function RecoveryPage() {
         </div>
       </section>
       <section className="mt-10">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">Next Steps</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Next Steps</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <Link
             href="/stories"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Read Survivor Stories</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Read Survivor Stories</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Learn from others who've been scammed and recovered.
             </p>
           </Link>
           <Link
             href="/report"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Report Your Case</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Report Your Case</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Submit a detailed report to help identify scam patterns.
             </p>
           </Link>
           <Link
             href="/database"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Search Our Scam Database</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Search Our Scam Database</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Look up indicators and check scam profiles.
             </p>
           </Link>

@@ -57,12 +57,12 @@ export default function AboutPage() {
           />
           <div className="space-y-3">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
+              <h1 className="text-3xl font-semibold tracking-tight text-foreground">
                 About {brand.shortName}
               </h1>
-              <p className="mt-1 text-sm font-medium text-slate-500">{brand.legalName}</p>
+              <p className="mt-1 text-sm font-medium text-[var(--avasc-text-muted)]">{brand.legalName}</p>
             </div>
-            <p className="max-w-3xl text-sm leading-relaxed text-slate-600">
+            <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
               AVASC is a nonprofit anti-scam platform built to support victims with dignity. We combine structured
               incident reporting, privacy-safe pattern intelligence, and practical recovery guidance.
             </p>
@@ -71,8 +71,8 @@ export default function AboutPage() {
       </header>
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="border-slate-200 p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">What we do</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+          <h2 className="text-lg font-semibold text-foreground">What we do</h2>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             <li>Help victims submit secure, structured scam reports.</li>
             <li>Analyze scam indicators and cluster recurring patterns.</li>
             <li>Publish anonymized public scam profiles for prevention.</li>
@@ -80,8 +80,8 @@ export default function AboutPage() {
           </ul>
         </Card>
         <Card className="border-slate-200 p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-slate-900">What we are not</h2>
-          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+          <h2 className="text-lg font-semibold text-foreground">What we are not</h2>
+          <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
             <li>Not a law firm.</li>
             <li>Not a government agency.</li>
             <li>Not a guaranteed recovery service.</li>
@@ -91,8 +91,8 @@ export default function AboutPage() {
       </div>
 
       <Card className="border-slate-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-slate-900">Privacy and safety commitments</h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-700">
+        <h2 className="text-lg font-semibold text-foreground">Privacy and safety commitments</h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           Reports are private by default. Public database pages use anonymized, victim-safe summaries only. We do not
           expose private narratives, internal admin notes, or other victims&apos; identifiable information in public
           views.

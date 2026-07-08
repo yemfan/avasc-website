@@ -20,11 +20,11 @@ export default async function ScamEntityPage({ params }: PageProps) {
   return (
     <div className="space-y-8">
       <div>
-        <Link href="/database" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+        <Link href="/database" className="text-sm font-medium text-muted-foreground hover:text-[var(--avasc-gold-light)]">
           ← Database search
         </Link>
-        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900">Scam profile</h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <h1 className="mt-4 text-3xl font-semibold tracking-tight text-foreground">Scam profile</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
           Aggregated indicator — not an accusation against any one person. Pattern data only.
         </p>
       </div>

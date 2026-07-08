@@ -150,33 +150,33 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
           realtimeAlerts={realtimeAlerts}
         />
       )}
-      <section className="mt-12 border-t border-slate-200 pt-12">
-        <h2 className="text-xl font-semibold text-slate-900 mb-6">Learn More</h2>
+      <section className="mt-12 border-t border-[var(--avasc-border)] pt-12">
+        <h2 className="text-xl font-semibold text-foreground mb-6">Learn More</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <a
             href="/report"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Report a Scam</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Report a Scam</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Share your experience and help us expand the database.
             </p>
           </a>
           <a
             href="/stories"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Read Survivor Stories</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Read Survivor Stories</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Learn how others identified and responded to scams.
             </p>
           </a>
           <a
             href="/recovery"
-            className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
+            className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-slate-900">Recovery Resources</h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <h3 className="font-medium text-foreground">Recovery Resources</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
               Get guidance on responding to and recovering from scams.
             </p>
           </a>
