@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to recognize fake job postings, work-from-home scams, and employment fraud. Protect yourself from upfront fee requests, check-cashing schemes, and reshipping scams.",
     type: "article",
     url: "https://avasc.org/guides/job-scam-warning-signs",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/job-scam-warning-signs",

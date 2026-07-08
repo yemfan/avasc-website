@@ -19,9 +19,11 @@ export const metadata: Metadata = {
     url: "https://avasc.org",
     siteName: "AVASC",
     type: "website",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/",

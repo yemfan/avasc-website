@@ -9,9 +9,11 @@ export const metadata: Metadata = {
     description: "Read real stories from scam survivors and share your experience to help others.",
     type: "website",
     url: "https://avasc.org/stories",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/stories",

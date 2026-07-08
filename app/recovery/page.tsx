@@ -12,9 +12,11 @@ export const metadata: Metadata = {
     description: "Find guidance and resources for recovering from cyber-scams.",
     type: "website",
     url: "https://avasc.org/recovery",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/recovery",

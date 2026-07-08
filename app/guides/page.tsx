@@ -14,9 +14,11 @@ export const metadata: Metadata = {
       "Learn how to identify scams, protect yourself, and recover with AVASC's comprehensive educational guides on romance scams, cryptocurrency fraud, investment schemes, and more.",
     type: "website",
     url: "https://avasc.org/guides",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides",

@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to identify fake virus popups, scam phone calls claiming to be Microsoft or Apple, and remote access tricks. Protect your devices and data.",
     type: "article",
     url: "https://avasc.org/guides/tech-support-scam-protection",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/tech-support-scam-protection",

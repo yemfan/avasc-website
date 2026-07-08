@@ -14,9 +14,11 @@ export const metadata: Metadata = {
       "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
     type: "website",
     url: "https://avasc.org/about",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/about",

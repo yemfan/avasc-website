@@ -16,8 +16,9 @@ export const metadata: Metadata = {
       "Trusted places to report scams, learn online safety, verify before you trust, and get victim support.",
     type: "website",
     url: `${SITE_URL}/resources`,
+    images: ["/og-image.png"],
   },
-  twitter: { card: "summary" },
+  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
   alternates: { canonical: "/resources" },
 };
 

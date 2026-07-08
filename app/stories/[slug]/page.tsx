@@ -26,9 +26,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: "Moderated survivor story from the AVASC community.",
       type: "article",
       url: `https://avasc.org/stories/${slug}`,
+      images: ["/og-image.png"],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
+      images: ["/og-image.png"],
     },
   };
 }

@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn about pig butchering, fake exchanges, pump and dump schemes, and cryptocurrency investment fraud. Protect your crypto assets.",
     type: "article",
     url: "https://avasc.org/guides/cryptocurrency-scam-types",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/cryptocurrency-scam-types",

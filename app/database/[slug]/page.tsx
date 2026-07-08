@@ -30,11 +30,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${profile.title} | AVASC scam database`,
       description,
       type: "article",
+      images: ["/og-image.png"],
     },
     twitter: {
       card: "summary_large_image",
       title: profile.title,
       description,
+      images: ["/og-image.png"],
     },
   };
 }

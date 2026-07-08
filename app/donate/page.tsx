@@ -21,9 +21,11 @@ export const metadata: Metadata = {
       "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
     type: "website",
     url: "https://avasc.org/donate",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/donate",

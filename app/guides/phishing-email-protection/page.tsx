@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to spot phishing emails, verify senders, check URLs, and secure your accounts with two-factor authentication. Protect yourself from credential theft.",
     type: "article",
     url: "https://avasc.org/guides/phishing-email-protection",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/phishing-email-protection",

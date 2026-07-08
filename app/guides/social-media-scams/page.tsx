@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to recognize fake giveaways, impersonation accounts, marketplace fraud, QR code scams, and clickbait links on social media platforms.",
     type: "article",
     url: "https://avasc.org/guides/social-media-scams",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/social-media-scams",

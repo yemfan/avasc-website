@@ -16,9 +16,11 @@ export const metadata: Metadata = {
       "Privacy-safe search across published scam profiles — indicators are masked or staff-approved for public display.",
     type: "website",
     url: "https://avasc.org/database",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/database",

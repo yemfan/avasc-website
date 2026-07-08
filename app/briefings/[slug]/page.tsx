@@ -37,9 +37,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${SITE_URL}${canonical}`,
       publishedTime: briefing.publishedAt.toISOString(),
       modifiedTime: briefing.updatedAt.toISOString(),
+      images: ["/og-image.png"],
       ...(briefing.sources.length ? {} : {}),
     },
-    twitter: { card: "summary", title: briefing.title, description },
+    twitter: { card: "summary_large_image", title: briefing.title, description, images: ["/og-image.png"] },
     alternates: { canonical },
   };
 }

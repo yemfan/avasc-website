@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn how scammers use email to commit CEO fraud, invoice fraud, and other business crimes.",
     type: "article",
     url: "https://avasc.org/guides/business-email-compromise",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/business-email-compromise",

@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn about scams targeting seniors, tech support fraud, Medicare fraud, the grandparent scam, and safeguards for protecting older adults.",
     type: "article",
     url: "https://avasc.org/guides/elder-fraud-prevention",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/elder-fraud-prevention",

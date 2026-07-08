@@ -14,9 +14,11 @@ export const metadata: Metadata = {
     description: "Subscribe to real-time scam alerts and stay informed about emerging threats.",
     type: "website",
     url: "https://avasc.org/alerts",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/alerts",

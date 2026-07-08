@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn about sextortion scams, how to report them, and where to find support.",
     type: "article",
     url: "https://avasc.org/guides/sextortion-and-blackmail-scams",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/sextortion-and-blackmail-scams",

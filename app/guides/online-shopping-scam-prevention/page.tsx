@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to identify fake websites, counterfeit products, and unsafe payment methods. Shop safely with tips for verifying sellers and protecting your financial information.",
     type: "article",
     url: "https://avasc.org/guides/online-shopping-scam-prevention",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/online-shopping-scam-prevention",

@@ -9,9 +9,11 @@ export const metadata: Metadata = {
     description: "Submit a scam report confidentially. Your report helps protect others.",
     type: "website",
     url: "https://avasc.org/report",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/report",

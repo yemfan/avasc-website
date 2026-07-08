@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn how to protect your Social Security number, monitor credit, freeze your credit, detect data breaches, and monitor the dark web.",
     type: "article",
     url: "https://avasc.org/guides/identity-theft-protection",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/identity-theft-protection",

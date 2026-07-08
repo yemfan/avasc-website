@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Immediate actions to take after a scam, how to report to authorities, document evidence, and access emotional support. Recovery starts now.",
     type: "article",
     url: "https://avasc.org/guides/what-to-do-if-youve-been-scammed",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/what-to-do-if-youve-been-scammed",

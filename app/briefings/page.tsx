@@ -22,8 +22,9 @@ export const metadata: Metadata = {
       "Victim-centered weekly briefings grounded in AVASC data and authoritative sources (FTC, FBI IC3, CISA, FinCEN).",
     type: "website",
     url: `${SITE_URL}/briefings`,
+    images: ["/og-image.png"],
   },
-  twitter: { card: "summary" },
+  twitter: { card: "summary_large_image", images: ["/og-image.png"] },
   alternates: { canonical: "/briefings" },
 };
 

@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to identify fake charities and verify legitimate organizations before donating.",
     type: "article",
     url: "https://avasc.org/guides/charity-scam-verification",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/charity-scam-verification",

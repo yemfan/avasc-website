@@ -13,9 +13,11 @@ export const metadata: Metadata = {
       "Learn to recognize catfishing, love bombing, and financial manipulation in online dating. Protect yourself from romance scammers.",
     type: "article",
     url: "https://avasc.org/guides/romance-scam-warning-signs",
+    images: ["/og-image.png"],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "/guides/romance-scam-warning-signs",
