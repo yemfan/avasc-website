@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Sextortion and Online Blackmail: What to Do and How to Get Help | AVASC",
+  title: "Sextortion and Online Blackmail: What to Do and How to Get Help",
   description:
     "Learn about sextortion scams, why you shouldn't pay, how to report, and where to find emotional support. Guidance for victims and those protecting minors.",
   openGraph: {

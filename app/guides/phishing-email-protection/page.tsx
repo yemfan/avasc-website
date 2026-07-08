@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "How to Protect Yourself from Phishing Emails and Fake Websites | AVASC",
+  title: "How to Protect Yourself from Phishing Emails and Fake Websites",
   description:
     "Learn to spot phishing emails, verify senders, check URLs, and secure your accounts with two-factor authentication. Protect yourself from credential theft.",
   openGraph: {

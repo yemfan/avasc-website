@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Online Shopping Scam Prevention: How to Shop Safely Online | AVASC",
+  title: "Online Shopping Scam Prevention: How to Shop Safely Online",
   description:
     "Learn to identify fake websites, counterfeit products, and unsafe payment methods. Shop safely with tips for verifying sellers and protecting your financial information.",
   openGraph: {

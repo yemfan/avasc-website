@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Investment Scam Red Flags: How to Spot Fraudulent Schemes | AVASC",
+  title: "Investment Scam Red Flags: How to Spot Fraudulent Schemes",
   description:
     "Learn to identify Ponzi schemes, unregistered investments, pressure-based tactics, and guaranteed return promises. Protect your money from investment fraud.",
   openGraph: {

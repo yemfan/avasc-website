@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Common Cryptocurrency Scam Types and How to Avoid Them | AVASC",
+  title: "Common Cryptocurrency Scam Types and How to Avoid Them",
   description:
     "Learn about pig butchering, fake exchanges, pump and dump schemes, and cryptocurrency investment fraud. Protect your crypto assets.",
   openGraph: {

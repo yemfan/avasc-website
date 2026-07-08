@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Job Scam Warning Signs: How to Spot Fake Employment Offers | AVASC",
+  title: "Job Scam Warning Signs: How to Spot Fake Employment Offers",
   description:
     "Learn to recognize fake job postings, work-from-home scams, and employment fraud. Protect yourself from upfront fee requests, check-cashing schemes, and reshipping scams.",
   openGraph: {

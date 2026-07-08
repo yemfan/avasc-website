@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "How to Verify a Charity and Avoid Donation Scams | AVASC",
+  title: "How to Verify a Charity and Avoid Donation Scams",
   description:
     "Learn to identify fake charities, verify 501(c)(3) status, check Charity Navigator, and avoid being scammed by fraudulent organizations after disasters.",
   openGraph: {

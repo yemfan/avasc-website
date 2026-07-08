@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Money Mule Scams: How Criminals Use Innocent People to Move Money | AVASC",
+  title: "Money Mule Scams: How Criminals Use Innocent People to Move Money",
   description:
     "Learn what money mule scams are, how people get recruited, the legal consequences, and what to do if you've become involved in money laundering without realizing it.",
   openGraph: {

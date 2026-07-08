@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Elder Fraud Prevention: Protecting Seniors from Scams | AVASC",
+  title: "Elder Fraud Prevention: Protecting Seniors from Scams",
   description:
     "Learn about scams targeting seniors, tech support fraud, Medicare fraud, the grandparent scam, and safeguards for protecting older adults.",
   openGraph: {

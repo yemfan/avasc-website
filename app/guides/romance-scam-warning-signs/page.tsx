@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Romance Scam Warning Signs: How to Protect Yourself Online | AVASC",
+  title: "Romance Scam Warning Signs: How to Protect Yourself Online",
   description:
     "Learn to recognize catfishing, love bombing, and financial manipulation in online dating. Protect yourself from romance scammers.",
   openGraph: {

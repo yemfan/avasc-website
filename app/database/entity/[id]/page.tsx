@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getScamEntityPublicById } from "@/lib/db/entity-detail";
@@ -5,6 +6,31 @@ import { getScamEntityPublicById } from "@/lib/db/entity-detail";
 export const dynamic = "force-dynamic";
 
 type PageProps = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const raw = (await getScamEntityPublicById(id)) as Record<string, unknown> | null;
+  if (!raw) return { title: "Scam profile not found" };
+
+  const value = typeof raw.normalizedValue === "string" ? raw.normalizedValue : "";
+  const title = value ? `Is ${value} a scam? — reported pattern profile` : "Scam pattern profile";
+  const description =
+    "Aggregated, public-safe scam-pattern intelligence for this indicator. Not an accusation against any individual — reported-pattern data only.";
+  const canonical = `/database/entity/${id}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: `${title} | AVASC`,
+      description,
+      type: "website",
+      url: `https://avasc.org${canonical}`,
+    },
+    twitter: { card: "summary" },
+  };
+}
 
 export default async function ScamEntityPage({ params }: PageProps) {
   const { id } = await params;

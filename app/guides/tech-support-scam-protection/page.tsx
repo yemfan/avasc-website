@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Tech Support Scam Protection: Don't Fall for Fake Computer Warnings | AVASC",
+  title: "Tech Support Scam Protection: Don't Fall for Fake Computer Warnings",
   description:
     "Learn to identify fake virus popups, scam phone calls claiming to be Microsoft or Apple, and remote access tricks. Protect your devices and data.",
   openGraph: {

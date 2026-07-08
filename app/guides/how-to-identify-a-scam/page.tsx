@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "How to Identify a Scam: Warning Signs Everyone Should Know | AVASC",
+  title: "How to Identify a Scam: Warning Signs Everyone Should Know",
   description:
     "Learn the common red flags, pressure tactics, and suspicious offers that indicate you may be targeted by scammers. Essential knowledge to protect yourself.",
   openGraph: {

@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Business Email Compromise (BEC): How Scammers Target Companies | AVASC",
+  title: "Business Email Compromise (BEC): How Scammers Target Companies",
   description:
     "Learn about CEO fraud, invoice manipulation, vendor impersonation, and W-2 phishing. Understand prevention policies and how to protect your organization.",
   openGraph: {

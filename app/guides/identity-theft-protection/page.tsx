@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Identity Theft Protection: How to Safeguard Your Personal Information | AVASC",
+  title: "Identity Theft Protection: How to Safeguard Your Personal Information",
   description:
     "Learn how to protect your Social Security number, monitor credit, freeze your credit, detect data breaches, and monitor the dark web. Essential identity theft prevention.",
   openGraph: {

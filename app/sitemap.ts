@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { listApprovedPublicStories } from "@/lib/public-stories/service";
+import { listPublishedBriefings } from "@/lib/briefings/queries";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://avasc.org";
@@ -52,6 +53,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/alerts`,
       lastModified: new Date(),
       changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/briefings`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/resources`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
       priority: 0.7,
     },
     {
@@ -173,8 +186,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     storyRoutes = [];
   }
 
+  // Dynamic briefing article pages
+  let briefingRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const briefings = await listPublishedBriefings(200);
+    briefingRoutes = briefings.map((b) => ({
+      url: `${baseUrl}/briefings/${b.slug}`,
+      lastModified: new Date(b.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  } catch {
+    briefingRoutes = [];
+  }
+
   // TODO: Add database profile routes once a listing function is available
   // Database profiles are search-based, so a dedicated sitemap query would be needed
 
-  return [...staticRoutes, ...storyRoutes];
+  return [...staticRoutes, ...storyRoutes, ...briefingRoutes];
 }

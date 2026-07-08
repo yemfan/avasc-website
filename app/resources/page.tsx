@@ -7,7 +7,7 @@ import { ReportCta } from "@/components/avasc/ReportCta";
 const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://avasc.org").replace(/\/$/, "");
 
 export const metadata: Metadata = {
-  title: "Scam Resources — Report, Learn & Get Help | AVASC",
+  title: "Scam Resources — Report, Learn & Get Help",
   description:
     "A curated directory of trusted places to report a scam, learn how to protect yourself, check before you trust, and find victim support — from government agencies and established nonprofits.",
   openGraph: {

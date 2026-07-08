@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "What to Do If You've Been Scammed: Step-by-Step Recovery Guide | AVASC",
+  title: "What to Do If You've Been Scammed: Step-by-Step Recovery Guide",
   description:
     "Immediate actions to take after a scam, how to report to authorities, document evidence, and access emotional support. Recovery starts now.",
   openGraph: {

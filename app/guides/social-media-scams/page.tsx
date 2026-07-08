@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Social Media Scams: How to Stay Safe on Facebook, Instagram, and TikTok | AVASC",
+  title: "Social Media Scams: How to Stay Safe on Facebook, Instagram, and TikTok",
   description:
     "Learn to recognize fake giveaways, impersonation accounts, marketplace fraud, QR code scams, and clickbait links on social media platforms.",
   openGraph: {
