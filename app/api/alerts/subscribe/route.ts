@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { subscriptionSchema } from "@/lib/alerts/subscription-schema";
-
-function normalizeEmail(email?: string) {
-  return email?.trim().toLowerCase() || null;
-}
-
-function normalizePhone(phone?: string) {
-  return phone?.trim().replace(/\s+/g, "") || null;
-}
+import { upsertSubscription } from "@/lib/subscriptions/upsert-subscription";
 
 export async function POST(req: NextRequest) {
   try {
@@ -41,51 +33,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const email = normalizeEmail(parsed.data.email);
-    const phone = normalizePhone(parsed.data.phone);
+    const { pendingConfirmation, isNew } = await upsertSubscription(parsed.data);
 
-    const matchOr = [...(email ? [{ email }] : []), ...(phone ? [{ phone }] : [])];
-    const existing =
-      matchOr.length > 0
-        ? await prisma.subscription.findFirst({ where: { OR: matchOr } })
-        : null;
+    const message = pendingConfirmation
+      ? "Almost there — check your email and click the confirmation link to start receiving alerts."
+      : isNew
+        ? "You are now subscribed to AVASC alerts."
+        : "Your alert preferences have been updated.";
 
-    if (existing) {
-      const updated = await prisma.subscription.update({
-        where: { id: existing.id },
-        data: {
-          email,
-          phone,
-          smsEnabled: parsed.data.smsEnabled,
-          emailDaily: parsed.data.emailDaily,
-          emailWeekly: parsed.data.emailWeekly,
-          isActive: true,
-        },
-      });
-
-      return NextResponse.json({
-        success: true,
-        message: "Your alert preferences have been updated.",
-        subscriptionId: updated.id,
-      });
-    }
-
-    const created = await prisma.subscription.create({
-      data: {
-        email,
-        phone,
-        smsEnabled: parsed.data.smsEnabled,
-        emailDaily: parsed.data.emailDaily,
-        emailWeekly: parsed.data.emailWeekly,
-        isActive: true,
-      },
-    });
-
-    return NextResponse.json({
-      success: true,
-      message: "You are now subscribed to AVASC alerts.",
-      subscriptionId: created.id,
-    });
+    return NextResponse.json({ success: true, pendingConfirmation, message });
   } catch (error) {
     return NextResponse.json(
       {

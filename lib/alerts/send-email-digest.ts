@@ -4,6 +4,7 @@ import { buildDailyDigest } from "@/lib/alerts/build-daily-digest";
 import { buildWeeklyReport } from "@/lib/alerts/build-weekly-report";
 import { getResend } from "@/lib/email/resend-client";
 import { createDeliveryLog } from "@/lib/alerts/delivery-log";
+import { listUnsubscribeHeaders, unsubscribeFooterHtml } from "@/lib/subscriptions/links";
 
 const DIGEST_GAP_MS = 20 * 60 * 60 * 1000;
 const WEEKLY_GAP_MS = 6 * 24 * 60 * 60 * 1000;
@@ -28,6 +29,7 @@ export async function sendDailyDigestEmail(
       isActive: true,
       emailDaily: true,
       email: { not: null },
+      confirmedAt: { not: null },
     },
   });
 
@@ -74,7 +76,8 @@ export async function sendDailyDigestEmail(
         from,
         to: sub.email!,
         subject,
-        html,
+        html: html + unsubscribeFooterHtml(sub.unsubscribeToken),
+        headers: listUnsubscribeHeaders(sub.unsubscribeToken),
       });
       if (error) {
         await createDeliveryLog(prisma, {
@@ -144,6 +147,7 @@ export async function sendWeeklyDigestEmail(
       isActive: true,
       emailWeekly: true,
       email: { not: null },
+      confirmedAt: { not: null },
     },
   });
 
@@ -190,7 +194,8 @@ export async function sendWeeklyDigestEmail(
         from,
         to: sub.email!,
         subject,
-        html,
+        html: html + unsubscribeFooterHtml(sub.unsubscribeToken),
+        headers: listUnsubscribeHeaders(sub.unsubscribeToken),
       });
       if (error) {
         await createDeliveryLog(prisma, {

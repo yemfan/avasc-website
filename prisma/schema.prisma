@@ -739,6 +739,10 @@ model Subscription {
   emailDaily    Boolean  @default(false)
   emailWeekly   Boolean  @default(false)
   isActive      Boolean  @default(true)
+  // Double opt-in (email): a subscriber only receives broadcast digests once confirmedAt is set.
+  confirmedAt      DateTime?
+  confirmToken     String?   @unique
+  unsubscribeToken String    @unique @default(uuid())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

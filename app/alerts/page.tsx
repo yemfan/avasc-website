@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { AlertSubscriptionForm } from "@/components/alerts/AlertSubscriptionForm";
 import { SectionShell } from "@/components/avasc/layout/SectionShell";
 
-type SearchProps = { searchParams: Promise<{ verify?: string }> };
+type SearchProps = {
+  searchParams: Promise<{ verify?: string; confirm?: string; unsubscribe?: string }>;
+};
 
 export const metadata: Metadata = {
   title: "Scam Alerts | AVASC",
@@ -22,11 +24,19 @@ export const metadata: Metadata = {
 };
 
 export default async function AlertsPage({ searchParams }: SearchProps) {
-  const { verify } = await searchParams;
-  const verifyMsg =
-    verify === "legacy"
-      ? "Email verification tokens are no longer used — your subscription is saved directly."
-      : null;
+  const { verify, confirm, unsubscribe } = await searchParams;
+  const statusMsg =
+    confirm === "success"
+      ? "Your email is confirmed — you're all set to receive AVASC scam briefings."
+      : confirm === "invalid"
+        ? "That confirmation link is invalid or has already been used. Subscribe again below if needed."
+        : unsubscribe === "success"
+          ? "You've been unsubscribed. You can re-subscribe anytime below."
+          : unsubscribe === "invalid"
+            ? "That unsubscribe link is invalid. Use the form below or email security@avasc.org."
+            : verify === "legacy"
+              ? "Email verification tokens are no longer used — your subscription is saved directly."
+              : null;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -69,12 +79,12 @@ export default async function AlertsPage({ searchParams }: SearchProps) {
             </a>
             .
           </p>
-          {verifyMsg ? (
+          {statusMsg ? (
             <p
               className="mt-4 rounded-lg border border-avasc-gold/40 bg-avasc-gold/5 px-4 py-3 text-sm text-avasc-gold-light"
               role="status"
             >
-              {verifyMsg}
+              {statusMsg}
             </p>
           ) : null}
         </div>

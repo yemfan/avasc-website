@@ -1,7 +1,7 @@
 "use server";
 
 import { subscribeRequestSchema } from "@/lib/alerts/subscription-schema";
-import { prisma } from "@/lib/prisma";
+import { upsertSubscription } from "@/lib/subscriptions/upsert-subscription";
 
 export type SubscribeState = {
   success: boolean;
@@ -47,40 +47,19 @@ export async function subscribeAction(_prevState: SubscribeState, formData: Form
   const phone = body.phone?.trim() || null;
 
   try {
-    const existing = email
-      ? await prisma.subscription.findFirst({ where: { email } })
-      : phone
-        ? await prisma.subscription.findFirst({ where: { phone } })
-        : null;
-
-    if (existing) {
-      await prisma.subscription.update({
-        where: { id: existing.id },
-        data: {
-          email: email ?? existing.email,
-          phone: phone ?? existing.phone,
-          smsEnabled: body.smsEnabled,
-          emailDaily: body.emailDaily,
-          emailWeekly: body.emailWeekly,
-          isActive: true,
-        },
-      });
-    } else {
-      await prisma.subscription.create({
-        data: {
-          email,
-          phone,
-          smsEnabled: body.smsEnabled,
-          emailDaily: body.emailDaily,
-          emailWeekly: body.emailWeekly,
-          isActive: true,
-        },
-      });
-    }
+    const { pendingConfirmation } = await upsertSubscription({
+      email,
+      phone,
+      smsEnabled: body.smsEnabled,
+      emailDaily: body.emailDaily,
+      emailWeekly: body.emailWeekly,
+    });
 
     return {
       success: true,
-      message: "You're subscribed. You can update preferences anytime.",
+      message: pendingConfirmation
+        ? "Almost there — check your email and click the confirmation link to start receiving alerts."
+        : "You're subscribed. You can update preferences anytime.",
       errors: undefined,
     };
   } catch (e) {

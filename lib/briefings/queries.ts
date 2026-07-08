@@ -104,3 +104,12 @@ export async function getPublishedBriefingBySlug(slug: string): Promise<Briefing
   if (!row || row.status !== "published") return null;
   return toView(row);
 }
+
+/** Most recent published briefing of a cadence (category = kind), or null. Used by the subscriber send. */
+export async function getLatestPublishedBriefing(kind: BriefingKind): Promise<BriefingView | null> {
+  const row = await prisma.briefing.findFirst({
+    where: { category: kind, status: "published" },
+    orderBy: { publishedAt: "desc" },
+  });
+  return row ? toView(row) : null;
+}

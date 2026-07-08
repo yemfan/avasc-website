@@ -3,11 +3,13 @@ import { NextResponse } from "next/server";
 import { requireCronSecret } from "@/lib/alerts/cron-auth";
 import { isAnthropicConfigured } from "@/lib/ai/anthropic";
 import { publishBriefing } from "@/lib/briefings/generate";
+import { sendBriefingDigest } from "@/lib/briefings/sendBriefing";
 
 /**
- * Generate + publish the daily "Today in Scams" briefing.
+ * Generate + publish the daily "Today in Scams" briefing, then broadcast it to
+ * confirmed daily subscribers (shared send primitives — confirmed-only, deduped,
+ * with unsubscribe footer + List-Unsubscribe headers).
  * Auth: `Authorization: Bearer $CRON_SECRET` (Vercel Cron / manual runs).
- * This is ADDITIVE — it does not touch the existing alert/digest send pipeline.
  */
 
 // Long-running: streams Claude + web_search across several tool rounds.
@@ -32,7 +34,9 @@ async function run(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true, slug });
+  const delivery = await sendBriefingDigest("daily");
+
+  return NextResponse.json({ ok: true, slug, delivery });
 }
 
 export async function POST(request: Request) {
