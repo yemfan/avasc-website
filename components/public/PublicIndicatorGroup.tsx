@@ -1,4 +1,5 @@
 import { IndicatorType } from "@prisma/client";
+import { useTranslations } from "next-intl";
 import { CheckCircle2 } from "lucide-react";
 import { indicatorTypeLabel } from "@/lib/public-database/public-indicator-display";
 import type { PublicIndicatorGroup as GroupModel } from "@/lib/public-database/public-scam-profile-types";
@@ -12,6 +13,7 @@ function groupHeading(type: string) {
 }
 
 export function PublicIndicatorGroup({ group }: { group: GroupModel }) {
+  const t = useTranslations("database");
   return (
     <section className="rounded-2xl border border-border bg-background p-5 shadow-sm">
       <h3 className="text-base font-semibold text-foreground">{groupHeading(group.type)}</h3>
@@ -21,13 +23,13 @@ export function PublicIndicatorGroup({ group }: { group: GroupModel }) {
             <div className="min-w-0 flex-1">
               <p className="break-words text-foreground">{item.value}</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                Linked cases: {item.linkedCaseCount} · Occurrences: {item.occurrenceCount}
+                {t("linkedCases", { count: item.linkedCaseCount })} · {t("occurrences", { count: item.occurrenceCount })}
               </p>
             </div>
             {item.isVerified ? (
               <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-foreground">
                 <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
-                Verified
+                {t("verified")}
               </span>
             ) : null}
           </li>

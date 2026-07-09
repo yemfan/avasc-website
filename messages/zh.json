@@ -184,5 +184,23 @@
     "whatToDoDesc": "为诈骗受害者提供的分步指南。",
     "detailMetaSuffix": "幸存者故事",
     "detailMetaDescription": "AVASC 社区经审核的幸存者故事。"
+  },
+  "database": {
+    "breadcrumbDb": "诈骗数据库",
+    "breadcrumbPattern": "模式",
+    "patternBlurb": "本页根据匿名报告汇总了一种<b>反复出现的模式</b>。它不指向任何特定个人，也不构成法律建议。",
+    "reportsLinked": "{count} 份报告与此模式相关",
+    "reportingWindow": "报告时间段：{range}",
+    "summary": "摘要",
+    "whatPeopleReport": "人们的报告内容",
+    "warningSigns": "警示信号",
+    "safetyWarning": "安全警告",
+    "suggestedNextSteps": "建议的后续步骤",
+    "publicIndicators": "公开指标",
+    "noIndicators": "此档案暂时还没有可用的公开指标。",
+    "linkedCases": "相关案件：{count}",
+    "occurrences": "出现次数：{count}",
+    "verified": "已核实",
+    "profileDisclaimer": "公开档案基于匿名报告的模式和经审核的聚类数据。AVASC 不保证每个事实情形都完全相同，且 AVASC 不是律师事务所。"
   }
 }

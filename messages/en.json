@@ -184,5 +184,23 @@
     "whatToDoDesc": "Step-by-step guide for scam victims.",
     "detailMetaSuffix": "Survivor story",
     "detailMetaDescription": "Moderated survivor story from the AVASC community."
+  },
+  "database": {
+    "breadcrumbDb": "Scam database",
+    "breadcrumbPattern": "Pattern",
+    "patternBlurb": "This page summarizes a <b>repeat pattern</b> from anonymized reports. It does not identify a specific person and is not legal advice.",
+    "reportsLinked": "{count} reports linked to this pattern",
+    "reportingWindow": "Reporting window: {range}",
+    "summary": "Summary",
+    "whatPeopleReport": "What people report",
+    "warningSigns": "Warning signs",
+    "safetyWarning": "Safety warning",
+    "suggestedNextSteps": "Suggested next steps",
+    "publicIndicators": "Public Indicators",
+    "noIndicators": "No public indicators are available for this profile yet.",
+    "linkedCases": "Linked cases: {count}",
+    "occurrences": "Occurrences: {count}",
+    "verified": "Verified",
+    "profileDisclaimer": "Public profiles are based on anonymized reported patterns and moderated cluster data. AVASC does not guarantee that every fact pattern is identical, and AVASC is not a law firm."
   }
 }
