@@ -310,7 +310,7 @@ export default async function BusinessEmailCompromisePage() {
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-700">{t("suspect5Title")}</h3>
+            <h3 className="font-semibold text-slate-900">{t("suspect5Title")}</h3>
             <p className="mt-2 text-slate-700">
               {t("suspect5Body")}
             </p>
