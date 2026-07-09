@@ -89,5 +89,25 @@
     "privacyBody": "Las denuncias son privadas de forma predeterminada. Las páginas públicas de la base de datos usan solo resúmenes anonimizados y seguros para las víctimas. No exponemos narrativas privadas, notas internas de administración ni información identificable de otras víctimas en las vistas públicas.",
     "reportCta": "Denunciar una estafa",
     "searchCta": "Buscar en la base de datos de estafas"
+  },
+  "blog": {
+    "metaTitle": "Vigilancia diaria de estafas — Blog de AVASC",
+    "metaDescription": "Publicaciones diarias de concienciación sobre estafas de AVASC: un recorrido rotativo por casos destacados, señales de alerta, estadísticas, historias de sobrevivientes y dónde obtener ayuda.",
+    "eyebrow": "Vigilancia diaria de estafas",
+    "title": "Blog de AVASC",
+    "intro": "Una publicación diaria de concienciación sobre estafas, que rota entre casos destacados, señales de alerta, estadísticas, historias de sobrevivientes y dónde obtener ayuda, a partir de los propios datos y orientación de AVASC.",
+    "emptyTitle": "Aún no hay nada aquí",
+    "emptyBody": "La primera publicación diaria está en camino. Mientras tanto, explora <briefings>Noticias de estafas</briefings> o nuestras <guides>guías de prevención</guides>.",
+    "readMore": "Leer más",
+    "support": "Apoyar a AVASC",
+    "themes": {
+      "scam_spotlight": "Estafa destacada",
+      "red_flag": "Señal de alerta",
+      "stat": "Estadística de estafas",
+      "story": "Historia de un sobreviviente",
+      "this_week": "Esta semana en estafas",
+      "protect": "Protégete",
+      "get_help": "Dónde obtener ayuda"
+    }
   }
 }

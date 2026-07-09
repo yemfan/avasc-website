@@ -89,5 +89,25 @@
     "privacyBody": "Reports are private by default. Public database pages use anonymized, victim-safe summaries only. We do not expose private narratives, internal admin notes, or other victims' identifiable information in public views.",
     "reportCta": "Report a scam",
     "searchCta": "Search scam database"
+  },
+  "blog": {
+    "metaTitle": "Daily Scam Watch — AVASC Blog",
+    "metaDescription": "AVASC's daily scam-awareness posts: a rotating look at scam spotlights, red flags, statistics, survivor stories, and where to get help.",
+    "eyebrow": "Daily Scam Watch",
+    "title": "AVASC Blog",
+    "intro": "A daily scam-awareness post, rotating through spotlights, red flags, statistics, survivor stories, and where to get help — drawn from AVASC's own data and guidance.",
+    "emptyTitle": "Nothing here yet",
+    "emptyBody": "The first daily post is on its way. In the meantime, explore <briefings>Scam News</briefings> or our <guides>prevention guides</guides>.",
+    "readMore": "Read more",
+    "support": "Support AVASC",
+    "themes": {
+      "scam_spotlight": "Scam spotlight",
+      "red_flag": "Red-flag warning",
+      "stat": "Scam stat",
+      "story": "Survivor story",
+      "this_week": "This Week in Scams",
+      "protect": "Protect yourself",
+      "get_help": "Where to get help"
+    }
   }
 }

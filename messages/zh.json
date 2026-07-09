@@ -89,5 +89,25 @@
     "privacyBody": "举报默认保密。公开数据库页面仅使用匿名、对受害者安全的摘要。我们不会在公开视图中暴露私人陈述、内部管理备注或其他受害者的可识别信息。",
     "reportCta": "举报诈骗",
     "searchCta": "搜索诈骗数据库"
+  },
+  "blog": {
+    "metaTitle": "每日诈骗观察 — AVASC 博客",
+    "metaDescription": "AVASC 每日诈骗防范帖子：轮换呈现诈骗聚焦、危险信号、数据统计、幸存者故事以及求助渠道。",
+    "eyebrow": "每日诈骗观察",
+    "title": "AVASC 博客",
+    "intro": "每日一篇诈骗防范帖子，轮换呈现诈骗聚焦、危险信号、数据统计、幸存者故事以及求助渠道——均取自 AVASC 自有的数据与指导。",
+    "emptyTitle": "这里暂时还没有内容",
+    "emptyBody": "第一篇每日帖子即将发布。在此期间，欢迎浏览<briefings>诈骗资讯</briefings>或我们的<guides>防范指南</guides>。",
+    "readMore": "阅读更多",
+    "support": "支持 AVASC",
+    "themes": {
+      "scam_spotlight": "诈骗聚焦",
+      "red_flag": "危险信号",
+      "stat": "诈骗数据",
+      "story": "幸存者故事",
+      "this_week": "本周诈骗速览",
+      "protect": "保护自己",
+      "get_help": "求助渠道"
+    }
   }
 }
