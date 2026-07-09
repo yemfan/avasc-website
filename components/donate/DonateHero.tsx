@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { DonateLinkButton } from "./DonateLinkButton";
 
 type DonateHeroProps = {
@@ -7,6 +8,7 @@ type DonateHeroProps = {
 };
 
 export function DonateHero({ title, subtitle, monthlyUrl }: DonateHeroProps) {
+  const t = useTranslations("donate");
   return (
     <section className="relative overflow-hidden border-b border-white/[0.06] bg-[linear-gradient(165deg,var(--avasc-bg-soft)_0%,#0a1628_40%,var(--avasc-blue)_100%)]">
       <div
@@ -19,7 +21,7 @@ export function DonateHero({ title, subtitle, monthlyUrl }: DonateHeroProps) {
       />
       <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
         <p className="inline-flex rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--avasc-gold-light)]">
-          Support AVASC
+          {t("heroBadge")}
         </p>
         <h1 className="font-display mx-auto mt-6 max-w-4xl text-[2rem] font-medium leading-[1.12] tracking-tight text-white sm:text-5xl sm:leading-[1.08]">
           {title}
@@ -32,14 +34,14 @@ export function DonateHero({ title, subtitle, monthlyUrl }: DonateHeroProps) {
           {/* Monthly: a fixed Stripe payment link when configured, else scroll to the form. */}
           <DonateLinkButton
             href={monthlyUrl ?? "#donate-form"}
-            label="Become a monthly supporter"
+            label={t("heroMonthlyCta")}
             variant="gold"
             className="min-w-[220px] shadow-[0_12px_40px_-12px_rgba(201,148,60,0.5)]"
           />
           {/* One-time: scroll to the amount form (dynamic Stripe Checkout handles it). */}
           <DonateLinkButton
             href="#donate-form"
-            label="One-time gift"
+            label={t("heroOneTimeCta")}
             variant="outline"
             className="min-w-[220px] border-white/[0.14] bg-white/[0.03] text-[var(--avasc-text-primary)] hover:border-[var(--avasc-gold)]/35 hover:bg-white/[0.06]"
           />

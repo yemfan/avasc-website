@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { MarketingPageHeader } from "@/components/marketing/MarketingPageHeader";
 import { createCaseBodySchema, type CreateCaseBody } from "@/lib/report/case-submission";
 import { ReportAiAssist } from "@/components/avasc/report/ReportAiAssist";
@@ -85,6 +86,7 @@ export type ReportMatchingCaseFlowProps = {
 };
 
 export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCaseFlowProps) {
+  const t = useTranslations("report");
   const [step, setStep] = useState<Step>(1);
   const [form, setForm] = useState<ReportFormState>(initialForm);
   const [formError, setFormError] = useState<string | null>(null);
@@ -120,9 +122,9 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
     setFieldErrors({});
     if (step === 1) {
       const fe: Partial<Record<string, string>> = {};
-      if (form.title.trim().length < 3) fe.title = "Add a short headline (at least 3 characters).";
-      if (!form.scamType.trim()) fe.scamType = "Select a scam type.";
-      if (form.description.trim().length < 20) fe.description = "Please add a bit more detail (at least 20 characters).";
+      if (form.title.trim().length < 3) fe.title = t("errTitle");
+      if (!form.scamType.trim()) fe.scamType = t("errScamType");
+      if (form.description.trim().length < 20) fe.description = t("errDescription");
       if (Object.keys(fe).length > 0) {
         setFieldErrors(fe);
         return;
@@ -130,8 +132,8 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
     }
     if (step === 2) {
       const fe: Partial<Record<string, string>> = {};
-      if (form.contactMethod.trim().length < 2) fe.contactMethod = "How were you contacted? (e.g. WhatsApp, email).";
-      if (form.evidence.trim().length < 10) fe.evidence = "Add indicators or notes (at least 10 characters).";
+      if (form.contactMethod.trim().length < 2) fe.contactMethod = t("errContactMethod");
+      if (form.evidence.trim().length < 10) fe.evidence = t("errEvidence");
       if (Object.keys(fe).length > 0) {
         setFieldErrors(fe);
         return;
@@ -163,7 +165,7 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
         if (msg) fe[String(key)] = msg;
       }
       setFieldErrors(fe);
-      setFormError(flat.formErrors[0] ?? "Please review the highlighted fields.");
+      setFormError(flat.formErrors[0] ?? t("errReviewFields"));
       setIsSubmitting(false);
       return;
     }
@@ -185,7 +187,7 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
         const msg =
           typeof json.error === "string"
             ? json.error
-            : "We couldn’t submit your report. Please try again.";
+            : t("errSubmitFailed");
         setFormError(msg);
         return;
       }
@@ -193,7 +195,7 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
       setDoneId(json.caseId);
       setStep(4);
     } catch {
-      setFormError("Something went wrong. Please try again.");
+      setFormError(t("errGeneric"));
     } finally {
       setIsSubmitting(false);
     }
@@ -202,24 +204,24 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
   if (doneId && step === 4) {
     return (
       <div className="rounded-[1.75rem] border border-white/[0.08] bg-[var(--avasc-bg-card)]/90 p-8 text-center shadow-[0_24px_70px_-28px_rgba(0,0,0,0.55)] backdrop-blur-sm sm:p-10">
-        <h2 className="font-display text-2xl font-medium text-[var(--avasc-gold-light)]">Report submitted</h2>
+        <h2 className="font-display text-2xl font-medium text-[var(--avasc-gold-light)]">{t("doneTitle")}</h2>
         <p className="mt-3 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
-          Your report helps others avoid scams. Thank you.
+          {t("doneThanks")}
         </p>
         <p className="mt-4 text-sm text-[var(--avasc-text-secondary)]">
-          Reference{" "}
+          {t("doneReference")}{" "}
           <span className="font-mono font-medium text-[var(--avasc-gold-light)]">{doneId}</span>
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link href={`/dashboard/cases/${doneId}`} className={btnPrimaryClass}>
-            Open in dashboard
+            {t("doneOpenDashboard")}
           </Link>
           <Link href="/" className={btnSecondaryClass}>
-            Home
+            {t("doneHome")}
           </Link>
         </div>
         <p className="mt-6 text-xs text-[var(--avasc-text-muted)]">
-          Signed-in reporters can track status from the dashboard.
+          {t("doneTrackNote")}
         </p>
       </div>
     );
@@ -228,22 +230,25 @@ export function ReportMatchingCaseFlow({ matchedProfileSlug }: ReportMatchingCas
   return (
     <div className="mx-auto w-full max-w-3xl space-y-8">
       <MarketingPageHeader
-        eyebrow="Victim reporting"
-        title="Report a matching scam case"
-        description="Structured intake helps staff link your experience to known patterns and protect others. Sensitive details are never published without your consent."
+        eyebrow={t("eyebrow")}
+        title={t("headerTitle")}
+        description={t("headerDescription")}
       />
 
       {matchedLabel ? (
         <div className="rounded-2xl border border-white/[0.08] bg-[var(--avasc-bg-soft)]/80 p-4 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm sm:p-5">
-          <p className="font-semibold text-[var(--avasc-text-primary)]">Reporting from a published pattern</p>
+          <p className="font-semibold text-[var(--avasc-text-primary)]">{t("matchedTitle")}</p>
           <p className="mt-2 leading-relaxed">
-            Staff can use this context when reviewing your case.{" "}
-            <Link
-              href={`/database/${encodeURIComponent(matchedLabel)}`}
-              className="font-medium text-[var(--avasc-gold-light)] underline-offset-2 hover:text-[var(--avasc-gold)] hover:underline"
-            >
-              View pattern
-            </Link>
+            {t.rich("matchedBody", {
+              link: (chunks) => (
+                <Link
+                  href={`/database/${encodeURIComponent(matchedLabel)}`}
+                  className="font-medium text-[var(--avasc-gold-light)] underline-offset-2 hover:text-[var(--avasc-gold)] hover:underline"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
           </p>
         </div>
       ) : null}
@@ -304,21 +309,22 @@ function Step1({
   onAiFill: (fields: ReportFieldSuggestion) => void;
   onNext: () => void;
 }) {
+  const t = useTranslations("report");
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="font-display text-xl font-medium text-white">Step 1: What happened?</h2>
+      <h2 className="font-display text-xl font-medium text-white">{t("step1Title")}</h2>
 
       <ReportAiAssist onFill={onAiFill} />
 
       <div>
         <label className={labelClass} htmlFor="report-title">
-          Short headline
+          {t("labelHeadline")}
         </label>
         <input
           id="report-title"
           value={form.title}
           onChange={(e) => updateField("title", e.target.value)}
-          placeholder="e.g. Fake exchange blocked my withdrawal"
+          placeholder={t("phHeadline")}
           className={fieldClass}
         />
         {fieldErrors.title ? <p className="mt-1 text-sm text-red-400">{fieldErrors.title}</p> : null}
@@ -326,7 +332,7 @@ function Step1({
 
       <div>
         <label className={labelClass} htmlFor="report-scam-type">
-          Scam type
+          {t("labelScamType")}
         </label>
         <select
           id="report-scam-type"
@@ -334,10 +340,10 @@ function Step1({
           onChange={(e) => updateField("scamType", e.target.value)}
           className={fieldClass}
         >
-          <option value="">Select a scam type</option>
-          {SCAM_TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
+          <option value="">{t("scamTypePlaceholder")}</option>
+          {SCAM_TYPES.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
             </option>
           ))}
         </select>
@@ -346,13 +352,13 @@ function Step1({
 
       <div>
         <label className={labelClass} htmlFor="report-description">
-          Describe what happened
+          {t("labelDescription")}
         </label>
         <textarea
           id="report-description"
           value={form.description}
           onChange={(e) => updateField("description", e.target.value)}
-          placeholder="Timeline, what they promised, and what went wrong."
+          placeholder={t("phDescription")}
           rows={6}
           className={fieldClass}
         />
@@ -361,7 +367,7 @@ function Step1({
 
       <div>
         <label className={labelClass} htmlFor="report-amount">
-          Estimated amount lost (USD)
+          {t("labelAmount")}
         </label>
         <input
           id="report-amount"
@@ -374,7 +380,7 @@ function Step1({
       </div>
 
       <button type="button" onClick={onNext} className={btnPrimaryClass}>
-        Continue
+        {t("continue")}
       </button>
     </div>
   );
@@ -393,19 +399,20 @@ function Step2({
   onNext: () => void;
   onBack: () => void;
 }) {
+  const t = useTranslations("report");
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="font-display text-xl font-medium text-white">Step 2: Scam details</h2>
+      <h2 className="font-display text-xl font-medium text-white">{t("step2Title")}</h2>
 
       <div>
         <label className={labelClass} htmlFor="report-contact">
-          How did they contact you?
+          {t("labelContact")}
         </label>
         <input
           id="report-contact"
           value={form.contactMethod}
           onChange={(e) => updateField("contactMethod", e.target.value)}
-          placeholder="WhatsApp, Email, Telegram, etc."
+          placeholder={t("phContact")}
           className={fieldClass}
         />
         {fieldErrors.contactMethod ? <p className="mt-1 text-sm text-red-400">{fieldErrors.contactMethod}</p> : null}
@@ -413,13 +420,13 @@ function Step2({
 
       <div>
         <label className={labelClass} htmlFor="report-evidence">
-          Indicators & evidence
+          {t("labelEvidence")}
         </label>
         <textarea
           id="report-evidence"
           value={form.evidence}
           onChange={(e) => updateField("evidence", e.target.value)}
-          placeholder="Domains, wallet addresses, phone numbers, app names…"
+          placeholder={t("phEvidence")}
           rows={6}
           className={fieldClass}
         />
@@ -428,10 +435,10 @@ function Step2({
 
       <div className="flex flex-wrap gap-3">
         <button type="button" onClick={onBack} className={btnSecondaryClass}>
-          Back
+          {t("back")}
         </button>
         <button type="button" onClick={onNext} className={btnPrimaryClass}>
-          Continue
+          {t("continue")}
         </button>
       </div>
     </div>
@@ -453,13 +460,14 @@ function Step3({
   onBack: () => void;
   isSubmitting: boolean;
 }) {
+  const t = useTranslations("report");
   return (
     <div className="mt-8 space-y-6">
-      <h2 className="font-display text-xl font-medium text-white">Step 3: Contact & submit</h2>
+      <h2 className="font-display text-xl font-medium text-white">{t("step3Title")}</h2>
 
       <div>
         <label className={labelClass} htmlFor="report-email">
-          Email (optional)
+          {t("labelEmail")}
         </label>
         <input
           id="report-email"
@@ -481,21 +489,20 @@ function Step3({
           className="mt-1"
         />
         <span className="text-sm text-[var(--avasc-text-secondary)]">
-          Allow AVASC to follow up if we need clarification (recommended).
+          {t("allowFollowUp")}
         </span>
       </label>
 
       <p className="text-xs leading-relaxed text-[var(--avasc-text-muted)]">
-        By submitting, you confirm the information is true to the best of your knowledge. AVASC is not a law firm or
-        government agency.
+        {t("disclaimer")}
       </p>
 
       <div className="flex flex-wrap gap-3">
         <button type="button" onClick={onBack} className={btnSecondaryClass} disabled={isSubmitting}>
-          Back
+          {t("back")}
         </button>
         <button type="button" onClick={onSubmit} className={btnPrimaryClass} disabled={isSubmitting}>
-          {isSubmitting ? "Submitting…" : "Submit report"}
+          {isSubmitting ? t("submitting") : t("submitReport")}
         </button>
       </div>
     </div>

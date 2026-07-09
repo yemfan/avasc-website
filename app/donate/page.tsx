@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import {
   DonateForm,
   DonateHero,
@@ -11,26 +12,29 @@ import {
   WhyDonateCard,
 } from "@/components/donate";
 
-export const metadata: Metadata = {
-  title: "Support AVASC | Donate",
-  description:
-    "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
-  openGraph: {
-    title: "Support AVASC | Donate",
-    description:
-      "Support AVASC's mission to help scam victims, expand scam awareness, and build tools that prevent future fraud.",
-    type: "website",
-    url: "https://www.avasc.org/donate",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/donate",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("donate");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: "https://www.avasc.org/donate",
+      images: ["/og-image.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: "/donate",
+    },
+  };
+}
 
 const STRIPE_DONATE_URL = process.env.NEXT_PUBLIC_STRIPE_DONATE_URL || "";
 const STRIPE_MONTHLY_URL = process.env.NEXT_PUBLIC_STRIPE_MONTHLY_URL || "";
@@ -41,6 +45,7 @@ type DonatePageProps = {
 };
 
 export default async function DonatePage({ searchParams }: DonatePageProps) {
+  const t = await getTranslations("donate");
   const sp = await searchParams;
   const thanksRaw = sp?.thanks;
   const showThanks =
@@ -69,17 +74,17 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
     <div className="min-h-0 space-y-0 pb-4">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <DonateHero
-        title="Support Scam Victims. Help Stop the Next Scam."
-        subtitle="Your donation helps AVASC support victims, build scam intelligence tools, and expand public awareness."
+        title={t("heroTitle")}
+        subtitle={t("heroSubtitle")}
         monthlyUrl={STRIPE_MONTHLY_URL || undefined}
       />
 
-      <TrustStrip items={["Secure donation options", "Victim-centered mission", "Privacy and dignity first"]} />
+      <TrustStrip items={[t("trust1"), t("trust2"), t("trust3")]} />
 
       <section id="donate-form" className="mx-auto max-w-2xl scroll-mt-24 py-12 sm:py-14">
-        <h2 className="font-display text-2xl font-medium tracking-tight text-white">Custom amount</h2>
+        <h2 className="font-display text-2xl font-medium tracking-tight text-white">{t("customAmountTitle")}</h2>
         <p className="mt-2 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
-          Choose one-time or monthly, then continue to our secure payment provider.
+          {t("customAmountBody")}
         </p>
         <div className="mt-8">
           <DonateForm showThanks={showThanks} />
@@ -89,45 +94,43 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
       <section className="mx-auto max-w-7xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
-            Your support creates real impact
+            {t("impactTitle")}
           </h2>
           <p className="mt-3 text-[var(--avasc-text-secondary)]">
-            Every contribution helps AVASC build better tools, support victims, and turn reported scam experiences into
-            public protection.
+            {t("impactBody")}
           </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <ImpactCard amount="$25" text="Helps expand victim support resources" />
-          <ImpactCard amount="$50" text="Helps review and organize scam reports" />
-          <ImpactCard amount="$100" text="Helps improve scam pattern tracking" />
-          <ImpactCard amount="$250" text="Helps support outreach and scam awareness efforts" />
+          <ImpactCard amount="$25" text={t("impact25")} />
+          <ImpactCard amount="$50" text={t("impact50")} />
+          <ImpactCard amount="$100" text={t("impact100")} />
+          <ImpactCard amount="$250" text={t("impact250")} />
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl py-10 sm:py-12">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
-            Why donate to AVASC
+            {t("whyTitle")}
           </h2>
           <p className="mt-3 text-[var(--avasc-text-secondary)]">
-            Your support helps us do three things well: assist victims, organize scam intelligence, and prevent future
-            harm.
+            {t("whyBody")}
           </p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-3">
           <WhyDonateCard
-            title="Support victims"
-            text="Help people facing fraud access guidance, resources, and practical next steps."
+            title={t("why1Title")}
+            text={t("why1Body")}
           />
           <WhyDonateCard
-            title="Build scam intelligence"
-            text="Strengthen a structured database that helps people compare scam patterns and recognize warning signs."
+            title={t("why2Title")}
+            text={t("why2Body")}
           />
           <WhyDonateCard
-            title="Prevent future harm"
-            text="Turn reported experiences into education, awareness, and protection for others."
+            title={t("why3Title")}
+            text={t("why3Body")}
           />
         </div>
       </section>
@@ -135,31 +138,31 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
       <section className="mx-auto max-w-7xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
-            Choose how you want to give
+            {t("chooseTitle")}
           </h2>
           <p className="mt-3 text-[var(--avasc-text-secondary)]">
-            Monthly support helps AVASC grow more steadily, while one-time gifts help fund immediate work.
+            {t("chooseBody")}
           </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <DonationOptionCard
-            title="Monthly Giving"
-            description="Provide steady support that helps AVASC plan, build, and assist more victims over time."
-            buttonLabel="Become a Monthly Supporter"
+            title={t("optMonthlyTitle")}
+            description={t("optMonthlyBody")}
+            buttonLabel={t("optMonthlyCta")}
             href={STRIPE_MONTHLY_URL || undefined}
             featured
           />
           <DonationOptionCard
-            title="One-Time Donation"
-            description="Make a direct contribution to support platform development and victim resources."
-            buttonLabel="Donate Once"
+            title={t("optOneTimeTitle")}
+            description={t("optOneTimeBody")}
+            buttonLabel={t("optOneTimeCta")}
             href={STRIPE_DONATE_URL || "#donate-form"}
           />
           <DonationOptionCard
-            title="Donate with PayPal"
-            description="Use PayPal if that is your preferred way to give."
-            buttonLabel="Donate with PayPal"
+            title={t("optPaypalTitle")}
+            description={t("optPaypalBody")}
+            buttonLabel={t("optPaypalCta")}
             href={PAYPAL_DONATE_URL || undefined}
           />
         </div>
@@ -170,19 +173,19 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
       <section className="mx-auto max-w-4xl py-16 sm:py-20">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <h2 className="font-display text-3xl font-medium tracking-tight text-white sm:text-4xl">
-            Frequently asked questions
+            {t("faqTitle")}
           </h2>
-          <p className="mt-3 text-[var(--avasc-text-secondary)]">A few quick answers before you donate.</p>
+          <p className="mt-3 text-[var(--avasc-text-secondary)]">{t("faqBody")}</p>
         </div>
 
         <div className="space-y-4">
           <FAQItem
-            question="Where does my donation go?"
-            answer="Donations support AVASC’s platform development, victim support resources, scam awareness, and outreach."
+            question={t("faq1Q")}
+            answer={t("faq1A")}
           />
           <FAQItem
-            question="Is my payment secure?"
-            answer="Yes. Donations are processed through trusted payment providers such as Stripe and PayPal."
+            question={t("faq2Q")}
+            answer={t("faq2A")}
           />
           {/* TOM CR-003: previous answer was a dev instruction
               ("Please display the appropriate tax language based on your
@@ -192,31 +195,30 @@ export default async function DonatePage({ searchParams }: DonatePageProps) {
               tax-deductible. Update this copy the moment the IRS
               determination letter arrives. */}
           <FAQItem
-            question="Are donations tax-deductible?"
-            answer="AVASC is a California nonprofit currently applying for IRS 501(c)(3) tax-exempt status. Until the IRS issues a determination letter, donations are not tax-deductible for federal income-tax purposes. We will update this page the moment our 501(c)(3) status is confirmed. If tax deductibility is important to you, please wait to contribute, or email give@avasc.org for the current status."
+            question={t("faq3Q")}
+            answer={t("faq3A")}
           />
           <FAQItem
-            question="Does AVASC guarantee recovery?"
-            answer="No. AVASC is not a law firm and does not guarantee recovery."
+            question={t("faq4Q")}
+            answer={t("faq4A")}
           />
           <FAQItem
-            question="Can I give monthly?"
-            answer="Yes. Monthly giving is one of the most helpful ways to support AVASC’s mission."
+            question={t("faq5Q")}
+            answer={t("faq5A")}
           />
         </div>
       </section>
 
       <FinalDonateCTA
-        title="Help us turn pain into protection."
-        subtitle="Too many scam victims face fraud alone. Your support helps build a better response."
+        title={t("finalCtaTitle")}
+        subtitle={t("finalCtaSubtitle")}
         monthlyUrl={STRIPE_MONTHLY_URL || null}
         oneTimeUrl={STRIPE_DONATE_URL || "#donate-form"}
       />
 
       <section className="border-t border-white/[0.06]">
         <div className="mx-auto max-w-7xl py-8 text-sm leading-relaxed text-[var(--avasc-text-muted)]">
-          Donations support AVASC’s platform development, scam awareness, victim support resources, and outreach. AVASC
-          is not a law firm and does not guarantee recovery.
+          {t("disclaimer")}
         </div>
       </section>
     </div>

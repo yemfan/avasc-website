@@ -1,24 +1,30 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { ReportMatchingCaseFlow } from "@/components/avasc/report/ReportMatchingCaseFlow";
 
-export const metadata: Metadata = {
-  title: "Report a Scam | AVASC",
-  description: "Submit a scam report confidentially. Your report helps protect others.",
-  openGraph: {
-    title: "Report a Scam | AVASC",
-    description: "Submit a scam report confidentially. Your report helps protect others.",
-    type: "website",
-    url: "https://www.avasc.org/report",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/report",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("report");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: "https://www.avasc.org/report",
+      images: ["/og-image.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: "/report",
+    },
+  };
+}
 
 type PageProps = {
   searchParams: Promise<{ matchedProfile?: string | string[] }>;

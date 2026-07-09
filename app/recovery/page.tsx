@@ -1,64 +1,56 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 import { RecoveryAi } from "@/components/recovery/RecoveryAi";
 
-export const metadata: Metadata = {
-  title: "Recovery Center | AVASC",
-  description: "Find guidance and resources for recovering from cyber-scams.",
-  openGraph: {
-    title: "Recovery Center | AVASC",
-    description: "Find guidance and resources for recovering from cyber-scams.",
-    type: "website",
-    url: "https://www.avasc.org/recovery",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/recovery",
-  },
-};
-
-const modules = [
-  {
-    title: "Crypto scam response",
-    points: [
-      "Stop sending funds; rotate credentials if a platform was compromised.",
-      "Export transaction hashes, wallet addresses, and chat logs (redact personal IDs).",
-      "Report to your exchange and local cybercrime unit where available.",
-    ],
-  },
-  {
-    title: "Bank & wire fraud",
-    points: [
-      "Call your bank’s fraud line immediately with dates and amounts.",
-      "Request recall / SWIFT investigation for wires when timing allows.",
-      "Preserve emails, SMS, and call logs that show misrepresentation.",
-    ],
-  },
-  {
-    title: "Romance & social engineering",
-    points: [
-      "Cease contact with the scammer; do not accept new “helpers” from the same thread.",
-      "Document platform handles and payment trails.",
-      "Seek emotional support from trusted people or counselors — shame is a tactic.",
-    ],
-  },
-  {
-    title: "Fake recovery agents",
-    points: [
-      "Anyone promising guaranteed return for an upfront fee is highly suspect.",
-      "Legitimate agencies do not ask for gift cards or crypto to “unlock” funds.",
-      "Report the new scam attempt to AVASC with prior case reference if you have one.",
-    ],
-  },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("recovery");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: "https://www.avasc.org/recovery",
+      images: ["/og-image.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: "/recovery",
+    },
+  };
+}
 
 export default function RecoveryPage() {
+  const t = useTranslations("recovery");
+  const modules = [
+    {
+      title: t("cryptoTitle"),
+      points: [t("cryptoPoint1"), t("cryptoPoint2"), t("cryptoPoint3")],
+    },
+    {
+      title: t("bankTitle"),
+      points: [t("bankPoint1"), t("bankPoint2"), t("bankPoint3")],
+    },
+    {
+      title: t("romanceTitle"),
+      points: [t("romancePoint1"), t("romancePoint2"), t("romancePoint3")],
+    },
+    {
+      title: t("fakeTitle"),
+      points: [t("fakePoint1"), t("fakePoint2"), t("fakePoint3")],
+    },
+  ];
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -86,16 +78,18 @@ export default function RecoveryPage() {
         className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-[var(--avasc-gold-light)]"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
-        Back to home
+        {t("backToHome")}
       </Link>
       <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Recovery center</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("title")}</h1>
         <p className="mt-4 text-muted-foreground leading-relaxed">
-          Grounded first steps and warnings — not legal advice. Pair this with a structured{" "}
-          <Link href="/report" className="font-medium text-[var(--avasc-gold-light)] underline underline-offset-2">
-            scam report
-          </Link>{" "}
-          so our team can triage and match patterns safely.
+          {t.rich("intro", {
+            report: (chunks) => (
+              <Link href="/report" className="font-medium text-[var(--avasc-gold-light)] underline underline-offset-2">
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
       </header>
 
@@ -117,20 +111,18 @@ export default function RecoveryPage() {
         ))}
       </div>
       <section className="rounded-2xl border border-amber-200 bg-amber-50/80 p-6 text-sm text-amber-950">
-        <p className="font-semibold">Evidence checklist</p>
+        <p className="font-semibold">{t("evidenceTitle")}</p>
         <ul className="mt-3 list-inside list-disc space-y-1 text-amber-950/90">
-          <li>Chronological narrative (private report form)</li>
-          <li>Indicators: domains, numbers, wallets, transaction IDs</li>
-          <li>Screenshots and PDFs (upload after account creation where required)</li>
-          <li>Financial institution reference numbers</li>
+          <li>{t("evidence1")}</li>
+          <li>{t("evidence2")}</li>
+          <li>{t("evidence3")}</li>
+          <li>{t("evidence4")}</li>
         </ul>
       </section>
       <section className="rounded-2xl border border-slate-200 bg-white p-6">
-        <h2 className="text-lg font-semibold text-slate-900">Authoritative reporting resources</h2>
+        <h2 className="text-lg font-semibold text-slate-900">{t("resourcesTitle")}</h2>
         <p className="mt-2 text-sm text-slate-600">
-          Filing with the relevant U.S. agency creates an official record, helps investigators
-          spot patterns, and is often required by banks or insurers. Filing with AVASC does not
-          replace these — we encourage you to do both.
+          {t("resourcesBody")}
         </p>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <a
@@ -139,10 +131,9 @@ export default function RecoveryPage() {
             rel="noopener noreferrer"
             className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <h3 className="font-medium text-slate-900">FTC — Report Fraud</h3>
+            <h3 className="font-medium text-slate-900">{t("ftcTitle")}</h3>
             <p className="mt-1 text-sm text-slate-600">
-              reportfraud.ftc.gov — the U.S. Federal Trade Commission’s consumer fraud intake for
-              scams, imposters, and deceptive business practices.
+              {t("ftcBody")}
             </p>
           </a>
           <a
@@ -151,10 +142,9 @@ export default function RecoveryPage() {
             rel="noopener noreferrer"
             className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <h3 className="font-medium text-slate-900">FBI IC3</h3>
+            <h3 className="font-medium text-slate-900">{t("ic3Title")}</h3>
             <p className="mt-1 text-sm text-slate-600">
-              ic3.gov — the FBI’s Internet Crime Complaint Center. File here for cyber-enabled
-              fraud, wire fraud, crypto theft, and cross-border schemes.
+              {t("ic3Body")}
             </p>
           </a>
           <a
@@ -163,42 +153,41 @@ export default function RecoveryPage() {
             rel="noopener noreferrer"
             className="rounded-lg border border-slate-200 p-4 transition-colors hover:border-slate-300 hover:bg-slate-50"
           >
-            <h3 className="font-medium text-slate-900">IdentityTheft.gov</h3>
+            <h3 className="font-medium text-slate-900">{t("identityTitle")}</h3>
             <p className="mt-1 text-sm text-slate-600">
-              identitytheft.gov — FTC-run recovery planner that generates a personalized
-              step-by-step plan if your identity or accounts were compromised.
+              {t("identityBody")}
             </p>
           </a>
         </div>
       </section>
       <section className="mt-10">
-        <h2 className="text-lg font-semibold text-foreground mb-4">Next Steps</h2>
+        <h2 className="text-lg font-semibold text-foreground mb-4">{t("nextStepsTitle")}</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <Link
             href="/stories"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-foreground">Read Survivor Stories</h3>
+            <h3 className="font-medium text-foreground">{t("storiesTitle")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Learn from others who've been scammed and recovered.
+              {t("storiesBody")}
             </p>
           </Link>
           <Link
             href="/report"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-foreground">Report Your Case</h3>
+            <h3 className="font-medium text-foreground">{t("reportTitle")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Submit a detailed report to help identify scam patterns.
+              {t("reportBody")}
             </p>
           </Link>
           <Link
             href="/database"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
-            <h3 className="font-medium text-foreground">Search Our Scam Database</h3>
+            <h3 className="font-medium text-foreground">{t("databaseTitle")}</h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Look up indicators and check scam profiles.
+              {t("databaseBody")}
             </p>
           </Link>
         </div>
