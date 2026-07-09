@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 
 import { getPublishedBriefingBySlug } from "@/lib/briefings/queries";
+import { translateBriefingView } from "@/lib/i18n/translate-briefing";
+import type { Locale } from "@/i18n/config";
 import { ReportCta } from "@/components/avasc/ReportCta";
 
 export const dynamic = "force-dynamic";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://www.avasc.org").replace(/\/$/, "");
+
+const DATE_LOCALE: Record<Locale, string> = { en: "en-US", es: "es-ES", zh: "zh-CN" };
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -21,10 +26,12 @@ function metaDescription(text: string | null | undefined, fallback: string): str
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const briefing = await getPublishedBriefingBySlug(slug);
-  if (!briefing) {
+  const locale = (await getLocale()) as Locale;
+  const raw = await getPublishedBriefingBySlug(slug);
+  if (!raw) {
     return { title: "Briefing not found" };
   }
+  const briefing = await translateBriefingView(raw, locale);
   const description = metaDescription(briefing.summary || briefing.dek, briefing.title);
   const canonical = `/briefings/${briefing.slug}`;
   return {
@@ -47,12 +54,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BriefingArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  const briefing = await getPublishedBriefingBySlug(slug);
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("briefings");
+  const raw = await getPublishedBriefingBySlug(slug);
 
-  if (!briefing) {
+  if (!raw) {
     notFound();
   }
 
+  const briefing = await translateBriefingView(raw, locale);
   const canonicalUrl = `${SITE_URL}/briefings/${briefing.slug}`;
 
   const articleSchema = {
@@ -110,27 +120,31 @@ export default async function BriefingArticlePage({ params }: PageProps) {
         className="inline-flex items-center gap-2 text-sm font-medium text-[var(--avasc-text-secondary)] hover:text-[var(--avasc-gold-light)]"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
-        All briefings
+        {t("allBriefings")}
       </Link>
 
       <header className="space-y-4">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--avasc-gold-light)]/90">
-          {briefing.periodLabel ?? "This Week in Scams"}
+          {briefing.periodLabel ?? t("thisWeekFallback")}
         </p>
         <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{briefing.title}</h1>
         {briefing.dek ? (
           <p className="text-lg leading-relaxed text-[var(--avasc-text-secondary)]">{briefing.dek}</p>
         ) : null}
         <p className="text-xs text-[var(--avasc-text-muted)]">
-          Published{" "}
-          {briefing.publishedAt.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          {t("published")}{" "}
+          {briefing.publishedAt.toLocaleDateString(DATE_LOCALE[locale] ?? "en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
         </p>
       </header>
 
       {briefing.keyPoints.length ? (
         <section className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-6">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--avasc-gold-light)]">
-            Key points
+            {t("keyPoints")}
           </h2>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-[var(--avasc-text-secondary)]">
             {briefing.keyPoints.map((point, i) => (
@@ -157,7 +171,7 @@ export default async function BriefingArticlePage({ params }: PageProps) {
         <section className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-6">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-5 w-5 text-[var(--avasc-gold-light)]" aria-hidden />
-            <h2 className="text-lg font-semibold text-white">Protect yourself</h2>
+            <h2 className="text-lg font-semibold text-white">{t("protectYourself")}</h2>
           </div>
           <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-[var(--avasc-text-secondary)]">
             {briefing.protectYourself.map((item, i) => (
@@ -169,7 +183,7 @@ export default async function BriefingArticlePage({ params }: PageProps) {
 
       {briefing.sources.length ? (
         <section className="space-y-3 border-t border-[var(--avasc-border)] pt-6">
-          <h2 className="text-lg font-semibold text-white">Sources</h2>
+          <h2 className="text-lg font-semibold text-white">{t("sources")}</h2>
           <ul className="space-y-2 text-sm">
             {briefing.sources.map((source, i) => (
               <li key={i} className="flex items-start gap-2">
@@ -196,18 +210,18 @@ export default async function BriefingArticlePage({ params }: PageProps) {
       <ReportCta />
 
       <section className="rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-soft)] p-6 text-sm text-[var(--avasc-text-secondary)]">
-        This briefing is public-safe intelligence: it surfaces only indicators and patterns that are already
-        public, alongside protective guidance — never a playbook for scammers. AVASC is not a law firm,
-        investigator, or government agency, and this is not legal or financial advice. If you&apos;ve been
-        targeted, you can{" "}
-        <Link href="/report" className="underline hover:text-[var(--avasc-gold-light)]">
-          report a scam
-        </Link>{" "}
-        or explore{" "}
-        <Link href="/recovery" className="underline hover:text-[var(--avasc-gold-light)]">
-          recovery resources
-        </Link>
-        .
+        {t.rich("detailDisclaimer", {
+          report: (chunks) => (
+            <Link href="/report" className="underline hover:text-[var(--avasc-gold-light)]">
+              {chunks}
+            </Link>
+          ),
+          recovery: (chunks) => (
+            <Link href="/recovery" className="underline hover:text-[var(--avasc-gold-light)]">
+              {chunks}
+            </Link>
+          ),
+        })}
       </section>
     </article>
   );

@@ -109,5 +109,28 @@
       "protect": "Protect yourself",
       "get_help": "Where to get help"
     }
+  },
+  "briefings": {
+    "metaTitle": "This Week in Scams — Weekly Fraud Briefings",
+    "metaDescription": "AVASC's public-safe weekly scam intelligence: what our database is seeing plus this week's authoritative fraud warnings and enforcement, with protective guidance for the public.",
+    "eyebrow": "Scam News",
+    "title": "Weekly Fraud Briefings",
+    "intro": "A plain-English, victim-centered read on this week's scams — combining what the AVASC database is seeing with authoritative warnings and enforcement from the FTC, FBI IC3, CISA, FinCEN, and state Attorneys General. Every briefing links out to its sources.",
+    "kindWeekly": "Weekly",
+    "kindDaily": "Daily",
+    "kindTrend": "Trend report",
+    "readBriefing": "Read briefing",
+    "errorTitle": "Briefings are temporarily unavailable",
+    "errorBody": "Please try again in a few minutes. In the meantime, explore our <guides>scam prevention guides</guides> or the <database>scam database</database>.",
+    "emptyTitle": "No briefings published yet",
+    "emptyBody": "The first \"This Week in Scams\" briefing is on the way. Until then, browse our <guides>prevention guides</guides>.",
+    "indexDisclaimer": "This is public-safe intelligence: briefings surface only indicators and patterns that are already public, and never operational detail that would help a fraudster. AVASC is not a law firm, investigator, or government agency.",
+    "allBriefings": "All briefings",
+    "thisWeekFallback": "This Week in Scams",
+    "published": "Published",
+    "keyPoints": "Key points",
+    "protectYourself": "Protect yourself",
+    "sources": "Sources",
+    "detailDisclaimer": "This briefing is public-safe intelligence: it surfaces only indicators and patterns that are already public, alongside protective guidance — never a playbook for scammers. AVASC is not a law firm, investigator, or government agency, and this is not legal or financial advice. If you've been targeted, you can <report>report a scam</report> or explore <recovery>recovery resources</recovery>."
   }
 }

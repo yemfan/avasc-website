@@ -109,5 +109,28 @@
       "protect": "保护自己",
       "get_help": "求助渠道"
     }
+  },
+  "briefings": {
+    "metaTitle": "本周诈骗速览 — 每周欺诈简报",
+    "metaDescription": "AVASC 面向公众安全的每周诈骗情报：我们数据库的发现，加上本周权威机构的欺诈警告与执法动态，并为公众提供防护指导。",
+    "eyebrow": "诈骗资讯",
+    "title": "每周欺诈简报",
+    "intro": "以通俗易懂、以受害者为中心的视角解读本周的骗局——将 AVASC 数据库的发现与 FTC、FBI IC3、CISA、FinCEN 及各州总检察长的权威警告和执法动态相结合。每份简报都附有来源链接。",
+    "kindWeekly": "每周",
+    "kindDaily": "每日",
+    "kindTrend": "趋势报告",
+    "readBriefing": "阅读简报",
+    "errorTitle": "简报暂时不可用",
+    "errorBody": "请几分钟后重试。在此期间，欢迎浏览我们的<guides>防骗指南</guides>或<database>诈骗数据库</database>。",
+    "emptyTitle": "尚未发布任何简报",
+    "emptyBody": "第一份《本周诈骗速览》简报即将发布。在此之前，欢迎浏览我们的<guides>防范指南</guides>。",
+    "indexDisclaimer": "这是面向公众安全的情报：简报仅呈现已经公开的指标和模式，绝不透露有助于诈骗者的操作细节。AVASC 不是律师事务所、调查机构或政府部门。",
+    "allBriefings": "所有简报",
+    "thisWeekFallback": "本周诈骗速览",
+    "published": "发布于",
+    "keyPoints": "要点",
+    "protectYourself": "保护自己",
+    "sources": "来源",
+    "detailDisclaimer": "本简报是面向公众安全的情报：仅呈现已经公开的指标和模式，并附有防护指导，绝不为诈骗者提供操作手册。AVASC 不是律师事务所、调查机构或政府部门，本文不构成法律或财务建议。如果您已成为诈骗目标，可以<report>举报诈骗</report>或了解<recovery>追损康复资源</recovery>。"
   }
 }

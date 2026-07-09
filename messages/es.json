@@ -109,5 +109,28 @@
       "protect": "Protégete",
       "get_help": "Dónde obtener ayuda"
     }
+  },
+  "briefings": {
+    "metaTitle": "Esta semana en estafas — Boletines semanales de fraude",
+    "metaDescription": "Inteligencia semanal de estafas de AVASC, segura para el público: lo que ve nuestra base de datos más las advertencias y acciones policiales de esta semana, con orientación de protección para el público.",
+    "eyebrow": "Noticias de estafas",
+    "title": "Boletines semanales de fraude",
+    "intro": "Una lectura en lenguaje claro y centrada en la víctima sobre las estafas de esta semana, que combina lo que ve la base de datos de AVASC con advertencias y acciones policiales de la FTC, el FBI IC3, CISA, FinCEN y los fiscales generales estatales. Cada boletín enlaza a sus fuentes.",
+    "kindWeekly": "Semanal",
+    "kindDaily": "Diario",
+    "kindTrend": "Informe de tendencias",
+    "readBriefing": "Leer el boletín",
+    "errorTitle": "Los boletines no están disponibles temporalmente",
+    "errorBody": "Vuelve a intentarlo en unos minutos. Mientras tanto, explora nuestras <guides>guías de prevención de estafas</guides> o la <database>base de datos de estafas</database>.",
+    "emptyTitle": "Aún no se han publicado boletines",
+    "emptyBody": "El primer boletín «Esta semana en estafas» está en camino. Hasta entonces, explora nuestras <guides>guías de prevención</guides>.",
+    "indexDisclaimer": "Esta es información segura para el público: los boletines muestran solo indicadores y patrones que ya son públicos, y nunca detalles operativos que ayuden a un estafador. AVASC no es un bufete de abogados, investigador ni una agencia gubernamental.",
+    "allBriefings": "Todos los boletines",
+    "thisWeekFallback": "Esta semana en estafas",
+    "published": "Publicado",
+    "keyPoints": "Puntos clave",
+    "protectYourself": "Protégete",
+    "sources": "Fuentes",
+    "detailDisclaimer": "Este boletín es información segura para el público: muestra solo indicadores y patrones que ya son públicos, junto con orientación de protección, nunca un manual para estafadores. AVASC no es un bufete de abogados, investigador ni una agencia gubernamental, y esto no es asesoramiento legal ni financiero. Si has sido blanco de una estafa, puedes <report>denunciar una estafa</report> o explorar <recovery>recursos de recuperación</recovery>."
   }
 }
