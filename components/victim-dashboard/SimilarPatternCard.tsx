@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { VictimSafeClusterMatch } from "@/lib/victim-dashboard/similar-patterns";

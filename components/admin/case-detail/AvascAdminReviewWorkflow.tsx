@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useMemo, useState, useTransition } from "react";
 import {
   AlertTriangle,
@@ -15,7 +15,7 @@ import {
   XCircle,
 } from "lucide-react";
 import type { ReviewCaseDto } from "@/lib/admin/get-case-review-workflow-data";
-import { markCaseNeedsFollowUpAction, runCaseQuickAction } from "@/app/admin/cases/[id]/actions";
+import { markCaseNeedsFollowUpAction, runCaseQuickAction } from "@/app/[locale]/admin/cases/[id]/actions";
 import {
   approveAllHighConfidenceIndicatorsAction,
   approveClusterSuggestionAction,
@@ -24,7 +24,7 @@ import {
   recomputeMatchingAction,
   rejectClusterSuggestionAction,
   saveIndicatorEditsAction,
-} from "@/app/admin/cases/[id]/review-actions";
+} from "@/app/[locale]/admin/cases/[id]/review-actions";
 
 function cx(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");

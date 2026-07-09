@@ -1,5 +1,5 @@
 import { ClusterIndicatorAggregate } from "@prisma/client";
-import { updateClusterIndicatorAction } from "@/app/admin/clusters/[id]/indicator-actions";
+import { updateClusterIndicatorAction } from "@/app/[locale]/admin/clusters/[id]/indicator-actions";
 
 type ClusterIndicatorEditRowProps = {
   indicator: ClusterIndicatorAggregate;

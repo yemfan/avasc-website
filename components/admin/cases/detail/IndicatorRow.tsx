@@ -1,11 +1,11 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Search } from "lucide-react";
 import type { CaseIndicator } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { submitIndicatorUpdate } from "@/app/admin/cases/[id]/form-actions";
+import { submitIndicatorUpdate } from "@/app/[locale]/admin/cases/[id]/form-actions";
 import { CopyTextButton } from "./CopyTextButton";
 
 export function IndicatorRow({

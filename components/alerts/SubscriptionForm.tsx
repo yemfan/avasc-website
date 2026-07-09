@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { subscribeAction, type SubscribeState } from "@/app/alerts/subscribe/actions";
+import { subscribeAction, type SubscribeState } from "@/app/[locale]/alerts/subscribe/actions";
 
 const initialState: SubscribeState = {
   success: false,

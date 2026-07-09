@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { PublicFeaturedAlert } from "@/lib/public-database/public-profile-types";
 import { Megaphone } from "lucide-react";
 

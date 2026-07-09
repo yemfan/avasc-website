@@ -1,30 +1,37 @@
 "use client";
 
 import { useTransition } from "react";
-import { useLocale, useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { Check, Globe } from "lucide-react";
 
-import { locales, localeLabels, localeShortLabels, type Locale } from "@/i18n/config";
-import { setLocaleAction } from "@/lib/i18n/actions";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { locales, localeLabels, localeShortLabels, defaultLocale, isLocale, type Locale } from "@/i18n/config";
 import { cn } from "@/lib/utils/cn";
 
 /**
- * Top-right language switcher. Sets the `NEXT_LOCALE` cookie via a server
- * action, then refreshes so the whole tree re-renders in the new language.
+ * Top-right language switcher. Switches locale by PATH: it re-renders the
+ * current page under the chosen locale prefix (`/es/...`, `/zh/...`; `en` is
+ * un-prefixed). `usePathname` from `@/i18n/navigation` returns the path WITHOUT
+ * the locale prefix, so `router.replace(pathname, { locale })` swaps only the
+ * language while keeping the user on the same page.
+ *
  * Uses a native <details> popover so it works without extra client state.
  */
 export function LanguageSwitcher({ className }: { className?: string }) {
   const t = useTranslations("language");
-  const activeLocale = useLocale() as Locale;
+  const params = useParams();
+  const pathname = usePathname();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
+  const rawLocale = params?.locale;
+  const activeLocale: Locale = isLocale(rawLocale) ? rawLocale : defaultLocale;
+
   function choose(next: Locale) {
     if (next === activeLocale) return;
-    startTransition(async () => {
-      await setLocaleAction(next);
-      router.refresh();
+    startTransition(() => {
+      router.replace(pathname, { locale: next });
     });
   }
 

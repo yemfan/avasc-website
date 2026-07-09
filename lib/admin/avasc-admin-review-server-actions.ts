@@ -12,4 +12,4 @@ export {
   rejectAllPendingSuggestionsAction,
   rejectClusterSuggestionAction,
   saveIndicatorEditsAction,
-} from "@/app/admin/cases/[id]/review-actions";
+} from "@/app/[locale]/admin/cases/[id]/review-actions";

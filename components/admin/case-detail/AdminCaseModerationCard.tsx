@@ -4,7 +4,7 @@ import {
   CaseVisibility,
   RecoveryStage,
 } from "@prisma/client";
-import { updateCaseModerationAction } from "@/app/admin/cases/[id]/actions";
+import { updateCaseModerationAction } from "@/app/[locale]/admin/cases/[id]/actions";
 
 type AdminCaseModerationCardProps = {
   record: Pick<

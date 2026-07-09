@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { markAlertReadAction } from "@/app/dashboard/alerts/actions";
+import { Link } from "@/i18n/navigation";
+import { markAlertReadAction } from "@/app/[locale]/dashboard/alerts/actions";
 
 export type AlertCenterListItem = {
   id: string;

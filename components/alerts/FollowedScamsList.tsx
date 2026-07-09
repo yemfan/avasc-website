@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { unfollowClusterAction } from "@/app/dashboard/alerts/actions";
+import { Link } from "@/i18n/navigation";
+import { unfollowClusterAction } from "@/app/[locale]/dashboard/alerts/actions";
 import type { FollowedScamSubscriptionRow } from "@/lib/alerts/get-followed-scams";
 
 export function FollowedScamsList({ items }: { items: FollowedScamSubscriptionRow[] }) {

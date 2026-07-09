@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { CalendarRange, Shield } from "lucide-react";
 import { RiskBadge } from "@/components/public-database/RiskBadge";

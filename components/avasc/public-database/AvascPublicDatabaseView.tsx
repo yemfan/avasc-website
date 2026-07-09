@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { Search, ShieldAlert, ArrowRight, AlertTriangle, Bell } from "lucide-react";
 import type { PublicDatabaseFiltersData, PublicScamSearchResult } from "@/lib/public-database/public-search-types";

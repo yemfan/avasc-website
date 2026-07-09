@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { HelpCircle } from "lucide-react";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 

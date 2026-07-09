@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Bell } from "lucide-react";
 import type { User } from "@prisma/client";
 import { LogoutButton } from "@/components/auth/LogoutButton";

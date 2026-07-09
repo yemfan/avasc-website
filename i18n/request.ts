@@ -1,16 +1,19 @@
-import { cookies } from "next/headers";
+import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 
-import { defaultLocale, isLocale } from "./config";
+import { routing } from "./routing";
 
 /**
- * Cookie-based locale resolution (no i18n routing). Reads `NEXT_LOCALE`,
- * falls back to the default, and loads the matching message catalog.
+ * Routing-based locale resolution. The active locale comes from the URL
+ * segment (`/es`, `/zh`) via the middleware; requests without a prefix
+ * resolve to the default locale (`en`).
  */
-export default getRequestConfig(async () => {
-  const cookieStore = await cookies();
-  const cookieLocale = cookieStore.get("NEXT_LOCALE")?.value;
-  const locale = isLocale(cookieLocale) ? cookieLocale : defaultLocale;
+export default getRequestConfig(async ({ requestLocale }) => {
+  let locale = await requestLocale;
+
+  if (!hasLocale(routing.locales, locale)) {
+    locale = routing.defaultLocale;
+  }
 
   return {
     locale,

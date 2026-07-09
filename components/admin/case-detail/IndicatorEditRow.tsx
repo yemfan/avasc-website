@@ -1,5 +1,5 @@
 import type { CaseIndicator } from "@prisma/client";
-import { updateIndicatorAction } from "@/app/admin/cases/[id]/indicator-actions";
+import { updateIndicatorAction } from "@/app/[locale]/admin/cases/[id]/indicator-actions";
 
 type IndicatorEditRowProps = {
   indicator: CaseIndicator;

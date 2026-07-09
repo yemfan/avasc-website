@@ -1,7 +1,7 @@
 import {
   saveAlertPreferencesAction,
   unsubscribeAllAlertsAction,
-} from "@/app/dashboard/alerts/actions";
+} from "@/app/[locale]/dashboard/alerts/actions";
 
 export type PreferencesSnapshot = {
   id: string;

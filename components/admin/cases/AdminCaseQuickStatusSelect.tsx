@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useTransition } from "react";
 import type { CaseStatus } from "@prisma/client";
 import { quickSetCaseStatusAction } from "@/lib/admin/admin-cases-list";

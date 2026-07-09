@@ -1,4 +1,4 @@
-import { recomputeMatchesAction } from "@/app/admin/cases/[id]/recompute-actions";
+import { recomputeMatchesAction } from "@/app/[locale]/admin/cases/[id]/recompute-actions";
 
 type AdminRecomputeMatchesCardProps = {
   caseId: string;

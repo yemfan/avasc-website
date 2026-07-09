@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ShieldCheck, Upload, X, ArrowRight, AlertTriangle, Eye } from "lucide-react";
 
 import {

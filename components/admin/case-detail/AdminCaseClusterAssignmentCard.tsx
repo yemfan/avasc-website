@@ -8,7 +8,7 @@ import {
   assignCaseToClusterAction,
   createClusterFromCaseAction,
   removeCaseFromClusterAction,
-} from "@/app/admin/cases/[id]/cluster-actions";
+} from "@/app/[locale]/admin/cases/[id]/cluster-actions";
 
 type ClusterLinkWithCluster = ScamClusterCase & {
   scamCluster: ScamCluster;

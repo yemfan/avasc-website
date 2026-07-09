@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { PublicScamSearchResult } from "@/lib/public-database/public-search-types";
 import { IndicatorChip } from "@/components/avasc/IndicatorChip";
 import { RiskBadge } from "@/components/avasc/RiskBadge";

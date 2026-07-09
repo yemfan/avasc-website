@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import {
   copyPublicIndicatorsCardHint,
