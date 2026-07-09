@@ -46,3 +46,40 @@ export async function getScamStatSeries(metric = "ic3_losses_usd"): Promise<Scam
     return null;
   }
 }
+
+export type ScamBreakdownRow = { category: string; valueUsd: number };
+export type ScamBreakdownGroup = {
+  dimension: string;
+  source: string;
+  sourceUrl: string;
+  year: number;
+  rows: ScamBreakdownRow[];
+};
+
+/**
+ * Load the granular fraud breakdowns (FTC / IC3) grouped by dimension, latest
+ * year per dimension, ranked by loss. Falls back to [] on any DB error.
+ */
+export async function getScamBreakdowns(): Promise<ScamBreakdownGroup[]> {
+  try {
+    const rows = await prisma.scamStatBreakdown.findMany({
+      orderBy: [{ dimension: "asc" }, { year: "desc" }, { rank: "asc" }],
+      select: { dimension: true, source: true, sourceUrl: true, year: true, category: true, valueUsd: true },
+    });
+    const groups = new Map<string, ScamBreakdownGroup>();
+    for (const r of rows) {
+      let g = groups.get(r.dimension);
+      if (!g) {
+        g = { dimension: r.dimension, source: r.source, sourceUrl: r.sourceUrl, year: r.year, rows: [] };
+        groups.set(r.dimension, g);
+      }
+      // Only the latest year for each dimension (rows are year-desc).
+      if (r.year !== g.year) continue;
+      if (typeof r.valueUsd === "number") g.rows.push({ category: r.category, valueUsd: r.valueUsd });
+    }
+    return [...groups.values()].filter((g) => g.rows.length > 0);
+  } catch (err) {
+    console.error("[scam-stats] breakdowns load failed", err instanceof Error ? err.message : err);
+    return [];
+  }
+}

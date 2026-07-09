@@ -2087,5 +2087,12 @@
     "riskMedium": "Suspicious — be careful",
     "riskLow": "Fewer red flags — still stay cautious",
     "riskUnclear": "Not enough to tell yet"
+  },
+  "scamStats": {
+    "sectionTitle": "Where the money goes",
+    "sectionIntro": "Reported fraud losses from official U.S. sources — the scam types and payment methods behind the biggest losses.",
+    "dim_ftc_payment_method": "Reported losses by payment method",
+    "dim_ic3_crime_type": "Reported losses by scam type",
+    "sourceLabel": "Source"
   }
 }

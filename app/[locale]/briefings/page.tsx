@@ -9,6 +9,7 @@ import type { Locale } from "@/i18n/config";
 import { getScamStatSeries } from "@/lib/scam-stats/queries";
 import { ScamTrendChart } from "@/components/scam-stats/ScamTrendChart";
 import { ScamHighlights } from "@/components/scam-stats/ScamHighlights";
+import { ScamBreakdowns } from "@/components/scam-stats/ScamBreakdowns";
 import { ReportCta } from "@/components/avasc/ReportCta";
 import { localeAlternates } from "@/lib/i18n/alternates";
 
@@ -109,6 +110,8 @@ export default async function BriefingsIndexPage() {
       <ScamHighlights />
 
       {scamTrend ? <ScamTrendChart series={scamTrend} overlay={ftcTrend} /> : null}
+
+      <ScamBreakdowns />
 
       {loadError ? (
         <div className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-6 text-sm text-[var(--avasc-text-secondary)]">

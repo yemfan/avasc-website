@@ -2087,5 +2087,12 @@
     "riskMedium": "Sospechoso: ten cuidado",
     "riskLow": "Menos señales de alerta, pero mantén la cautela",
     "riskUnclear": "Aún no hay suficiente para saberlo"
+  },
+  "scamStats": {
+    "sectionTitle": "Adónde va el dinero",
+    "sectionIntro": "Pérdidas por fraude reportadas según fuentes oficiales de EE. UU.: los tipos de estafa y los métodos de pago detrás de las mayores pérdidas.",
+    "dim_ftc_payment_method": "Pérdidas reportadas por método de pago",
+    "dim_ic3_crime_type": "Pérdidas reportadas por tipo de estafa",
+    "sourceLabel": "Fuente"
   }
 }

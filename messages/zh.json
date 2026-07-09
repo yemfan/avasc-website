@@ -2087,5 +2087,12 @@
     "riskMedium": "可疑——请当心",
     "riskLow": "危险信号较少——仍需保持警惕",
     "riskUnclear": "目前信息不足，难以判断"
+  },
+  "scamStats": {
+    "sectionTitle": "钱都流向了哪里",
+    "sectionIntro": "来自美国官方来源的报告欺诈损失——造成最大损失的诈骗类型和支付方式。",
+    "dim_ftc_payment_method": "按支付方式划分的报告损失",
+    "dim_ic3_crime_type": "按诈骗类型划分的报告损失",
+    "sourceLabel": "来源"
   }
 }

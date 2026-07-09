@@ -516,6 +516,33 @@ model AppSetting {
 }
 
 /**
+ * Granular fraud breakdowns from official annual reports (FTC Consumer Sentinel,
+ * FBI IC3) — e.g. losses by payment method / contact method, top crime types.
+ * Complements the year-over-year `ScamStat` totals. Verified + sourced only.
+ */
+model ScamStatBreakdown {
+  id         String   @id @default(uuid()) @db.Uuid
+  /** Breakdown key, e.g. "ftc_payment_method" | "ftc_contact_method" | "ic3_crime_type". */
+  dimension  String
+  source     String
+  year       Int
+  /** Category within the dimension, e.g. "Cryptocurrency" | "Phone call" | "Investment". */
+  category   String
+  /** Reported losses in USD (absolute), if applicable. */
+  valueUsd   Float?
+  /** Report/complaint count, if applicable. */
+  valueCount Int?
+  /** Sort order within the dimension (1 = largest). */
+  rank       Int      @default(0)
+  sourceUrl  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([dimension, year, category])
+  @@index([dimension, year])
+}
+
+/**
  * Cache of on-demand translations for public DB content (blog posts, alerts,
  * briefings, stories). English is canonical and never stored here; each row
  * holds one entity's translated fields for one non-English locale, keyed by a
