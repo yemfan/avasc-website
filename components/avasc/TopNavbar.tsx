@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Menu } from "lucide-react";
 import { brand, brandImages } from "@/lib/brand-images";
+import { LanguageSwitcher } from "@/components/avasc/LanguageSwitcher";
 import { cn } from "@/lib/utils/cn";
 
 const navLinkBase =
@@ -43,15 +45,15 @@ type TopNavbarProps = {
 };
 
 const DESKTOP_LINKS = [
-  { href: "/database", label: "Scam Database" },
-  { href: "/report", label: "Report Case" },
-  { href: "/briefings", label: "Scam News" },
-  { href: "/blog", label: "Blog" },
-  { href: "/stories", label: "Stories" },
-  { href: "/guides", label: "Guides" },
-  { href: "/recovery", label: "Recovery" },
-  { href: "/resources", label: "Resources" },
-  { href: "/about", label: "About" },
+  { href: "/database", key: "database" },
+  { href: "/report", key: "report" },
+  { href: "/briefings", key: "briefings" },
+  { href: "/blog", key: "blog" },
+  { href: "/stories", key: "stories" },
+  { href: "/guides", key: "guides" },
+  { href: "/recovery", key: "recovery" },
+  { href: "/resources", key: "resources" },
+  { href: "/about", key: "about" },
 ] as const;
 
 function mobileItemActiveClass(active: boolean): string {
@@ -63,6 +65,7 @@ function mobileItemActiveClass(active: boolean): string {
 
 function MobileMenu() {
   const pathname = usePathname();
+  const t = useTranslations("nav");
   // TOM MN-002: mobile viewport renders the gold "Report" CTA next to the
   // hamburger already (see TopNavbar bottom-right on md- breakpoints). The
   // menu listing "Report Case" inside as well surfaced as a duplicate.
@@ -75,13 +78,13 @@ function MobileMenu() {
           ctaOutlineClass,
           "cursor-pointer list-none px-3 py-2 [&::-webkit-details-marker]:hidden"
         )}
-        aria-label="Open menu"
+        aria-label={t("openMenu")}
       >
         <Menu className="h-4 w-4 shrink-0" aria-hidden />
       </summary>
       <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-64 rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-2 shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
         <div className="flex flex-col gap-0.5">
-          {mobileMenuLinks.map(({ href, label }) => {
+          {mobileMenuLinks.map(({ href, key }) => {
             const active = isActivePath(pathname, href);
             return (
               <Link
@@ -90,15 +93,15 @@ function MobileMenu() {
                 aria-current={active ? "page" : undefined}
                 className={mobileItemActiveClass(active)}
               >
-                {label}
+                {t(key)}
               </Link>
             );
           })}
           <Link href="/donate" className={mobileItemClass}>
-            Donate
+            {t("donate")}
           </Link>
           <Link href="/login" className={mobileItemClass}>
-            Sign in
+            {t("signIn")}
           </Link>
         </div>
       </div>
@@ -108,6 +111,7 @@ function MobileMenu() {
 
 export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
   const pathname = usePathname();
+  const t = useTranslations("nav");
   return (
     <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[rgba(5,9,18,0.78)] shadow-[0_1px_0_rgba(255,255,255,0.04)_inset] backdrop-blur-xl supports-[backdrop-filter]:bg-[rgba(5,9,18,0.72)]">
       <div className="mx-auto flex min-h-[4.5rem] max-w-7xl items-center justify-between gap-4 px-4 sm:min-h-[5rem] sm:px-6 lg:px-8">
@@ -131,8 +135,8 @@ export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
           />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Primary">
-          {DESKTOP_LINKS.map(({ href, label }) => {
+        <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label={t("primaryNav")}>
+          {DESKTOP_LINKS.map(({ href, key }) => {
             const active = isActivePath(pathname, href);
             return (
               <Link
@@ -141,7 +145,7 @@ export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
                 aria-current={active ? "page" : undefined}
                 className={desktopNavClass(active)}
               >
-                {label}
+                {t(key)}
               </Link>
             );
           })}
@@ -149,20 +153,22 @@ export function TopNavbar({ logoSrc = brandImages.logoFull }: TopNavbarProps) {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link href="/donate" className={cn(ctaOutlineClass, "hidden sm:inline-flex")}>
-            Donate
+            {t("donate")}
           </Link>
           <Link href="/login" className={cn(navLinkClass, "hidden px-2 lg:inline-flex")}>
-            Sign in
+            {t("signIn")}
           </Link>
           <Link href="/report" className={ctaGoldClass}>
-            Report Now
+            {t("reportNow")}
           </Link>
+          <LanguageSwitcher />
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           <Link href="/report" className={cn(ctaGoldClass, "px-3 py-2 text-xs sm:text-sm")}>
-            Report
+            {t("reportShort")}
           </Link>
+          <LanguageSwitcher />
           <MobileMenu />
         </div>
       </div>

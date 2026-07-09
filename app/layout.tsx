@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 import { ConditionalAppShell } from "@/components/layout/ConditionalAppShell";
 import "./globals.css";
 
@@ -43,11 +45,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
   // TOM CR-004 + P2 recommendation: enrich the NonprofitOrganization schema
   // with location, legal name, and nonprofit-status metadata so Google's
   // Knowledge Panel surfaces real legitimacy signals. The 501(c)(3) Pending
@@ -109,11 +112,13 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} ${frauncesDisplay.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans bg-background text-foreground">
-        <ConditionalAppShell>{children}</ConditionalAppShell>
+        <NextIntlClientProvider>
+          <ConditionalAppShell>{children}</ConditionalAppShell>
+        </NextIntlClientProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}

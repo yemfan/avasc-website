@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "database": "Base de datos de estafas",
+    "report": "Reportar caso",
+    "briefings": "Noticias de estafas",
+    "blog": "Blog",
+    "stories": "Historias",
+    "guides": "Guías",
+    "recovery": "Recuperación",
+    "resources": "Recursos",
+    "about": "Acerca de",
+    "donate": "Donar",
+    "signIn": "Iniciar sesión",
+    "reportNow": "Reportar ahora",
+    "reportShort": "Reportar",
+    "openMenu": "Abrir menú",
+    "primaryNav": "Principal"
+  },
+  "language": {
+    "label": "Idioma",
+    "select": "Seleccionar idioma"
+  }
+}

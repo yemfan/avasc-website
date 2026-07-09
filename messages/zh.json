@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "database": "诈骗数据库",
+    "report": "举报案件",
+    "briefings": "诈骗资讯",
+    "blog": "博客",
+    "stories": "受害者故事",
+    "guides": "防骗指南",
+    "recovery": "追损与康复",
+    "resources": "资源",
+    "about": "关于我们",
+    "donate": "捐赠",
+    "signIn": "登录",
+    "reportNow": "立即举报",
+    "reportShort": "举报",
+    "openMenu": "打开菜单",
+    "primaryNav": "主导航"
+  },
+  "language": {
+    "label": "语言",
+    "select": "选择语言"
+  }
+}

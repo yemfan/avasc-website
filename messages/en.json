@@ -1,0 +1,23 @@
+{
+  "nav": {
+    "database": "Scam Database",
+    "report": "Report Case",
+    "briefings": "Scam News",
+    "blog": "Blog",
+    "stories": "Stories",
+    "guides": "Guides",
+    "recovery": "Recovery",
+    "resources": "Resources",
+    "about": "About",
+    "donate": "Donate",
+    "signIn": "Sign in",
+    "reportNow": "Report Now",
+    "reportShort": "Report",
+    "openMenu": "Open menu",
+    "primaryNav": "Primary"
+  },
+  "language": {
+    "label": "Language",
+    "select": "Select language"
+  }
+}
