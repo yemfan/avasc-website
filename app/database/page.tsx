@@ -1,31 +1,26 @@
 import type { Metadata } from "next";
+import { getLocale, getTranslations } from "next-intl/server";
 import { searchPublicScamProfiles } from "@/lib/public-database/public-scam-search";
 import { getPublicDatabaseFilters } from "@/lib/public-database/public-filters";
 import { AvascPublicDatabaseView } from "@/components/avasc/public-database/AvascPublicDatabaseView";
 import { getPublicAlerts } from "@/lib/alerts/avasc-alert-section-api-and-loader";
+import { translateMany } from "@/lib/i18n/translate-content";
+import type { Locale } from "@/i18n/config";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Scam pattern database",
-  description:
-    "Search published scam profiles using publicly approved indicators — domains, wallets, emails, and more.",
-  openGraph: {
-    title: "Search reported scam patterns | AVASC",
-    description:
-      "Privacy-safe search across published scam profiles — indicators are masked or staff-approved for public display.",
-    type: "website",
-    url: "https://www.avasc.org/database",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/database",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("database");
+  const title = t("listMetaTitle");
+  const description = t("searchDescription");
+  return {
+    title,
+    description,
+    openGraph: { title: `${t("searchTitle")} | AVASC`, description, type: "website", url: "https://www.avasc.org/database", images: ["/og-image.png"] },
+    twitter: { card: "summary_large_image", images: ["/og-image.png"] },
+    alternates: { canonical: "/database" },
+  };
+}
 
 type PageProps = {
   searchParams: Promise<{
@@ -38,6 +33,8 @@ type PageProps = {
 
 export default async function PublicDatabasePage({ searchParams }: PageProps) {
   const params = await searchParams;
+  const locale = (await getLocale()) as Locale;
+  const t = await getTranslations("database");
 
   const query = params.q ?? "";
   const scamType = params.scamType ?? "ALL";
@@ -77,6 +74,20 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
     databaseError = msg;
   }
 
+  // Translate result card content (title/summary) for the active locale; cached.
+  if (locale !== "en" && results.length) {
+    try {
+      const tr = await translateMany(
+        "scam_profile_card",
+        locale,
+        results.map((r) => ({ id: r.id, fields: { title: r.title, summary: r.summary } })),
+      );
+      results = results.map((r, i) => ({ ...r, title: tr[i]?.title ?? r.title, summary: tr[i]?.summary ?? r.summary }));
+    } catch {
+      // keep English on failure
+    }
+  }
+
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -102,11 +113,8 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
       {databaseError ? (
         <div className="mx-auto max-w-3xl px-4 py-12">
           <div className="rounded-lg border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.06] p-5 text-sm text-[var(--avasc-gold-light)]">
-            <h2 className="text-lg font-medium text-white">Scam database is temporarily unavailable</h2>
-            <p className="mt-2 text-[var(--avasc-text-secondary)]">
-              We&apos;re having trouble loading the scam pattern database right now.
-              Please try again in a few minutes. In the meantime:
-            </p>
+            <h2 className="text-lg font-medium text-white">{t("unavailableTitle")}</h2>
+            <p className="mt-2 text-[var(--avasc-text-secondary)]">{t("unavailableBody")}</p>
             <ul className="mt-3 list-disc space-y-1 pl-5 text-[var(--avasc-text-secondary)]">
               <li>
                 <a

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { Filter, Search } from "lucide-react";
 import type { PublicDatabaseFiltersData } from "@/lib/public-database/public-search-types";
 
@@ -45,6 +46,7 @@ export function PublicDatabaseSearchFilters({
   riskLevel: initialRiskLevel,
   indicatorType: initialIndicatorType,
 }: PublicDatabaseSearchFiltersProps) {
+  const t = useTranslations("database");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -109,9 +111,9 @@ export function PublicDatabaseSearchFilters({
     >
       <div className="flex flex-wrap items-center gap-2 font-display text-sm font-medium text-[var(--avasc-gold-light)]">
         <Filter className="h-4 w-4 shrink-0" aria-hidden />
-        <span>Search & filters</span>
+        <span>{t("filtersTitle")}</span>
         {isPending ? (
-          <span className="text-xs font-normal text-[var(--avasc-text-muted)]">Updating…</span>
+          <span className="text-xs font-normal text-[var(--avasc-text-muted)]">{t("updating")}</span>
         ) : null}
       </div>
 
@@ -124,7 +126,7 @@ export function PublicDatabaseSearchFilters({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search by domain, wallet, phone, email, alias, platform, or scam type"
+            placeholder={t("searchPlaceholder")}
             autoComplete="off"
             className={`${fieldClass} py-3 pl-11 pr-4`}
             aria-busy={isPending}
@@ -134,7 +136,7 @@ export function PublicDatabaseSearchFilters({
         <div className="grid gap-4 md:grid-cols-3">
           <div>
             <label className="mb-2 block text-sm font-medium text-white" htmlFor="db-scam-type-live">
-              Scam Type
+              {t("filterScamType")}
             </label>
             <select
               id="db-scam-type-live"
@@ -147,7 +149,7 @@ export function PublicDatabaseSearchFilters({
               }}
               className={fieldClass}
             >
-              <option value="ALL">All</option>
+              <option value="ALL">{t("filterAll")}</option>
               {filters.scamTypes.map((type) => (
                 <option key={type} value={type}>
                   {type}
@@ -158,7 +160,7 @@ export function PublicDatabaseSearchFilters({
 
           <div>
             <label className="mb-2 block text-sm font-medium text-white" htmlFor="db-risk-level-live">
-              Risk Level
+              {t("filterRisk")}
             </label>
             <select
               id="db-risk-level-live"
@@ -171,7 +173,7 @@ export function PublicDatabaseSearchFilters({
               }}
               className={fieldClass}
             >
-              <option value="ALL">All</option>
+              <option value="ALL">{t("filterAll")}</option>
               {filters.riskLevels.map((level) => (
                 <option key={level} value={level}>
                   {formatEnum(level)}
@@ -182,7 +184,7 @@ export function PublicDatabaseSearchFilters({
 
           <div>
             <label className="mb-2 block text-sm font-medium text-white" htmlFor="db-indicator-type-live">
-              Indicator Type
+              {t("filterIndicator")}
             </label>
             <select
               id="db-indicator-type-live"
@@ -195,7 +197,7 @@ export function PublicDatabaseSearchFilters({
               }}
               className={fieldClass}
             >
-              <option value="ALL">All</option>
+              <option value="ALL">{t("filterAll")}</option>
               {filters.indicatorTypes.map((type) => (
                 <option key={type} value={type}>
                   {formatEnum(type)}
