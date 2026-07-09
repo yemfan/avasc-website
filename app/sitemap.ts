@@ -4,8 +4,29 @@ import { prisma } from "@/lib/prisma";
 import { listApprovedPublicStories } from "@/lib/public-stories/service";
 import { listPublishedBriefings } from "@/lib/briefings/queries";
 
+const BASE_URL = "https://www.avasc.org";
+
+/**
+ * Add hreflang alternates (es, zh) to a sitemap entry. The `url` stays the
+ * un-prefixed English URL (default locale under `localePrefix: "as-needed"`);
+ * the localized variants get `/es` / `/zh` prefixes.
+ */
+function withLocaleAlternates(entry: MetadataRoute.Sitemap[number]): MetadataRoute.Sitemap[number] {
+  const path = entry.url.startsWith(BASE_URL) ? entry.url.slice(BASE_URL.length) : entry.url;
+  const suffix = path === "/" ? "" : path;
+  return {
+    ...entry,
+    alternates: {
+      languages: {
+        es: `${BASE_URL}/es${suffix}`,
+        zh: `${BASE_URL}/zh${suffix}`,
+      },
+    },
+  };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://www.avasc.org";
+  const baseUrl = BASE_URL;
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -240,5 +261,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     databaseRoutes = [];
   }
 
-  return [...staticRoutes, ...databaseRoutes, ...storyRoutes, ...briefingRoutes];
+  return [...staticRoutes, ...databaseRoutes, ...storyRoutes, ...briefingRoutes].map(
+    withLocaleAlternates
+  );
 }

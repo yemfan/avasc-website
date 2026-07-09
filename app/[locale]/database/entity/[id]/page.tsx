@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { getScamEntityPublicById } from "@/lib/db/entity-detail";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title,
     description,
-    alternates: { canonical },
+    alternates: localeAlternates(canonical),
     openGraph: {
       title: `${title} | AVASC`,
       description,

@@ -4,6 +4,7 @@ import { HomepageHero } from "@/components/marketing/HomepageHero";
 import { HomepageMissionHighlights } from "@/components/marketing/HomepageMissionHighlights";
 import { ScamCheck } from "@/components/scam-check/ScamCheck";
 import { getHomepageAlertSectionData } from "@/lib/alerts/avasc-alert-section-api-and-loader";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 /** Prisma-backed alert section; do not prerender without DB. */
 export const dynamic = "force-dynamic";
@@ -25,9 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: ["/og-image.png"],
   },
-  alternates: {
-    canonical: "/",
-  },
+  alternates: localeAlternates("/"),
 };
 
 export default async function HomePage() {

@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
 import { brand, brandImages } from "@/lib/brand-images";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("about");
@@ -24,9 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/about",
-    },
+    alternates: localeAlternates("/about"),
   };
 }
 

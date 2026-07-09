@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 /**
  * [REQUIRES LEGAL REVIEW]
@@ -25,7 +26,7 @@ export const metadata: Metadata = {
   title: "Terms of Service | AVASC",
   description:
     "Terms governing use of the AVASC website — scam reporting, alerts, donations, and what AVASC is and is not.",
-  alternates: { canonical: "/terms" },
+  alternates: localeAlternates("/terms"),
   keywords: ["terms of service", "AVASC", "acceptable use"],
 };
 

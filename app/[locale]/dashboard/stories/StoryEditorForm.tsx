@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { saveStorySchema, type SaveStoryInput } from "@/lib/victim-dashboard/schemas";
-import { saveStoryAction } from "@/app/dashboard/_actions/stories";
+import { saveStoryAction } from "@/app/[locale]/dashboard/_actions/stories";
 
 type Props = {
   cases: { id: string; title: string }[];

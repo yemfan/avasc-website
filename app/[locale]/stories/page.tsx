@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { StoriesClient } from "@/components/stories/StoriesClient";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("stories");
@@ -11,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     openGraph: { title, description, type: "website", url: "https://www.avasc.org/stories", images: ["/og-image.png"] },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },
-    alternates: { canonical: "/stories" },
+    alternates: localeAlternates("/stories"),
   };
 }
 

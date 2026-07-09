@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { AiGuide } from "./AiGuide";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("guidesIndex");
@@ -23,9 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/guides",
-    },
+    alternates: localeAlternates("/guides"),
   };
 }
 

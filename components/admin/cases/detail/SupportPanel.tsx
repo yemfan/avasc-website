@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { formatDate } from "@/lib/admin/format";
 import type { AdminCaseDetailRecord } from "@/lib/admin/case-detail-query";
-import { submitSupportUpdate } from "@/app/admin/support/support-form-actions";
+import { submitSupportUpdate } from "@/app/[locale]/admin/support/support-form-actions";
 
 type SupportRow = AdminCaseDetailRecord["supportRequests"][number];
 

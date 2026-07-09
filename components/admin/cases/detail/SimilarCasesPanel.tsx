@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import type { CaseMatchResult } from "@/lib/matching";
-import { submitClusterLink } from "@/app/admin/cases/[id]/form-actions";
+import { submitClusterLink } from "@/app/[locale]/admin/cases/[id]/form-actions";
 
 function strengthVariant(
   s: CaseMatchResult["strengthLabel"]

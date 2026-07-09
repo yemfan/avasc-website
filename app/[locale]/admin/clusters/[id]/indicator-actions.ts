@@ -1,1 +1,1 @@
-export { updateClusterIndicatorAction } from "@/app/admin/clusters/indicator-actions";
+export { updateClusterIndicatorAction } from "@/app/[locale]/admin/clusters/indicator-actions";

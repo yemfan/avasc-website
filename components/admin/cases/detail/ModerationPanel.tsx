@@ -11,7 +11,7 @@ import {
   submitClusterLink,
   submitCreateClusterFromCase,
   submitSuggestCluster,
-} from "@/app/admin/cases/[id]/form-actions";
+} from "@/app/[locale]/admin/cases/[id]/form-actions";
 
 const VIS: CaseVisibility[] = [
   CaseVisibility.private,

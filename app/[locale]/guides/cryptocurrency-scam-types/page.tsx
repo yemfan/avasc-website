@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("guide_cryptocurrency_scam_types");
@@ -22,9 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/guides/cryptocurrency-scam-types",
-    },
+    alternates: localeAlternates("/guides/cryptocurrency-scam-types"),
   };
 }
 

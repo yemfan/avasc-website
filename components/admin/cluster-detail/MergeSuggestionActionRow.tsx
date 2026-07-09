@@ -1,4 +1,4 @@
-import { mergeClustersAction } from "@/app/admin/clusters/[id]/merge-actions";
+import { mergeClustersAction } from "@/app/[locale]/admin/clusters/[id]/merge-actions";
 
 type MergeSuggestionActionRowProps = {
   mergeSuggestionId: string;

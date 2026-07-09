@@ -4,6 +4,7 @@ import { ExternalLink } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 import { ReportCta } from "@/components/avasc/ReportCta";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 const SITE_URL = (process.env.NEXT_PUBLIC_APP_URL ?? "https://www.avasc.org").replace(/\/$/, "");
 
@@ -20,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: ["/og-image.png"],
     },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },
-    alternates: { canonical: "/resources" },
+    alternates: localeAlternates("/resources"),
   };
 }
 

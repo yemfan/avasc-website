@@ -6,6 +6,7 @@ import { ArrowRight, Heart } from "lucide-react";
 import { listRecentDailyPosts } from "@/lib/social/daily-queries";
 import { translateMany } from "@/lib/i18n/translate-content";
 import type { Locale } from "@/i18n/config";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     openGraph: { title, description, type: "website", url: `${SITE_URL}/blog`, images: ["/og-image.png"] },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },
-    alternates: { canonical: "/blog" },
+    alternates: localeAlternates("/blog"),
   };
 }
 

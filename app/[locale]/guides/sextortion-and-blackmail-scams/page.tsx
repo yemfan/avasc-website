@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("guide_sextortion_and_blackmail_scams");
@@ -22,9 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/guides/sextortion-and-blackmail-scams",
-    },
+    alternates: localeAlternates("/guides/sextortion-and-blackmail-scams"),
   };
 }
 

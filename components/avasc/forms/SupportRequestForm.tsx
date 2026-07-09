@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { submitSupportRequestAction } from "@/app/dashboard/_actions/support";
+import { submitSupportRequestAction } from "@/app/[locale]/dashboard/_actions/support";
 import { FormActions } from "./FormActions";
 import { FormField } from "./FormField";
 import { FormSection } from "./FormSection";

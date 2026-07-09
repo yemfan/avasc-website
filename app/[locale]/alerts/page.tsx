@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AlertSubscriptionForm } from "@/components/alerts/AlertSubscriptionForm";
 import { SectionShell } from "@/components/avasc/layout/SectionShell";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 type SearchProps = {
   searchParams: Promise<{ verify?: string; confirm?: string; unsubscribe?: string }>;
@@ -20,9 +21,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     images: ["/og-image.png"],
   },
-  alternates: {
-    canonical: "/alerts",
-  },
+  alternates: localeAlternates("/alerts"),
 };
 
 export default async function AlertsPage({ searchParams }: SearchProps) {

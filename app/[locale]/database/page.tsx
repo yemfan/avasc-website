@@ -6,6 +6,7 @@ import { AvascPublicDatabaseView } from "@/components/avasc/public-database/Avas
 import { getPublicAlerts } from "@/lib/alerts/avasc-alert-section-api-and-loader";
 import { translateMany } from "@/lib/i18n/translate-content";
 import type { Locale } from "@/i18n/config";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     openGraph: { title: `${t("searchTitle")} | AVASC`, description, type: "website", url: "https://www.avasc.org/database", images: ["/og-image.png"] },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },
-    alternates: { canonical: "/database" },
+    alternates: localeAlternates("/database"),
   };
 }
 

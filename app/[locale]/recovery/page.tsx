@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 
 import { RecoveryAi } from "@/components/recovery/RecoveryAi";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("recovery");
@@ -24,9 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/recovery",
-    },
+    alternates: localeAlternates("/recovery"),
   };
 }
 

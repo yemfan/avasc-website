@@ -10,6 +10,7 @@ import { getScamStatSeries } from "@/lib/scam-stats/queries";
 import { ScamTrendChart } from "@/components/scam-stats/ScamTrendChart";
 import { ScamHighlights } from "@/components/scam-stats/ScamHighlights";
 import { ReportCta } from "@/components/avasc/ReportCta";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     openGraph: { title: `${title} | AVASC`, description, type: "website", url: `${SITE_URL}/briefings`, images: ["/og-image.png"] },
     twitter: { card: "summary_large_image", images: ["/og-image.png"] },
-    alternates: { canonical: "/briefings" },
+    alternates: localeAlternates("/briefings"),
   };
 }
 

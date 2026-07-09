@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Link } from "@/i18n/navigation";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 /**
  * [REQUIRES LEGAL REVIEW]
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy | AVASC",
   description:
     "How AVASC collects, uses, shares, and protects personal information — including victim reports, SMS alerts, and donation data.",
-  alternates: { canonical: "/privacy" },
+  alternates: localeAlternates("/privacy"),
   keywords: ["privacy policy", "AVASC", "victim data", "GDPR", "CCPA"],
 };
 

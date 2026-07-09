@@ -6,6 +6,7 @@ import { ArrowLeft, ExternalLink, ShieldCheck } from "lucide-react";
 
 import { getPublishedBriefingBySlug } from "@/lib/briefings/queries";
 import { translateBriefingView } from "@/lib/i18n/translate-briefing";
+import { localeAlternates } from "@/lib/i18n/alternates";
 import type { Locale } from "@/i18n/config";
 import { ReportCta } from "@/components/avasc/ReportCta";
 
@@ -48,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       ...(briefing.sources.length ? {} : {}),
     },
     twitter: { card: "summary_large_image", title: briefing.title, description, images: ["/og-image.png"] },
-    alternates: { canonical },
+    alternates: localeAlternates(canonical),
   };
 }
 

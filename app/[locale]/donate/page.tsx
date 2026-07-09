@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { localeAlternates } from "@/lib/i18n/alternates";
 import {
   DonateForm,
   DonateHero,
@@ -30,9 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/donate",
-    },
+    alternates: localeAlternates("/donate"),
   };
 }
 

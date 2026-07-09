@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import { Languages, ShieldCheck } from "lucide-react";
 
-import { translateCaseForReviewAction } from "@/app/admin/cases/[id]/translate-actions";
+import { translateCaseForReviewAction } from "@/app/[locale]/admin/cases/[id]/translate-actions";
 
 /**
  * Moderator control to translate a non-English case narrative to English for

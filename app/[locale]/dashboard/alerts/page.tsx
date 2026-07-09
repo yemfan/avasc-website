@@ -1,5 +1,5 @@
 import { AlertCenterList, type AlertCenterListItem } from "@/components/alerts/AlertCenterList";
-import { markAllAlertsReadAction } from "@/app/dashboard/alerts/actions";
+import { markAllAlertsReadAction } from "@/app/[locale]/dashboard/alerts/actions";
 import { getUserAlertCenter } from "@/lib/alerts/get-user-alert-center";
 import { requireUser } from "@/lib/auth/require-user";
 import { prisma } from "@/lib/prisma";

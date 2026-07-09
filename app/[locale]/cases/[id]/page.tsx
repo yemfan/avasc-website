@@ -23,7 +23,10 @@ export default async function CaseDetailPage({ params }: PageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect({ href: "/login", locale });
+  if (!user) {
+    redirect({ href: "/login", locale });
+    return null;
+  }
   await ensureAppUser(user);
 
   const db = getServiceSupabase();

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ReportMatchingCaseFlow } from "@/components/avasc/report/ReportMatchingCaseFlow";
+import { localeAlternates } from "@/lib/i18n/alternates";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("report");
@@ -20,9 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
-    alternates: {
-      canonical: "/report",
-    },
+    alternates: localeAlternates("/report"),
   };
 }
 

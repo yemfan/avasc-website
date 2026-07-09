@@ -1,7 +1,7 @@
 import { UserRole } from "@prisma/client";
 
 import { requireRole } from "@/lib/auth/require-role";
-import { BriefingsAdminView } from "@/app/admin/_briefings/BriefingsAdminView";
+import { BriefingsAdminView } from "@/app/[locale]/admin/_briefings/BriefingsAdminView";
 
 export const dynamic = "force-dynamic";
 
