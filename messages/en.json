@@ -19,5 +19,53 @@
   "language": {
     "label": "Language",
     "select": "Select language"
+  },
+  "hero": {
+    "badge": "Nonprofit · Privacy-first",
+    "headline": "Report scams, search patterns, <highlight>stay ahead</highlight> of fraud",
+    "subtitle": "AVASC helps victims compare cases, follow verified scam profiles, and receive critical alerts—without exposing sensitive details in public.",
+    "reportScam": "Report a scam",
+    "searchDatabase": "Search database",
+    "aboutAvasc": "About AVASC",
+    "alertsNote": "Realtime alerts and daily highlights are in the panel on the right. <link>Subscribe for SMS & email</link> in the section below.",
+    "alertsRegionLabel": "Realtime alerts and daily news",
+    "alertsPanelTitle": "Realtime alerts & daily news",
+    "alertsPanelSubtitle": "Critical warnings as they surface, plus staff-reviewed daily highlights. Indicators are public-safe; follow links for full profiles."
+  },
+  "mission": {
+    "missionK": "Mission",
+    "missionV": "Victim-centered intelligence and recovery guidance—not a law firm or agency.",
+    "databaseK": "Database",
+    "databaseV": "Anonymized indicators and published scam profiles you can search safely.",
+    "alertsK": "Alerts",
+    "alertsV": "Realtime SMS for critical threats plus optional daily or weekly email digests.",
+    "trustK": "Trust",
+    "trustV": "We never ask for passwords, full card numbers, or government IDs in public forms."
+  },
+  "footer": {
+    "tagline": "Victim-centered reporting, pattern intelligence, and recovery resources.",
+    "takeAction": "Take action",
+    "reportScam": "Report a scam",
+    "scamDatabase": "Scam database",
+    "alerts": "Alerts",
+    "recoveryCenter": "Recovery center",
+    "resources": "Resources",
+    "organization": "Organization",
+    "about": "About AVASC",
+    "stories": "Stories",
+    "guides": "Guides",
+    "scamNews": "Scam News",
+    "blog": "Blog",
+    "donate": "Donate",
+    "signIn": "Sign in",
+    "disclaimerTitle": "Disclaimer",
+    "disclaimerBody": "Not a law firm, investigator, or government agency. No guarantee of fund recovery. Public entries are anonymized—never share passwords, full card numbers, or IDs in public forms. Watch for recovery scams with upfront fees.",
+    "location": "Los Angeles, California",
+    "registeredNonprofit": "California Registered Nonprofit",
+    "pending501c3": "501(c)(3) Pending",
+    "pending501c3Title": "IRS 501(c)(3) application is pending. Donations are not currently tax-deductible. See the donate page FAQ for details.",
+    "rightsReserved": "All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms"
   }
 }

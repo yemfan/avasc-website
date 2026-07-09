@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import { TopNavbar } from "@/components/avasc/TopNavbar";
 import { brand, brandImages } from "@/lib/brand-images";
 
@@ -9,6 +10,7 @@ const footerLink = "text-sm text-[var(--avasc-text-secondary)] transition-colors
 const footerColTitle = "text-xs font-semibold uppercase tracking-[0.14em] text-[var(--avasc-gold-light)]/90";
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const t = useTranslations("footer");
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <TopNavbar />
@@ -31,85 +33,83 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </div>
               </div>
               <p className="mt-4 text-sm leading-relaxed text-[var(--avasc-text-secondary)]">
-                Victim-centered reporting, pattern intelligence, and recovery resources.
+                {t("tagline")}
               </p>
             </div>
             <div>
-              <p className={footerColTitle}>Take action</p>
+              <p className={footerColTitle}>{t("takeAction")}</p>
               <ul className="mt-4 space-y-2.5">
                 <li>
                   <Link href="/report" className={footerLink}>
-                    Report a scam
+                    {t("reportScam")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/database" className={footerLink}>
-                    Scam database
+                    {t("scamDatabase")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/alerts" className={footerLink}>
-                    Alerts
+                    {t("alerts")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/recovery" className={footerLink}>
-                    Recovery center
+                    {t("recoveryCenter")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/resources" className={footerLink}>
-                    Resources
+                    {t("resources")}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <p className={footerColTitle}>Organization</p>
+              <p className={footerColTitle}>{t("organization")}</p>
               <ul className="mt-4 space-y-2.5">
                 <li>
                   <Link href="/about" className={footerLink}>
-                    About AVASC
+                    {t("about")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/stories" className={footerLink}>
-                    Stories
+                    {t("stories")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/guides" className={footerLink}>
-                    Guides
+                    {t("guides")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/briefings" className={footerLink}>
-                    Scam News
+                    {t("scamNews")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/blog" className={footerLink}>
-                    Blog
+                    {t("blog")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/donate" className={footerLink}>
-                    Donate
+                    {t("donate")}
                   </Link>
                 </li>
                 <li>
                   <Link href="/login" className={footerLink}>
-                    Sign in
+                    {t("signIn")}
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <p className={footerColTitle}>Disclaimer</p>
+              <p className={footerColTitle}>{t("disclaimerTitle")}</p>
               <p className="mt-4 text-xs leading-relaxed text-[var(--avasc-text-muted)]">
-                Not a law firm, investigator, or government agency. No guarantee of fund recovery. Public entries are
-                anonymized—never share passwords, full card numbers, or IDs in public forms. Watch for recovery scams
-                with upfront fees.
+                {t("disclaimerBody")}
               </p>
             </div>
           </div>
@@ -119,15 +119,15 @@ export function AppShell({ children }: { children: ReactNode }) {
               donors before they give. */}
           <div className="mt-12 border-t border-white/[0.06] pt-8 space-y-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--avasc-text-muted)]">
-              <span>Los Angeles, California</span>
+              <span>{t("location")}</span>
               <span aria-hidden>·</span>
-              <span>California Registered Nonprofit</span>
+              <span>{t("registeredNonprofit")}</span>
               <span aria-hidden>·</span>
               <span
                 className="inline-flex items-center gap-1 rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-2 py-0.5 text-[10px] font-medium text-[var(--avasc-gold-light)]"
-                title="IRS 501(c)(3) application is pending. Donations are not currently tax-deductible. See the donate page FAQ for details."
+                title={t("pending501c3Title")}
               >
-                501(c)(3) Pending
+                {t("pending501c3")}
               </span>
               <span aria-hidden>·</span>
               <span>avasc.org</span>
@@ -138,17 +138,17 @@ export function AppShell({ children }: { children: ReactNode }) {
                 (separate). */}
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-xs text-[var(--avasc-text-muted)]">
-                © {new Date().getFullYear()} {brand.shortName} ({brand.legalName}). All rights reserved.
+                © {new Date().getFullYear()} {brand.shortName} ({brand.legalName}). {t("rightsReserved")}
               </p>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-[var(--avasc-text-muted)]">
                 <Link href="/privacy" className="hover:text-[var(--avasc-gold-light)]">
-                  Privacy
+                  {t("privacy")}
                 </Link>
                 <Link href="/terms" className="hover:text-[var(--avasc-gold-light)]">
-                  Terms
+                  {t("terms")}
                 </Link>
                 <Link href="/database" className="hover:text-[var(--avasc-gold-light)]">
-                  Scam Database
+                  {t("scamDatabase")}
                 </Link>
               </div>
             </div>

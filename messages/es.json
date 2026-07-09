@@ -19,5 +19,53 @@
   "language": {
     "label": "Idioma",
     "select": "Seleccionar idioma"
+  },
+  "hero": {
+    "badge": "Sin fines de lucro · Privacidad primero",
+    "headline": "Denuncia estafas, busca patrones y <highlight>anticípate</highlight> al fraude",
+    "subtitle": "AVASC ayuda a las víctimas a comparar casos, seguir perfiles de estafas verificados y recibir alertas críticas, sin exponer datos sensibles en público.",
+    "reportScam": "Denunciar una estafa",
+    "searchDatabase": "Buscar en la base de datos",
+    "aboutAvasc": "Acerca de AVASC",
+    "alertsNote": "Las alertas en tiempo real y los destacados diarios están en el panel de la derecha. <link>Suscríbete por SMS y correo</link> en la sección de abajo.",
+    "alertsRegionLabel": "Alertas en tiempo real y noticias diarias",
+    "alertsPanelTitle": "Alertas en tiempo real y noticias diarias",
+    "alertsPanelSubtitle": "Advertencias críticas en cuanto surgen, más destacados diarios revisados por el equipo. Los indicadores son seguros para el público; sigue los enlaces para ver los perfiles completos."
+  },
+  "mission": {
+    "missionK": "Misión",
+    "missionV": "Inteligencia centrada en la víctima y orientación para la recuperación; no somos un bufete ni una agencia.",
+    "databaseK": "Base de datos",
+    "databaseV": "Indicadores anónimos y perfiles de estafas publicados que puedes buscar de forma segura.",
+    "alertsK": "Alertas",
+    "alertsV": "SMS en tiempo real para amenazas críticas, más resúmenes por correo diarios o semanales opcionales.",
+    "trustK": "Confianza",
+    "trustV": "Nunca pedimos contraseñas, números completos de tarjeta ni documentos de identidad en formularios públicos."
+  },
+  "footer": {
+    "tagline": "Denuncia centrada en la víctima, inteligencia de patrones y recursos de recuperación.",
+    "takeAction": "Actuar",
+    "reportScam": "Denunciar una estafa",
+    "scamDatabase": "Base de datos de estafas",
+    "alerts": "Alertas",
+    "recoveryCenter": "Centro de recuperación",
+    "resources": "Recursos",
+    "organization": "Organización",
+    "about": "Acerca de AVASC",
+    "stories": "Historias",
+    "guides": "Guías",
+    "scamNews": "Noticias de estafas",
+    "blog": "Blog",
+    "donate": "Donar",
+    "signIn": "Iniciar sesión",
+    "disclaimerTitle": "Aviso legal",
+    "disclaimerBody": "No somos un bufete de abogados, investigadores ni una agencia gubernamental. No garantizamos la recuperación de fondos. Las entradas públicas son anónimas: nunca compartas contraseñas, números completos de tarjeta ni documentos de identidad en formularios públicos. Ten cuidado con las estafas de recuperación que cobran por adelantado.",
+    "location": "Los Ángeles, California",
+    "registeredNonprofit": "Organización sin fines de lucro registrada en California",
+    "pending501c3": "501(c)(3) Pendiente",
+    "pending501c3Title": "La solicitud 501(c)(3) del IRS está pendiente. Las donaciones no son deducibles de impuestos por ahora. Consulta las preguntas frecuentes en la página de donaciones.",
+    "rightsReserved": "Todos los derechos reservados.",
+    "privacy": "Privacidad",
+    "terms": "Términos"
   }
 }

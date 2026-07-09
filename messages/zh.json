@@ -19,5 +19,53 @@
   "language": {
     "label": "语言",
     "select": "选择语言"
+  },
+  "hero": {
+    "badge": "非营利 · 隐私优先",
+    "headline": "举报诈骗、搜索模式，<highlight>抢先一步</highlight>防范欺诈",
+    "subtitle": "AVASC 帮助受害者比对案例、关注已核实的诈骗档案并接收紧急警报——无需在公开场合暴露敏感信息。",
+    "reportScam": "举报诈骗",
+    "searchDatabase": "搜索数据库",
+    "aboutAvasc": "关于 AVASC",
+    "alertsNote": "实时警报和每日精选在右侧面板中。<link>订阅短信和邮件</link>请见下方板块。",
+    "alertsRegionLabel": "实时警报与每日资讯",
+    "alertsPanelTitle": "实时警报与每日资讯",
+    "alertsPanelSubtitle": "紧急警告一经出现即时推送，另有工作人员审核的每日精选。指标均为公开安全信息；点击链接查看完整档案。"
+  },
+  "mission": {
+    "missionK": "使命",
+    "missionV": "以受害者为中心的情报与追损康复指导——我们不是律所或机构。",
+    "databaseK": "数据库",
+    "databaseV": "匿名指标和已发布的诈骗档案，可安全搜索。",
+    "alertsK": "警报",
+    "alertsV": "针对紧急威胁的实时短信，另有可选的每日或每周邮件摘要。",
+    "trustK": "信任",
+    "trustV": "我们绝不会在公开表单中索取密码、完整卡号或政府身份证件。"
+  },
+  "footer": {
+    "tagline": "以受害者为中心的举报、模式情报与追损康复资源。",
+    "takeAction": "立即行动",
+    "reportScam": "举报诈骗",
+    "scamDatabase": "诈骗数据库",
+    "alerts": "警报",
+    "recoveryCenter": "康复中心",
+    "resources": "资源",
+    "organization": "组织",
+    "about": "关于 AVASC",
+    "stories": "受害者故事",
+    "guides": "防骗指南",
+    "scamNews": "诈骗资讯",
+    "blog": "博客",
+    "donate": "捐赠",
+    "signIn": "登录",
+    "disclaimerTitle": "免责声明",
+    "disclaimerBody": "我们不是律师事务所、调查机构或政府部门，无法保证追回资金。公开条目均已匿名处理——切勿在公开表单中分享密码、完整卡号或身份证件。谨防收取预付费用的追损骗局。",
+    "location": "美国加州洛杉矶",
+    "registeredNonprofit": "加州注册非营利组织",
+    "pending501c3": "501(c)(3) 审批中",
+    "pending501c3Title": "IRS 501(c)(3) 资格申请正在审批中。目前捐款不可抵税。详情请见捐赠页面的常见问题。",
+    "rightsReserved": "保留所有权利。",
+    "privacy": "隐私",
+    "terms": "条款"
   }
 }
