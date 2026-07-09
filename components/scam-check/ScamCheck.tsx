@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ShieldCheck, Upload, X, ArrowRight, AlertTriangle, Eye } from "lucide-react";
 
@@ -9,7 +10,15 @@ import {
   MAX_IMAGES,
   RISK_META,
   type ScamCheckResult,
+  type ScamRisk,
 } from "@/lib/scam-check/types";
+
+const RISK_LABEL_KEY: Record<ScamRisk, "riskHigh" | "riskMedium" | "riskLow" | "riskUnclear"> = {
+  high: "riskHigh",
+  medium: "riskMedium",
+  low: "riskLow",
+  unclear: "riskUnclear",
+};
 
 type Attachment = { id: string; dataUrl: string; name: string };
 
@@ -50,6 +59,8 @@ async function fileToDataUrl(file: File): Promise<string> {
 }
 
 export function ScamCheck() {
+  const t = useTranslations("scamCheck");
+  const locale = useLocale();
   const [description, setDescription] = useState("");
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [loading, setLoading] = useState(false);
@@ -87,13 +98,14 @@ export function ScamCheck() {
         body: JSON.stringify({
           description: description.trim(),
           images: attachments.map((a) => a.dataUrl),
+          locale,
         }),
       });
       const data = (await res.json()) as { ok: true; result: ScamCheckResult } | { ok: false; error: string };
       if (data.ok) setResult(data.result);
       else setError(data.error);
     } catch {
-      setError("Something went wrong. Please try again in a moment.");
+      setError(t("genericError"));
     } finally {
       setLoading(false);
     }
@@ -103,16 +115,15 @@ export function ScamCheck() {
     <section className="rounded-3xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-bg-card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.35)] sm:p-8">
       <div className="flex items-center gap-2">
         <ShieldCheck className="h-6 w-6 text-[var(--avasc-gold-light)]" aria-hidden />
-        <h2 className="text-2xl font-semibold text-foreground">Scam Check</h2>
+        <h2 className="text-2xl font-semibold text-foreground">{t("title")}</h2>
       </div>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-        Tell us anything about your suspected scam case and we&apos;ll check it for you. You can describe
-        what happened or upload screenshots of the message, profile, or conversation.
+        {t("intro")}
       </p>
 
       <div className="mt-5">
         <label htmlFor="scam-check-input" className="sr-only">
-          Describe your suspected scam
+          {t("srLabel")}
         </label>
         <textarea
           id="scam-check-input"
@@ -120,7 +131,7 @@ export function ScamCheck() {
           onChange={(e) => setDescription(e.target.value.slice(0, MAX_DESC_CHARS))}
           disabled={loading}
           rows={4}
-          placeholder="e.g. I got a text saying my package couldn't be delivered and to pay a small fee at this link… is this real?"
+          placeholder={t("placeholder")}
           className="w-full rounded-2xl border border-[var(--avasc-border)] bg-[var(--avasc-bg)] px-4 py-3 text-sm text-foreground placeholder:text-[var(--avasc-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--avasc-gold)]"
         />
 
@@ -159,10 +170,10 @@ export function ScamCheck() {
             className="inline-flex items-center gap-2 rounded-full border border-[var(--avasc-border)] px-4 py-2 text-sm font-medium text-foreground transition hover:border-[var(--avasc-gold)]/50 disabled:opacity-50"
           >
             <Upload className="h-4 w-4" aria-hidden />
-            Add screenshots
+            {t("addScreenshots")}
           </button>
           <span className="text-xs text-[var(--avasc-text-muted)]">
-            {attachments.length}/{MAX_IMAGES} images · don&apos;t include passwords or full card numbers
+            {t("imagesHint", { count: attachments.length, max: MAX_IMAGES })}
           </span>
           <button
             type="button"
@@ -170,7 +181,7 @@ export function ScamCheck() {
             disabled={!canSubmit}
             className="ml-auto inline-flex items-center gap-2 rounded-full bg-[var(--avasc-gold)] px-6 py-2.5 text-sm font-semibold text-[var(--avasc-bg)] transition hover:brightness-110 disabled:opacity-50"
           >
-            {loading ? "Checking…" : "Check it"}
+            {loading ? t("checking") : t("checkIt")}
             {!loading ? <ArrowRight className="h-4 w-4" aria-hidden /> : null}
           </button>
         </div>
@@ -186,17 +197,18 @@ export function ScamCheck() {
 }
 
 function ScamCheckResultView({ result }: { result: ScamCheckResult }) {
+  const t = useTranslations("scamCheck");
   const meta = RISK_META[result.risk];
   return (
     <div className="mt-6 space-y-5 border-t border-[var(--avasc-border)] pt-5">
       <div className={`flex items-start gap-3 rounded-xl border px-4 py-3 ${TONE_CLASS[meta.tone] ?? TONE_CLASS.slate}`}>
         <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" aria-hidden />
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide">{meta.label}</p>
+          <p className="text-xs font-semibold uppercase tracking-wide">{t(RISK_LABEL_KEY[result.risk])}</p>
           <p className="mt-1 text-sm font-medium text-foreground">{result.verdict}</p>
           {result.scamType ? (
             <p className="mt-1 text-sm text-muted-foreground">
-              <span className="font-medium text-foreground">Looks like:</span> {result.scamType}
+              <span className="font-medium text-foreground">{t("looksLike")}</span> {result.scamType}
             </p>
           ) : null}
         </div>
@@ -206,7 +218,7 @@ function ScamCheckResultView({ result }: { result: ScamCheckResult }) {
         <div>
           <h3 className="flex items-center gap-2 text-sm font-semibold text-foreground">
             <Eye className="h-4 w-4 text-[var(--avasc-gold-light)]" aria-hidden />
-            What we noticed
+            {t("whatWeNoticed")}
           </h3>
           <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm text-muted-foreground marker:text-[var(--avasc-gold-light)]">
             {result.signals.map((s, i) => (
@@ -218,7 +230,7 @@ function ScamCheckResultView({ result }: { result: ScamCheckResult }) {
 
       {result.whatToDo.length > 0 ? (
         <div>
-          <h3 className="text-sm font-semibold text-foreground">What to do now</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t("whatToDoNow")}</h3>
           <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground marker:text-[var(--avasc-gold-light)]">
             {result.whatToDo.map((s, i) => (
               <li key={i}>{s}</li>
@@ -229,7 +241,7 @@ function ScamCheckResultView({ result }: { result: ScamCheckResult }) {
 
       {result.reporting.length > 0 ? (
         <div>
-          <h3 className="text-sm font-semibold text-foreground">Where to report</h3>
+          <h3 className="text-sm font-semibold text-foreground">{t("whereToReport")}</h3>
           <ul className="mt-2 space-y-1.5 text-sm">
             {result.reporting.map((r, i) => (
               <li key={i}>
@@ -259,19 +271,19 @@ function ScamCheckResultView({ result }: { result: ScamCheckResult }) {
           href="/report"
           className="rounded-full bg-[var(--avasc-gold)] px-5 py-2.5 text-sm font-semibold text-[var(--avasc-bg)] hover:brightness-110"
         >
-          Report this to AVASC
+          {t("reportCta")}
         </Link>
         <Link
           href="/recovery"
           className="rounded-full border border-[var(--avasc-border)] px-5 py-2.5 text-sm font-semibold text-foreground hover:border-[var(--avasc-gold)]/50"
         >
-          Recovery help
+          {t("recoveryCta")}
         </Link>
         <Link
           href="/resources"
           className="rounded-full border border-[var(--avasc-border)] px-5 py-2.5 text-sm font-semibold text-foreground hover:border-[var(--avasc-gold)]/50"
         >
-          More resources
+          {t("resourcesCta")}
         </Link>
       </div>
     </div>

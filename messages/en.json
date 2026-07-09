@@ -2065,5 +2065,27 @@
     "metaTitle": "AVASC — Anti-scam support & reporting",
     "metaDescription": "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
     "ogDescription": "Report scams, search indicators, compare patterns, and find recovery guidance — privacy-first."
+  },
+  "scamCheck": {
+    "title": "Scam Check",
+    "intro": "Tell us anything about your suspected scam case and we'll check it for you. You can describe what happened or upload screenshots of the message, profile, or conversation.",
+    "srLabel": "Describe your suspected scam",
+    "placeholder": "e.g. I got a text saying my package couldn't be delivered and to pay a small fee at this link… is this real?",
+    "addScreenshots": "Add screenshots",
+    "imagesHint": "{count}/{max} images · don't include passwords or full card numbers",
+    "checking": "Checking…",
+    "checkIt": "Check it",
+    "genericError": "Something went wrong. Please try again in a moment.",
+    "looksLike": "Looks like:",
+    "whatWeNoticed": "What we noticed",
+    "whatToDoNow": "What to do now",
+    "whereToReport": "Where to report",
+    "reportCta": "Report this to AVASC",
+    "recoveryCta": "Recovery help",
+    "resourcesCta": "More resources",
+    "riskHigh": "High risk — likely a scam",
+    "riskMedium": "Suspicious — be careful",
+    "riskLow": "Fewer red flags — still stay cautious",
+    "riskUnclear": "Not enough to tell yet"
   }
 }

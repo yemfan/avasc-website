@@ -11,9 +11,13 @@ const MAX_TOKENS = 2000;
 
 export type ScamCheckImage = { mediaType: "image/png" | "image/jpeg" | "image/gif" | "image/webp"; base64: string };
 
-export type ScamCheckInput = { description: string; images: ScamCheckImage[] };
+export type ScamCheckInput = { description: string; images: ScamCheckImage[]; language?: string };
 
-function buildSystemPrompt(): string {
+function buildSystemPrompt(language?: string): string {
+  const languageRule =
+    language && language !== "English"
+      ? `- LANGUAGE: Write ALL JSON string values (verdict, scamType, signals, whatToDo, reporting labels, caution) entirely in ${language}. Keep URLs and proper nouns (FBI IC3, FTC) unchanged.`
+      : "";
   return [
     "You are the Scam Check assistant for AVASC (Association of Victims Against Cyber-Scams), a nonprofit that helps fraud victims.",
     "A person shares a description and/or screenshots of a message, profile, website, or conversation they're unsure about. Assess how likely it is to be a scam and tell them what to do.",
@@ -32,9 +36,12 @@ function buildSystemPrompt(): string {
     "- Never ask them to share passwords, full card numbers, government IDs, or 2FA codes.",
     "- Point them to official reporting: FBI IC3 (https://www.ic3.gov) and the FTC (https://reportfraud.ftc.gov); add the relevant platform/bank where useful.",
     "- Base 'signals' ONLY on what they actually described or that is visible in the screenshots. Quote or paraphrase concrete details you saw. Do not invent facts.",
+    languageRule,
     "",
     'Return ONLY a JSON object: {"risk": "high"|"medium"|"low"|"unclear", "verdict": string, "scamType": string|null, "signals": string[], "whatToDo": string[], "reporting": [{"label": string, "url": string}], "caution": string}. The "caution" must include a brief reminder that this is an automated check that can be wrong. No text outside the JSON.',
-  ].join("\n");
+  ]
+    .filter(Boolean)
+    .join("\n");
 }
 
 function extractJson(text: string): unknown {
@@ -108,7 +115,7 @@ export async function analyzeScamCheck(input: ScamCheckInput): Promise<ScamCheck
   const message = await client.messages.create({
     model: MODEL,
     max_tokens: MAX_TOKENS,
-    system: buildSystemPrompt(),
+    system: buildSystemPrompt(input.language),
     messages: [{ role: "user", content }],
   });
 

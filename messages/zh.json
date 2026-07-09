@@ -2065,5 +2065,27 @@
     "metaTitle": "AVASC — 反诈骗支持与举报",
     "metaDescription": "反网络诈骗受害者协会（AVASC）：举报诈骗、搜索指标、比对模式并获取追损康复指导——隐私优先。",
     "ogDescription": "举报诈骗、搜索指标、比对模式并获取追损康复指导——隐私优先。"
+  },
+  "scamCheck": {
+    "title": "诈骗检测",
+    "intro": "把你怀疑的诈骗情况告诉我们，我们会为你检测。你可以描述发生了什么，或上传消息、资料页或对话的截图。",
+    "srLabel": "描述你怀疑的诈骗",
+    "placeholder": "例如：我收到一条短信说我的包裹无法投递，让我在这个链接上支付一笔小额费用……这是真的吗？",
+    "addScreenshots": "添加截图",
+    "imagesHint": "{count}/{max} 张图片 · 请勿包含密码或完整卡号",
+    "checking": "检测中…",
+    "checkIt": "检测",
+    "genericError": "出了点问题。请稍后再试。",
+    "looksLike": "看起来像：",
+    "whatWeNoticed": "我们注意到的",
+    "whatToDoNow": "现在该怎么做",
+    "whereToReport": "去哪里举报",
+    "reportCta": "向 AVASC 举报",
+    "recoveryCta": "追损帮助",
+    "resourcesCta": "更多资源",
+    "riskHigh": "高风险——很可能是骗局",
+    "riskMedium": "可疑——请当心",
+    "riskLow": "危险信号较少——仍需保持警惕",
+    "riskUnclear": "目前信息不足，难以判断"
   }
 }

@@ -5,6 +5,13 @@ import { analyzeScamCheck, type ScamCheckImage } from "@/lib/scam-check/analyze"
 import { MAX_DESC_CHARS, MAX_IMAGES, MAX_IMAGE_BASE64_CHARS } from "@/lib/scam-check/types";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
 
+/**
+ * Map app locale → language name for the model prompt. The client sends its
+ * locale in the body: this route is outside the next-intl middleware (API paths
+ * are unlocalized), so `getLocale()` here would always return the default.
+ */
+const LANGUAGE_NAME: Record<string, string> = { en: "English", es: "Spanish", zh: "Simplified Chinese" };
+
 // Vision + reasoning can take a little while; give it headroom.
 export const maxDuration = 60;
 
@@ -54,7 +61,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  const b = body as { description?: unknown; images?: unknown };
+  const b = body as { description?: unknown; images?: unknown; locale?: unknown };
+  const language = typeof b.locale === "string" ? LANGUAGE_NAME[b.locale] ?? "English" : "English";
   const description = typeof b.description === "string" ? b.description.trim().slice(0, MAX_DESC_CHARS) : "";
   const rawImages = Array.isArray(b.images) ? b.images.slice(0, MAX_IMAGES) : [];
   const images = rawImages.map(parseDataUrl).filter((x): x is ScamCheckImage => x !== null);
@@ -73,7 +81,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const result = await analyzeScamCheck({ description, images });
+    const result = await analyzeScamCheck({ description, images, language });
     if (!result) {
       return NextResponse.json(
         { ok: false, error: "We couldn't complete the check just now. Please try again or report your case." },

@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import { ClusterPublicStatus, type Prisma } from "@prisma/client";
 import { getLocale } from "next-intl/server";
 import { z } from "zod";
 
@@ -58,6 +58,34 @@ export async function localizeAlerts(items: PublicAlertItem[]): Promise<PublicAl
   }
 }
 
+/**
+ * Fallback daily cards from recent PUBLISHED scam clusters, so the homepage
+ * "daily" feed surfaces real intelligence instead of a "not yet posted" void
+ * when no DAILY alerts have been published. Real content, real dates.
+ */
+async function getRecentClustersAsDailyCards(limit = 3): Promise<PublicAlertItem[]> {
+  const clusters = await prisma.scamCluster.findMany({
+    where: { publicStatus: ClusterPublicStatus.PUBLISHED },
+    orderBy: { updatedAt: "desc" },
+    take: limit,
+    select: { id: true, slug: true, title: true, summary: true, riskLevel: true, updatedAt: true, reportCountSnapshot: true },
+  });
+  return clusters.map(
+    (c): PublicAlertItem => ({
+      id: c.id,
+      slug: c.slug,
+      type: "DAILY",
+      priority: normalizePriority(c.riskLevel),
+      title: c.title,
+      summary: c.summary,
+      shortText: c.title,
+      publishedAt: formatAlertDate(c.updatedAt),
+      clusterId: c.id,
+      stats: { newReports: c.reportCountSnapshot ?? undefined },
+    }),
+  );
+}
+
 export async function getHomepageAlertSectionData(): Promise<{
   realtimeAlerts: PublicAlertItem[];
   dailyAlerts: PublicAlertItem[];
@@ -67,7 +95,10 @@ export async function getHomepageAlertSectionData(): Promise<{
       getPublicAlerts({ type: "REALTIME", limit: 8, forHomepage: true }),
       getPublicAlerts({ type: "DAILY", limit: 6, forHomepage: true }),
     ]);
-    const [rt, daily] = await Promise.all([localizeAlerts(realtimeAlerts), localizeAlerts(dailyAlerts)]);
+    // No published daily alerts yet → surface recent published scam clusters so
+    // the feed is never an empty "not yet posted" state.
+    const dailyBase = dailyAlerts.length > 0 ? dailyAlerts : await getRecentClustersAsDailyCards(3).catch(() => []);
+    const [rt, daily] = await Promise.all([localizeAlerts(realtimeAlerts), localizeAlerts(dailyBase)]);
     return { realtimeAlerts: rt, dailyAlerts: daily };
   } catch (err) {
     console.error("[getHomepageAlertSectionData] failed, using empty alerts", err);

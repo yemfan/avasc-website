@@ -2065,5 +2065,27 @@
     "metaTitle": "AVASC — Apoyo y denuncia contra estafas",
     "metaDescription": "Asociación de Víctimas Contra las Ciberestafas (AVASC): denuncia estafas, busca indicadores, compara patrones y encuentra orientación para la recuperación — con la privacidad primero.",
     "ogDescription": "Denuncia estafas, busca indicadores, compara patrones y encuentra orientación para la recuperación — con la privacidad primero."
+  },
+  "scamCheck": {
+    "title": "Verificación de estafas",
+    "intro": "Cuéntanos lo que sea sobre tu posible caso de estafa y lo verificaremos por ti. Puedes describir lo que pasó o subir capturas de pantalla del mensaje, el perfil o la conversación.",
+    "srLabel": "Describe la posible estafa",
+    "placeholder": "p. ej., Recibí un mensaje que decía que no se pudo entregar mi paquete y que pagara una pequeña tarifa en este enlace… ¿es real?",
+    "addScreenshots": "Agregar capturas",
+    "imagesHint": "{count}/{max} imágenes · no incluyas contraseñas ni números completos de tarjeta",
+    "checking": "Verificando…",
+    "checkIt": "Verificar",
+    "genericError": "Algo salió mal. Vuelve a intentarlo en un momento.",
+    "looksLike": "Parece:",
+    "whatWeNoticed": "Lo que notamos",
+    "whatToDoNow": "Qué hacer ahora",
+    "whereToReport": "Dónde denunciar",
+    "reportCta": "Reportar esto a AVASC",
+    "recoveryCta": "Ayuda para recuperación",
+    "resourcesCta": "Más recursos",
+    "riskHigh": "Riesgo alto: probablemente una estafa",
+    "riskMedium": "Sospechoso: ten cuidado",
+    "riskLow": "Menos señales de alerta, pero mantén la cautela",
+    "riskUnclear": "Aún no hay suficiente para saberlo"
   }
 }
