@@ -7,6 +7,7 @@ import { StoryComments } from "@/components/stories/StoryComments";
 import { getPrisma } from "@/lib/prisma";
 import { getApprovedStoryBySlug } from "@/lib/public-stories";
 import { translateFields } from "@/lib/i18n/translate-content";
+import { localeAlternates } from "@/lib/i18n/alternates";
 import type { Locale } from "@/i18n/config";
 
 type PageProps = { params: Promise<{ slug: string }> };
@@ -44,6 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       card: "summary_large_image",
       images: ["/og-image.png"],
     },
+    alternates: localeAlternates(`/stories/${slug}`),
   };
 }
 

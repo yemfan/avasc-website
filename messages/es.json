@@ -2060,5 +2060,10 @@
     "submittedMsg": "Comentario enviado para moderación.",
     "failSubmit": "No se pudo enviar el comentario",
     "failGeneric": "No se pudo enviar el comentario."
+  },
+  "home": {
+    "metaTitle": "AVASC — Apoyo y denuncia contra estafas",
+    "metaDescription": "Asociación de Víctimas Contra las Ciberestafas (AVASC): denuncia estafas, busca indicadores, compara patrones y encuentra orientación para la recuperación — con la privacidad primero.",
+    "ogDescription": "Denuncia estafas, busca indicadores, compara patrones y encuentra orientación para la recuperación — con la privacidad primero."
   }
 }

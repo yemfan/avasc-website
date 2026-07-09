@@ -2060,5 +2060,10 @@
     "submittedMsg": "Comment submitted for moderation.",
     "failSubmit": "Failed to submit comment",
     "failGeneric": "Could not submit comment."
+  },
+  "home": {
+    "metaTitle": "AVASC — Anti-scam support & reporting",
+    "metaDescription": "Association of Victims Against Cyber-Scams (AVASC): report scams, search indicators, compare patterns, and find recovery guidance — privacy-first.",
+    "ogDescription": "Report scams, search indicators, compare patterns, and find recovery guidance — privacy-first."
   }
 }

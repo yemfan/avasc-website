@@ -9,6 +9,7 @@ import { RelatedPublicProfiles } from "@/components/public/RelatedPublicProfiles
 import { ReportMatchingCaseCTA } from "@/components/public/ReportMatchingCaseCTA";
 import { getPublicScamProfileBySlug } from "@/lib/public-database/public-profile";
 import { translateFields } from "@/lib/i18n/translate-content";
+import { localeAlternates } from "@/lib/i18n/alternates";
 import type { Locale } from "@/i18n/config";
 
 export const dynamic = "force-dynamic";
@@ -75,6 +76,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       images: ["/og-image.png"],
     },
+    alternates: localeAlternates(`/database/${slug}`),
   };
 }
 

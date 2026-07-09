@@ -2060,5 +2060,10 @@
     "submittedMsg": "评论已提交审核。",
     "failSubmit": "评论提交失败",
     "failGeneric": "无法提交评论。"
+  },
+  "home": {
+    "metaTitle": "AVASC — 反诈骗支持与举报",
+    "metaDescription": "反网络诈骗受害者协会（AVASC）：举报诈骗、搜索指标、比对模式并获取追损康复指导——隐私优先。",
+    "ogDescription": "举报诈骗、搜索指标、比对模式并获取追损康复指导——隐私优先。"
   }
 }
