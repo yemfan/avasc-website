@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+import { ClusterPublicStatus } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { listApprovedPublicStories } from "@/lib/public-stories/service";
 import { listPublishedBriefings } from "@/lib/briefings/queries";
 
@@ -175,6 +177,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   // Dynamic story pages
@@ -206,8 +220,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     briefingRoutes = [];
   }
 
-  // TODO: Add database profile routes once a listing function is available
-  // Database profiles are search-based, so a dedicated sitemap query would be needed
+  // Published scam-profile pages (/database/[slug]) — the core reference content.
+  let databaseRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const clusters = await prisma.scamCluster.findMany({
+      where: { publicStatus: ClusterPublicStatus.PUBLISHED },
+      select: { slug: true, updatedAt: true },
+      orderBy: { updatedAt: "desc" },
+      take: 1000,
+    });
+    databaseRoutes = clusters.map((c) => ({
+      url: `${baseUrl}/database/${c.slug}`,
+      lastModified: new Date(c.updatedAt),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // DB unavailable during build — skip dynamic routes
+    databaseRoutes = [];
+  }
 
-  return [...staticRoutes, ...storyRoutes, ...briefingRoutes];
+  return [...staticRoutes, ...databaseRoutes, ...storyRoutes, ...briefingRoutes];
 }
