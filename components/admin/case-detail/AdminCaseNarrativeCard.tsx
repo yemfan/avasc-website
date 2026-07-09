@@ -1,5 +1,7 @@
 import type { Case } from "@prisma/client";
 
+import { CaseReviewTranslate } from "@/components/admin/case-detail/CaseReviewTranslate";
+
 type AdminCaseNarrativeCardProps = {
   record: Case;
 };
@@ -30,6 +32,8 @@ export function AdminCaseNarrativeCard({ record }: AdminCaseNarrativeCardProps) 
             </p>
           </div>
         ) : null}
+
+        <CaseReviewTranslate caseId={record.id} language={record.language} />
       </div>
     </section>
   );

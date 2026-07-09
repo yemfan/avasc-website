@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getLocale } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { createCaseBodySchema } from "@/lib/report/case-submission";
@@ -71,8 +72,10 @@ export async function POST(req: Request) {
 
   if (authUser) await ensureAppUser(authUser);
 
+  const locale = await getLocale();
+
   try {
-    const { caseId } = await createCaseWithIntakeMatching(parsed.data, authUser);
+    const { caseId } = await createCaseWithIntakeMatching(parsed.data, authUser, locale);
     return NextResponse.json({ success: true, caseId });
   } catch (err) {
     console.error("[api/cases] POST failed", err);

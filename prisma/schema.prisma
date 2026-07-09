@@ -192,6 +192,8 @@ model Case {
   title                       String
   summary                     String
   fullNarrative               String?
+  /** BCP-ish app locale the victim reported in (en|es|zh). Source of truth for their own words + reply routing. */
+  language                    String?
   incidentStartDate           DateTime?
   incidentEndDate             DateTime?
   amountLost                  Decimal?       @db.Decimal(12, 2)

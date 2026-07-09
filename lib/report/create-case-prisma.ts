@@ -84,7 +84,8 @@ async function resolveReporterUserId(authUser: SupabaseAuthUser | null): Promise
  */
 export async function createCaseWithIntakeMatching(
   body: CreateCaseBody,
-  authUser: SupabaseAuthUser | null
+  authUser: SupabaseAuthUser | null,
+  language?: string | null
 ): Promise<{ caseId: string }> {
   const userId = await resolveReporterUserId(authUser);
 
@@ -108,6 +109,7 @@ export async function createCaseWithIntakeMatching(
         title: body.title.trim(),
         summary,
         fullNarrative: body.narrativePrivate.trim(),
+        language: language?.trim() || null,
         scamType: body.scamType.trim(),
         amountLost:
           body.amountCents != null
