@@ -1,10 +1,34 @@
 import { NextResponse } from "next/server";
+import { getLocale } from "next-intl/server";
 import { createPublicStorySchema, createStorySubmission, listApprovedPublicStories } from "@/lib/public-stories";
+import { translateMany } from "@/lib/i18n/translate-content";
+import type { Locale } from "@/i18n/config";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   const stories = await listApprovedPublicStories(50);
+
+  // Translate approved (public) story content for the active locale; cached.
+  try {
+    const locale = (await getLocale()) as Locale;
+    if (locale !== "en" && stories.length) {
+      const translated = await translateMany(
+        "story",
+        locale,
+        stories.map((s) => ({ id: s.id, fields: { title: s.title, body: s.body } })),
+      );
+      const localized = stories.map((s, i) => ({
+        ...s,
+        title: translated[i]?.title ?? s.title,
+        body: translated[i]?.body ?? s.body,
+      }));
+      return NextResponse.json({ success: true, stories: localized });
+    }
+  } catch {
+    // fall through to English
+  }
+
   return NextResponse.json({ success: true, stories });
 }
 

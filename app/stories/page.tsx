@@ -1,26 +1,22 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { StoriesClient } from "@/components/stories/StoriesClient";
 
-export const metadata: Metadata = {
-  title: "Scam Survivor Stories | AVASC",
-  description: "Read real stories from scam survivors and share your experience to help others.",
-  openGraph: {
-    title: "Scam Survivor Stories | AVASC",
-    description: "Read real stories from scam survivors and share your experience to help others.",
-    type: "website",
-    url: "https://www.avasc.org/stories",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/stories",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("stories");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: { title, description, type: "website", url: "https://www.avasc.org/stories", images: ["/og-image.png"] },
+    twitter: { card: "summary_large_image", images: ["/og-image.png"] },
+    alternates: { canonical: "/stories" },
+  };
+}
 
-export default function StoriesPage() {
+export default async function StoriesPage() {
+  const t = await getTranslations("stories");
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -44,10 +40,8 @@ export default function StoriesPage() {
     <div className="space-y-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Survivor stories</h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-          Comments and posts are moderated. External links are blocked in comments for safety.
-        </p>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">{t("pageTitle")}</h1>
+        <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{t("pageIntro")}</p>
       </div>
       <StoriesClient />
     </div>
