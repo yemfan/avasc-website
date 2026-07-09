@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils/cn";
 
 export type RiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
@@ -38,6 +39,7 @@ export function RiskBadge({
   className?: string;
 }) {
   const L = typeof level === "string" ? normalizeRiskLevel(level) : level;
+  const t = useTranslations("risk");
 
   return (
     <span
@@ -47,7 +49,7 @@ export function RiskBadge({
         className
       )}
     >
-      {L}
+      {t(L)}
     </span>
   );
 }

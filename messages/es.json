@@ -2021,5 +2021,44 @@
     "resourceIdentifyTitle": "Cómo identificar una estafa",
     "resourceIdentifyDesc": "Aprenda las señales de advertencia para prevenir futuras estafas.",
     "reportCta": "También puede <link>denunciar su estafa a AVASC</link> directamente. Nuestro equipo ayudará a garantizar que su caso quede documentado y que se identifiquen los patrones."
+  },
+  "recoveryAi": {
+    "title": "Plan de recuperación con IA: cuéntanos qué pasó",
+    "intro": "Describe tu situación y crearemos un plan de recuperación priorizado, paso a paso: qué hacer primero, dónde denunciar y cómo evitar que te vuelvan a atacar. Esto es orientación general, no asesoramiento legal ni financiero.",
+    "srLabel": "Describe qué pasó",
+    "placeholder": "p. ej., Transferí $5,000 a lo que creía que era el departamento antifraude de mi banco tras una llamada. Les di un código de un mensaje de texto. ¿Qué hago ahora?",
+    "warnPii": "No incluyas contraseñas, números completos de tarjeta, tu SSN ni códigos de verificación (2FA).",
+    "building": "Creando tu plan…",
+    "submitBtn": "Obtener mi plan de recuperación",
+    "genericError": "Algo salió mal. Vuelve a intentarlo en un momento."
+  },
+  "reportAi": {
+    "title": "Rellénalo con IA",
+    "intro": "Solo cuéntanos qué pasó con tus propias palabras y redactaremos los campos de abajo para que los revises y edites. No se envía nada hasta que pulses enviar.",
+    "placeholder": "p. ej., Recibí una llamada de alguien que decía ser del equipo antifraude de mi banco. Me hicieron transferir $5,000 a una «cuenta segura» y leerles un código de un mensaje de texto…",
+    "drafting": "Redactando…",
+    "draftBtn": "Redactar el formulario",
+    "filled": "Borrador añadido abajo: revísalo y edítalo antes de enviar.",
+    "warnPii": "No incluyas contraseñas, números completos de tarjeta ni códigos de verificación (2FA).",
+    "genericError": "Algo salió mal. Vuelve a intentarlo en un momento."
+  },
+  "risk": {
+    "label": "Riesgo:",
+    "LOW": "Bajo",
+    "MEDIUM": "Medio",
+    "HIGH": "Alto",
+    "CRITICAL": "Crítico"
+  },
+  "storyComments": {
+    "title": "Comentarios",
+    "moderationNote": "Los comentarios se moderan antes de aparecer públicamente. Evita compartir datos de contacto personales o bancarios.",
+    "noComments": "Aún no hay comentarios aprobados.",
+    "addComment": "Añade un comentario",
+    "placeholder": "Comparte con apoyo. No se permiten enlaces en los comentarios.",
+    "submitting": "Enviando...",
+    "submitBtn": "Enviar comentario",
+    "submittedMsg": "Comentario enviado para moderación.",
+    "failSubmit": "No se pudo enviar el comentario",
+    "failGeneric": "No se pudo enviar el comentario."
   }
 }

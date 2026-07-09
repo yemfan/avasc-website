@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { LifeBuoy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import { MAX_SITUATION_CHARS, type Guidance } from "@/lib/guides/types";
  * description. On-demand, not persisted.
  */
 export function RecoveryAi() {
+  const t = useTranslations("recoveryAi");
   const [situation, setSituation] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export function RecoveryAi() {
       if (data.ok) setGuidance(data.guidance);
       else setError(data.error);
     } catch {
-      setError("Something went wrong. Please try again in a moment.");
+      setError(t("genericError"));
     } finally {
       setLoading(false);
     }
@@ -44,17 +46,13 @@ export function RecoveryAi() {
     <section className="rounded-2xl border border-[var(--avasc-gold)]/30 bg-[var(--avasc-bg-card)] p-6 shadow-sm">
       <div className="flex items-center gap-2">
         <LifeBuoy className="h-5 w-5 text-[var(--avasc-gold-light)]" aria-hidden />
-        <h2 className="text-lg font-semibold text-foreground">AI recovery plan — tell us what happened</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("title")}</h2>
       </div>
-      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Describe your situation and we&apos;ll build a prioritized, step-by-step recovery plan —
-        what to do first, where to report, and how to avoid being targeted again. This is general
-        guidance, not legal or financial advice.
-      </p>
+      <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{t("intro")}</p>
 
       <div className="mt-4">
         <label htmlFor="recovery-situation" className="sr-only">
-          Describe what happened
+          {t("srLabel")}
         </label>
         <textarea
           id="recovery-situation"
@@ -62,13 +60,11 @@ export function RecoveryAi() {
           onChange={(e) => setSituation(e.target.value.slice(0, MAX_SITUATION_CHARS))}
           disabled={loading}
           rows={5}
-          placeholder="e.g. I wired $5,000 to what I thought was my bank's fraud department after a call. I gave them a code from a text. What do I do now?"
+          placeholder={t("placeholder")}
           className="w-full rounded-xl border border-[var(--avasc-border)] bg-[var(--avasc-bg)] px-4 py-3 text-sm text-foreground placeholder:text-[var(--avasc-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--avasc-gold)]"
         />
         <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-          <p className="text-xs text-[var(--avasc-text-muted)]">
-            Do not include passwords, full card numbers, your SSN, or 2FA codes.
-          </p>
+          <p className="text-xs text-[var(--avasc-text-muted)]">{t("warnPii")}</p>
           <span className="text-xs text-[var(--avasc-text-muted)]">
             {situation.length}/{MAX_SITUATION_CHARS}
           </span>
@@ -77,7 +73,7 @@ export function RecoveryAi() {
 
       <div className="mt-4">
         <Button type="button" variant="gold" onClick={onSubmit} disabled={loading || tooShort}>
-          {loading ? "Building your plan…" : "Get my recovery plan"}
+          {loading ? t("building") : t("submitBtn")}
         </Button>
       </div>
 

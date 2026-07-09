@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { describeRiskLevelForAudience } from "@/lib/public-database/public-indicator-display";
 import type { PublicRiskLevel } from "@/lib/public-database/public-profile-types";
@@ -17,13 +18,14 @@ export function RiskBadge({
   level: PublicRiskLevel;
   className?: string;
 }) {
+  const t = useTranslations("risk");
   return (
     <Badge
       variant={VARIANT[level]}
       className={cn("font-semibold tracking-wide", className)}
       title={describeRiskLevelForAudience(level)}
     >
-      Risk: {level}
+      {t("label")} {t(level)}
     </Badge>
   );
 }

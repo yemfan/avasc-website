@@ -2021,5 +2021,44 @@
     "resourceIdentifyTitle": "How to Identify a Scam",
     "resourceIdentifyDesc": "Learn warning signs to prevent future scams.",
     "reportCta": "You can also <link>report your scam to AVASC</link> directly. Our team will help ensure your case is documented and patterns are identified."
+  },
+  "recoveryAi": {
+    "title": "AI recovery plan — tell us what happened",
+    "intro": "Describe your situation and we'll build a prioritized, step-by-step recovery plan — what to do first, where to report, and how to avoid being targeted again. This is general guidance, not legal or financial advice.",
+    "srLabel": "Describe what happened",
+    "placeholder": "e.g. I wired $5,000 to what I thought was my bank's fraud department after a call. I gave them a code from a text. What do I do now?",
+    "warnPii": "Do not include passwords, full card numbers, your SSN, or 2FA codes.",
+    "building": "Building your plan…",
+    "submitBtn": "Get my recovery plan",
+    "genericError": "Something went wrong. Please try again in a moment."
+  },
+  "reportAi": {
+    "title": "Fill this in with AI",
+    "intro": "Just tell us what happened in your own words and we'll draft the fields below for you to review and edit. Nothing is submitted until you press submit.",
+    "placeholder": "e.g. I got a call from someone saying they were my bank's fraud team. They had me move $5,000 to a 'safe account' and read them a code from a text…",
+    "drafting": "Drafting…",
+    "draftBtn": "Draft the form",
+    "filled": "Draft added below — please review and edit before submitting.",
+    "warnPii": "Don't include passwords, full card numbers, or 2FA codes.",
+    "genericError": "Something went wrong. Please try again in a moment."
+  },
+  "risk": {
+    "label": "Risk:",
+    "LOW": "Low",
+    "MEDIUM": "Medium",
+    "HIGH": "High",
+    "CRITICAL": "Critical"
+  },
+  "storyComments": {
+    "title": "Comments",
+    "moderationNote": "Comments are moderated before appearing publicly. Please avoid sharing personal contact or banking details.",
+    "noComments": "No approved comments yet.",
+    "addComment": "Add a comment",
+    "placeholder": "Share supportively. Links are not allowed in comments.",
+    "submitting": "Submitting...",
+    "submitBtn": "Submit comment",
+    "submittedMsg": "Comment submitted for moderation.",
+    "failSubmit": "Failed to submit comment",
+    "failGeneric": "Could not submit comment."
   }
 }

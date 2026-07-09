@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 
 type PublicStoryComment = {
   id: string;
@@ -9,7 +10,11 @@ type PublicStoryComment = {
   authorLabel: string;
 };
 
+const DATE_LOCALE: Record<string, string> = { en: "en-US", es: "es-ES", zh: "zh-CN" };
+
 export function StoryComments({ slug }: { slug: string }) {
+  const t = useTranslations("storyComments");
+  const locale = useLocale();
   const [comments, setComments] = useState<PublicStoryComment[]>([]);
   const [body, setBody] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,12 +44,12 @@ export function StoryComments({ slug }: { slug: string }) {
         body: JSON.stringify({ body }),
       });
       const json = (await res.json()) as { success?: boolean; error?: string };
-      if (!res.ok || !json.success) throw new Error(json.error ?? "Failed to submit comment");
+      if (!res.ok || !json.success) throw new Error(json.error ?? t("failSubmit"));
       setBody("");
-      setMessage("Comment submitted for moderation.");
+      setMessage(t("submittedMsg"));
       await loadComments();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not submit comment.");
+      setError(err instanceof Error ? err.message : t("failGeneric"));
     } finally {
       setLoading(false);
     }
@@ -52,19 +57,17 @@ export function StoryComments({ slug }: { slug: string }) {
 
   return (
     <section className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Comments</h2>
-      <p className="text-sm text-slate-600">
-        Comments are moderated before appearing publicly. Please avoid sharing personal contact or banking details.
-      </p>
+      <h2 className="text-lg font-semibold text-slate-900">{t("title")}</h2>
+      <p className="text-sm text-slate-600">{t("moderationNote")}</p>
 
       {comments.length === 0 ? (
-        <p className="text-sm text-slate-600">No approved comments yet.</p>
+        <p className="text-sm text-slate-600">{t("noComments")}</p>
       ) : (
         <ul className="space-y-3">
           {comments.map((c) => (
             <li key={c.id} className="rounded-lg border border-slate-100 bg-slate-50 px-4 py-3">
               <p className="text-xs text-slate-500">
-                {c.authorLabel} · {new Date(c.createdAt).toLocaleDateString()}
+                {c.authorLabel} · {new Date(c.createdAt).toLocaleDateString(DATE_LOCALE[locale] ?? "en-US")}
               </p>
               <p className="mt-1 whitespace-pre-wrap text-sm text-slate-800">{c.body}</p>
             </li>
@@ -73,7 +76,7 @@ export function StoryComments({ slug }: { slug: string }) {
       )}
 
       <form onSubmit={onSubmit} className="space-y-3 border-t border-slate-100 pt-3">
-        <label className="block text-sm font-medium text-slate-800">Add a comment</label>
+        <label className="block text-sm font-medium text-slate-800">{t("addComment")}</label>
         <textarea
           className="min-h-[96px] w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
           value={body}
@@ -81,7 +84,7 @@ export function StoryComments({ slug }: { slug: string }) {
           required
           minLength={2}
           maxLength={4000}
-          placeholder="Share supportively. Links are not allowed in comments."
+          placeholder={t("placeholder")}
         />
         {error ? <p className="text-sm text-red-700">{error}</p> : null}
         {message ? <p className="text-sm text-emerald-700">{message}</p> : null}
@@ -90,7 +93,7 @@ export function StoryComments({ slug }: { slug: string }) {
           disabled={loading}
           className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
         >
-          {loading ? "Submitting..." : "Submit comment"}
+          {loading ? t("submitting") : t("submitBtn")}
         </button>
       </form>
     </section>
