@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Prisma } from "@prisma/client";
 
 type ClusterRow = Prisma.ScamClusterGetPayload<{

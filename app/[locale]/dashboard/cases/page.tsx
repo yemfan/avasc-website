@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { CaseStatus } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { CaseCard } from "@/components/victim-dashboard/CaseCard";

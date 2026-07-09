@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { requireAuthUser, getUserCases } from "@/lib/victim-dashboard";
 import { StoryEditorForm } from "../StoryEditorForm";
 

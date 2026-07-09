@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { FileWarning } from "lucide-react";
 import type { EvidenceFile } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";

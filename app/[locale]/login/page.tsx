@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { SocialAuthButtons } from "@/components/auth/SocialAuthButtons";
 

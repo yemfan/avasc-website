@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 import { retryFailedImportFormAction } from "@/lib/admin/avasc-admin-import-actions";
 import { getAdminImportsListData } from "@/lib/admin/avasc-import-approval-actions";

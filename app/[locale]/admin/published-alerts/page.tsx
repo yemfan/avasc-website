@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 import { AdminBreadcrumbs } from "@/components/admin/AdminBreadcrumbs";
 import { Badge } from "@/components/ui/badge";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { CommentModerationStatus, type Prisma } from "@prisma/client";
 import { getPrisma } from "@/lib/prisma";
 import { AdminBreadcrumbs } from "@/components/admin/AdminBreadcrumbs";

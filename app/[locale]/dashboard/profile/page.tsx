@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { SafeInfoAlert } from "@/components/victim-dashboard/SafeInfoAlert";
 import { requireAuthUser } from "@/lib/victim-dashboard";

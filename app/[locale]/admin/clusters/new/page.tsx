@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { redirect } from "next/navigation";
 import { PageHeader } from "@/components/avasc/PageHeader";
 import { Button } from "@/components/ui/button";

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { EmptyState } from "@/components/avasc/EmptyState";
 import { PageHeader } from "@/components/avasc/PageHeader";
 import { StatCard } from "@/components/avasc/StatCard";

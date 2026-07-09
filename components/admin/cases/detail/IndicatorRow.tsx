@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Search } from "lucide-react";
 import type { CaseIndicator } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";

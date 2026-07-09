@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { ExternalLink } from "lucide-react";
 import { AdminBreadcrumbs } from "@/components/admin/AdminBreadcrumbs";
 import { Button } from "@/components/ui/button";

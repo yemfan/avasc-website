@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { usePathname } from "@/i18n/navigation";
 import { avascNavItemClass } from "@/components/avasc/nav-link-styles";
 import { cn } from "@/lib/utils/cn";
 

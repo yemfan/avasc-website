@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import type { Case } from "@prisma/client";
 
 type AdminCaseHeaderProps = {

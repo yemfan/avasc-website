@@ -1,5 +1,5 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Eye, EyeOff, Radio, Newspaper, Home, Save } from "lucide-react";
 
 import {

@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { Link, redirect } from "@/i18n/navigation";
+import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ensureAppUser } from "@/lib/ensure-user";
 import { getServiceSupabase } from "@/lib/supabase/service-role";
@@ -7,7 +7,7 @@ import { getCaseDetailById } from "@/lib/db/case-detail";
 
 export const dynamic = "force-dynamic";
 
-type PageProps = { params: Promise<{ id: string }> };
+type PageProps = { params: Promise<{ id: string; locale: string }> };
 
 type EntityRow = {
   id: string;
@@ -18,12 +18,12 @@ type EntityRow = {
 };
 
 export default async function CaseDetailPage({ params }: PageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect({ href: "/login", locale });
   await ensureAppUser(user);
 
   const db = getServiceSupabase();
@@ -35,7 +35,7 @@ export default async function CaseDetailPage({ params }: PageProps) {
 
   const allowed =
     c.reporterUserId === user.id || appUser?.role === "admin" || appUser?.role === "moderator";
-  if (!allowed) redirect("/dashboard");
+  if (!allowed) redirect({ href: "/dashboard", locale });
 
   const indicators = c.indicators as { id: string; type: string; value: string; rawValue: string | null }[];
   const evidence = c.evidence as { id: string; mimeType: string; sizeBytes: number }[];
