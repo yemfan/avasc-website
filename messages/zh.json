@@ -132,5 +132,22 @@
     "protectYourself": "保护自己",
     "sources": "来源",
     "detailDisclaimer": "本简报是面向公众安全的情报：仅呈现已经公开的指标和模式，并附有防护指导，绝不为诈骗者提供操作手册。AVASC 不是律师事务所、调查机构或政府部门，本文不构成法律或财务建议。如果您已成为诈骗目标，可以<report>举报诈骗</report>或了解<recovery>追损康复资源</recovery>。"
+  },
+  "alerts": {
+    "liveIntelligence": "实时情报",
+    "defaultTitle": "AVASC 警报",
+    "defaultSubtitle": "实时诈骗情报，包含即时警告与每日分析。",
+    "subscribe": "订阅警报",
+    "liveAlerts": "实时警报",
+    "liveAlertsCaption": "紧急及高优先级诈骗活动",
+    "allQuiet": "一切平静——目前没有紧急警报。",
+    "realtimeExplain": "实时警报仅在出现高可信度的紧急诈骗活动时触发。<sub>订阅</sub>即可在发布的第一时间收到。",
+    "dailyNotPosted": "今日每日简报尚未发布。",
+    "dailyExplain": "AVASC 在工作日发布每日诈骗模式简报。<sub>订阅邮件</sub>即可每天在收件箱收到当日简报，或<report>举报诈骗</report>为下一期作出贡献。",
+    "dailyAlert": "每日警报",
+    "viewDetails": "查看详情",
+    "newReports": "{count} 份新报告",
+    "estimatedLoss": "预计损失 {amount}",
+    "realtimeAlertStrip": "AVASC 实时警报"
   }
 }

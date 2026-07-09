@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { AlertTriangle, Bell, ChevronRight, Radio, ShieldAlert } from "lucide-react";
 
 import type {
@@ -51,8 +52,8 @@ function alertHref(item: AlertItem) {
 export function AvascAlertSection({
   realtimeAlerts,
   dailyAlerts,
-  title = "AVASC Alerts",
-  subtitle = "Live scam intelligence with realtime warnings and daily analysis.",
+  title,
+  subtitle,
   hideSubscribeCta = false,
   compact = false,
 }: {
@@ -65,6 +66,9 @@ export function AvascAlertSection({
   /** Tighter typography and single-column daily cards (e.g. homepage hero sidebar). */
   compact?: boolean;
 }) {
+  const t = useTranslations("alerts");
+  const heading = title ?? t("defaultTitle");
+  const sub = subtitle ?? t("defaultSubtitle");
   return (
     <section className={compact ? "min-w-0 space-y-4" : "space-y-6"}>
       <div
@@ -77,7 +81,7 @@ export function AvascAlertSection({
         <div>
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--avasc-gold)]/30 bg-[var(--avasc-gold)]/[0.08] px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--avasc-gold-light)]">
             <Bell className="h-3.5 w-3.5" />
-            Live intelligence
+            {t("liveIntelligence")}
           </div>
           <h2
             className={
@@ -86,7 +90,7 @@ export function AvascAlertSection({
                 : "font-display mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl"
             }
           >
-            {title}
+            {heading}
           </h2>
           <p
             className={
@@ -95,7 +99,7 @@ export function AvascAlertSection({
                 : "mt-3 max-w-3xl text-base leading-relaxed text-[var(--avasc-text-secondary)]"
             }
           >
-            {subtitle}
+            {sub}
           </p>
         </div>
 
@@ -104,7 +108,7 @@ export function AvascAlertSection({
             href="/alerts/subscribe"
             className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[var(--avasc-gold-dark)] via-[var(--avasc-gold)] to-[var(--avasc-gold-light)] px-5 py-3 text-sm font-semibold text-[#050A14] shadow-[0_12px_36px_-14px_rgba(201,148,60,0.55)] transition hover:brightness-[1.06]"
           >
-            Subscribe to alerts
+            {t("subscribe")}
             <ChevronRight className="h-4 w-4" />
           </Link>
         )}
@@ -117,6 +121,7 @@ export function AvascAlertSection({
 }
 
 export function RealtimeAlertTicker({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
+  const t = useTranslations("alerts");
   if (!items.length) {
     // TOM MJ-001: the original "No active realtime alerts right now"
     // presented as a void and undermined the "pattern intelligence" value
@@ -133,14 +138,16 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
       >
         <div className="flex items-center gap-2">
           <span className="inline-flex h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
-          <span className="font-medium text-white">All quiet — no current critical alerts.</span>
+          <span className="font-medium text-white">{t("allQuiet")}</span>
         </div>
         <p className="mt-2 text-xs leading-relaxed text-[var(--avasc-text-muted)]">
-          REALTIME alerts fire only for high-confidence CRITICAL scam activity.{" "}
-          <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
-            Subscribe
-          </Link>{" "}
-          to get them the moment they publish.
+          {t.rich("realtimeExplain", {
+            sub: (chunks) => (
+              <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
       </div>
     );
@@ -179,7 +186,7 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
           }
         >
           <Radio className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
-          LIVE ALERTS
+          {t("liveAlerts")}
         </div>
         <div
           className={cx(
@@ -187,7 +194,7 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
             compact ? "line-clamp-2 text-[10px] sm:line-clamp-none sm:text-xs" : "text-xs"
           )}
         >
-          Critical and high-priority scam activity
+          {t("liveAlertsCaption")}
         </div>
       </div>
 
@@ -216,6 +223,7 @@ export function RealtimeAlertTicker({ items, compact = false }: { items: AlertIt
 }
 
 export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[]; compact?: boolean }) {
+  const t = useTranslations("alerts");
   if (!items.length) {
     // TOM MJ-001: same reframe as RealtimeAlertTicker. Previous "No daily
     // alerts published yet" read as broken. Now conveys the editorial cadence
@@ -228,17 +236,20 @@ export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[];
             : "rounded-2xl border border-white/[0.06] bg-[var(--avasc-bg-card)]/80 p-6 text-sm text-[var(--avasc-text-secondary)] backdrop-blur-sm"
         }
       >
-        <div className="font-medium text-white">Daily briefing not yet posted for today.</div>
+        <div className="font-medium text-white">{t("dailyNotPosted")}</div>
         <p className="mt-2 text-xs leading-relaxed text-[var(--avasc-text-muted)]">
-          AVASC publishes daily scam-pattern briefings on weekdays.{" "}
-          <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
-            Subscribe by email
-          </Link>{" "}
-          to get each day&apos;s brief in your inbox, or{" "}
-          <Link href="/report" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
-            report a scam
-          </Link>{" "}
-          to contribute to the next one.
+          {t.rich("dailyExplain", {
+            sub: (chunks) => (
+              <Link href="/alerts" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+                {chunks}
+              </Link>
+            ),
+            report: (chunks) => (
+              <Link href="/report" className="underline decoration-[var(--avasc-gold)]/60 underline-offset-2 hover:text-[var(--avasc-gold-light)]">
+                {chunks}
+              </Link>
+            ),
+          })}
         </p>
       </div>
     );
@@ -254,6 +265,7 @@ export function DailyAlertFeed({ items, compact = false }: { items: AlertItem[];
 }
 
 export function DailyAlertCard({ item, compact = false }: { item: AlertItem; compact?: boolean }) {
+  const t = useTranslations("alerts");
   const styles = priorityClasses(item.priority);
 
   return (
@@ -274,7 +286,7 @@ export function DailyAlertCard({ item, compact = false }: { item: AlertItem; com
           }
         >
           <ShieldAlert className={compact ? "h-3 w-3" : "h-3.5 w-3.5"} />
-          Daily Alert
+          {t("dailyAlert")}
         </div>
         <span
           className={cx(
@@ -296,10 +308,10 @@ export function DailyAlertCard({ item, compact = false }: { item: AlertItem; com
 
       <div className={compact ? "mt-3 flex flex-wrap gap-1.5" : "mt-5 flex flex-wrap gap-2"}>
         {typeof item.stats?.newReports === "number" ? (
-          <MetaPill>{item.stats.newReports} new reports</MetaPill>
+          <MetaPill>{t("newReports", { count: item.stats.newReports })}</MetaPill>
         ) : null}
         {typeof item.stats?.amountLostUsd === "number" ? (
-          <MetaPill>${item.stats.amountLostUsd.toLocaleString()} estimated loss</MetaPill>
+          <MetaPill>{t("estimatedLoss", { amount: `$${item.stats.amountLostUsd.toLocaleString()}` })}</MetaPill>
         ) : null}
         {item.stats?.indicatorLabel ? <MetaPill>{item.stats.indicatorLabel}</MetaPill> : null}
       </div>
@@ -316,7 +328,7 @@ export function DailyAlertCard({ item, compact = false }: { item: AlertItem; com
           href={alertHref(item)}
           className={compact ? "inline-flex items-center text-xs font-medium text-[var(--avasc-gold-light)] hover:text-white" : "inline-flex items-center text-sm font-medium text-[var(--avasc-gold-light)] hover:text-white"}
         >
-          View details
+          {t("viewDetails")}
           <ChevronRight className={compact ? "ml-0.5 h-3.5 w-3.5" : "ml-1 h-4 w-4"} />
         </Link>
       </div>
@@ -325,6 +337,7 @@ export function DailyAlertCard({ item, compact = false }: { item: AlertItem; com
 }
 
 export function AlertStripCompact({ items }: { items: AlertItem[] }) {
+  const t = useTranslations("alerts");
   if (!items.length) return null;
 
   return (
@@ -332,7 +345,7 @@ export function AlertStripCompact({ items }: { items: AlertItem[] }) {
       <div className="flex flex-wrap items-center gap-3">
         <span className="inline-flex items-center gap-2 font-semibold">
           <AlertTriangle className="h-4 w-4" />
-          AVASC Realtime Alert
+          {t("realtimeAlertStrip")}
         </span>
         <Link href={alertHref(items[0])} className="truncate hover:underline">
           {items[0].shortText}

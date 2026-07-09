@@ -132,5 +132,22 @@
     "protectYourself": "Protégete",
     "sources": "Fuentes",
     "detailDisclaimer": "Este boletín es información segura para el público: muestra solo indicadores y patrones que ya son públicos, junto con orientación de protección, nunca un manual para estafadores. AVASC no es un bufete de abogados, investigador ni una agencia gubernamental, y esto no es asesoramiento legal ni financiero. Si has sido blanco de una estafa, puedes <report>denunciar una estafa</report> o explorar <recovery>recursos de recuperación</recovery>."
+  },
+  "alerts": {
+    "liveIntelligence": "Inteligencia en vivo",
+    "defaultTitle": "Alertas de AVASC",
+    "defaultSubtitle": "Inteligencia de estafas en vivo con advertencias en tiempo real y análisis diario.",
+    "subscribe": "Suscribirse a las alertas",
+    "liveAlerts": "ALERTAS EN VIVO",
+    "liveAlertsCaption": "Actividad de estafas crítica y de alta prioridad",
+    "allQuiet": "Todo tranquilo: no hay alertas críticas actuales.",
+    "realtimeExplain": "Las alertas en TIEMPO REAL se activan solo para actividad de estafas CRÍTICA de alta confianza. <sub>Suscríbete</sub> para recibirlas en cuanto se publiquen.",
+    "dailyNotPosted": "El resumen diario aún no se ha publicado hoy.",
+    "dailyExplain": "AVASC publica resúmenes diarios de patrones de estafas los días laborables. <sub>Suscríbete por correo</sub> para recibir el resumen de cada día en tu bandeja de entrada, o <report>denuncia una estafa</report> para contribuir al próximo.",
+    "dailyAlert": "Alerta diaria",
+    "viewDetails": "Ver detalles",
+    "newReports": "{count} nuevos reportes",
+    "estimatedLoss": "{amount} de pérdida estimada",
+    "realtimeAlertStrip": "Alerta en tiempo real de AVASC"
   }
 }

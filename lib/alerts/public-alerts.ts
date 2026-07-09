@@ -1,8 +1,11 @@
 import type { Prisma } from "@prisma/client";
+import { getLocale } from "next-intl/server";
 import { z } from "zod";
 
 import { buildPublicAlertWhere } from "@/lib/alerts/build-public-alert-where";
 import { prisma } from "@/lib/prisma";
+import { translateMany } from "@/lib/i18n/translate-content";
+import type { Locale } from "@/i18n/config";
 
 export type AlertPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 export type AlertType = "REALTIME" | "DAILY";
@@ -30,6 +33,31 @@ const publicAlertsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(50).optional().default(10),
 });
 
+/**
+ * Translate alert content (title/summary/shortText) for the active locale.
+ * Public, already-anonymized fields only; cached + fails open to English.
+ */
+export async function localizeAlerts(items: PublicAlertItem[]): Promise<PublicAlertItem[]> {
+  if (items.length === 0) return items;
+  try {
+    const locale = (await getLocale()) as Locale;
+    if (locale === "en") return items;
+    const translated = await translateMany(
+      "alert",
+      locale,
+      items.map((a) => ({ id: a.id, fields: { title: a.title, summary: a.summary, shortText: a.shortText } })),
+    );
+    return items.map((a, i) => ({
+      ...a,
+      title: translated[i]?.title ?? a.title,
+      summary: translated[i]?.summary ?? a.summary,
+      shortText: translated[i]?.shortText ?? a.shortText,
+    }));
+  } catch {
+    return items; // no request context / translation error → English
+  }
+}
+
 export async function getHomepageAlertSectionData(): Promise<{
   realtimeAlerts: PublicAlertItem[];
   dailyAlerts: PublicAlertItem[];
@@ -39,7 +67,8 @@ export async function getHomepageAlertSectionData(): Promise<{
       getPublicAlerts({ type: "REALTIME", limit: 8, forHomepage: true }),
       getPublicAlerts({ type: "DAILY", limit: 6, forHomepage: true }),
     ]);
-    return { realtimeAlerts, dailyAlerts };
+    const [rt, daily] = await Promise.all([localizeAlerts(realtimeAlerts), localizeAlerts(dailyAlerts)]);
+    return { realtimeAlerts: rt, dailyAlerts: daily };
   } catch (err) {
     console.error("[getHomepageAlertSectionData] failed, using empty alerts", err);
     return { realtimeAlerts: [], dailyAlerts: [] };

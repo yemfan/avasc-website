@@ -132,5 +132,22 @@
     "protectYourself": "Protect yourself",
     "sources": "Sources",
     "detailDisclaimer": "This briefing is public-safe intelligence: it surfaces only indicators and patterns that are already public, alongside protective guidance — never a playbook for scammers. AVASC is not a law firm, investigator, or government agency, and this is not legal or financial advice. If you've been targeted, you can <report>report a scam</report> or explore <recovery>recovery resources</recovery>."
+  },
+  "alerts": {
+    "liveIntelligence": "Live intelligence",
+    "defaultTitle": "AVASC Alerts",
+    "defaultSubtitle": "Live scam intelligence with realtime warnings and daily analysis.",
+    "subscribe": "Subscribe to alerts",
+    "liveAlerts": "LIVE ALERTS",
+    "liveAlertsCaption": "Critical and high-priority scam activity",
+    "allQuiet": "All quiet — no current critical alerts.",
+    "realtimeExplain": "REALTIME alerts fire only for high-confidence CRITICAL scam activity. <sub>Subscribe</sub> to get them the moment they publish.",
+    "dailyNotPosted": "Daily briefing not yet posted for today.",
+    "dailyExplain": "AVASC publishes daily scam-pattern briefings on weekdays. <sub>Subscribe by email</sub> to get each day's brief in your inbox, or <report>report a scam</report> to contribute to the next one.",
+    "dailyAlert": "Daily Alert",
+    "viewDetails": "View details",
+    "newReports": "{count} new reports",
+    "estimatedLoss": "{amount} estimated loss",
+    "realtimeAlertStrip": "AVASC Realtime Alert"
   }
 }
