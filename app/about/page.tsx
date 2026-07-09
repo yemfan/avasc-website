@@ -1,31 +1,37 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
 import { brand, brandImages } from "@/lib/brand-images";
 
-export const metadata: Metadata = {
-  title: "About AVASC",
-  description:
-    "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
-  openGraph: {
-    title: "About AVASC",
-    description:
-      "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
-    type: "website",
-    url: "https://www.avasc.org/about",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/about",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("about");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: "https://www.avasc.org/about",
+      images: ["/og-image.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: "/about",
+    },
+  };
+}
 
 export default function AboutPage() {
+  const t = useTranslations("about");
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -60,76 +66,77 @@ export default function AboutPage() {
           <div className="space-y-3">
             <div>
               <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-                About {brand.shortName}
+                {t("titlePrefix")} {brand.shortName}
               </h1>
               <p className="mt-1 text-sm font-medium text-[var(--avasc-text-muted)]">{brand.legalName}</p>
             </div>
             <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-              AVASC is a nonprofit anti-scam platform built to support victims with dignity. We combine structured
-              incident reporting, privacy-safe pattern intelligence, and practical recovery guidance.
+              {t("intro")}
             </p>
           </div>
         </div>
       </header>
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="border-slate-200 p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-foreground">What we do</h2>
+          <h2 className="text-lg font-semibold text-foreground">{t("whatWeDo")}</h2>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground marker:text-[var(--avasc-gold-light)]">
-            <li>Help victims submit secure, structured scam reports.</li>
-            <li>Analyze scam indicators and cluster recurring patterns.</li>
-            <li>Publish anonymized public scam profiles for prevention.</li>
+            <li>{t("do1")}</li>
+            <li>{t("do2")}</li>
+            <li>{t("do3")}</li>
             <li>
-              Issue{" "}
-              <Link
-                href="/briefings"
-                className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
-              >
-                public scam alerts
-              </Link>{" "}
-              and a weekly &quot;This Week in Scams&quot; briefing.
+              {t.rich("do4", {
+                alerts: (chunks) => (
+                  <Link
+                    href="/briefings"
+                    className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
             </li>
             <li>
-              Offer free{" "}
-              <Link
-                href="/guides"
-                className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
-              >
-                scam-prevention education
-              </Link>{" "}
-              — guides, resources, and an AI Scam Check.
+              {t.rich("do5", {
+                guides: (chunks) => (
+                  <Link
+                    href="/guides"
+                    className="text-[var(--avasc-gold-light)] underline underline-offset-2 hover:text-[var(--avasc-gold)]"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
             </li>
-            <li>Provide support-request workflows and recovery checklists.</li>
+            <li>{t("do6")}</li>
           </ul>
         </Card>
         <Card className="border-slate-200 p-5 shadow-sm">
-          <h2 className="text-lg font-semibold text-foreground">What we are not</h2>
+          <h2 className="text-lg font-semibold text-foreground">{t("whatWeAreNot")}</h2>
           <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-            <li>Not a law firm.</li>
-            <li>Not a government agency.</li>
-            <li>Not a guaranteed recovery service.</li>
-            <li>Not a place to publish private victim information.</li>
+            <li>{t("not1")}</li>
+            <li>{t("not2")}</li>
+            <li>{t("not3")}</li>
+            <li>{t("not4")}</li>
           </ul>
         </Card>
       </div>
 
       <Card className="border-slate-200 p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-foreground">Privacy and safety commitments</h2>
+        <h2 className="text-lg font-semibold text-foreground">{t("privacyTitle")}</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Reports are private by default. Public database pages use anonymized, victim-safe summaries only. We do not
-          expose private narratives, internal admin notes, or other victims&apos; identifiable information in public
-          views.
+          {t("privacyBody")}
         </p>
       </Card>
 
       <div className="flex flex-wrap gap-3">
         <Link href="/report" className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
-          Report a scam
+          {t("reportCta")}
         </Link>
         <Link
           href="/database"
           className="rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-slate-50"
         >
-          Search scam database
+          {t("searchCta")}
         </Link>
       </div>
     </div>

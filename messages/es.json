@@ -67,5 +67,27 @@
     "rightsReserved": "Todos los derechos reservados.",
     "privacy": "Privacidad",
     "terms": "Términos"
+  },
+  "about": {
+    "metaTitle": "Acerca de AVASC",
+    "metaDescription": "Asociación de Víctimas Contra las Ciberestafas (AVASC): misión, diseño centrado en la privacidad y apoyo contra las estafas.",
+    "titlePrefix": "Acerca de",
+    "intro": "AVASC es una plataforma sin fines de lucro contra las estafas, creada para apoyar a las víctimas con dignidad. Combinamos denuncias estructuradas de incidentes, inteligencia de patrones respetuosa con la privacidad y orientación práctica para la recuperación.",
+    "whatWeDo": "Qué hacemos",
+    "do1": "Ayudamos a las víctimas a enviar denuncias de estafas seguras y estructuradas.",
+    "do2": "Analizamos indicadores de estafas y agrupamos patrones recurrentes.",
+    "do3": "Publicamos perfiles públicos de estafas anonimizados para la prevención.",
+    "do4": "Emitimos <alerts>alertas públicas de estafas</alerts> y un boletín semanal «Esta semana en estafas».",
+    "do5": "Ofrecemos <guides>educación gratuita para prevenir estafas</guides>: guías, recursos y una verificación de estafas con IA.",
+    "do6": "Ofrecemos flujos de solicitud de apoyo y listas de verificación para la recuperación.",
+    "whatWeAreNot": "Qué no somos",
+    "not1": "No somos un bufete de abogados.",
+    "not2": "No somos una agencia gubernamental.",
+    "not3": "No somos un servicio de recuperación garantizada.",
+    "not4": "No somos un lugar para publicar información privada de las víctimas.",
+    "privacyTitle": "Compromisos de privacidad y seguridad",
+    "privacyBody": "Las denuncias son privadas de forma predeterminada. Las páginas públicas de la base de datos usan solo resúmenes anonimizados y seguros para las víctimas. No exponemos narrativas privadas, notas internas de administración ni información identificable de otras víctimas en las vistas públicas.",
+    "reportCta": "Denunciar una estafa",
+    "searchCta": "Buscar en la base de datos de estafas"
   }
 }

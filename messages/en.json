@@ -67,5 +67,27 @@
     "rightsReserved": "All rights reserved.",
     "privacy": "Privacy",
     "terms": "Terms"
+  },
+  "about": {
+    "metaTitle": "About AVASC",
+    "metaDescription": "Association of Victims Against Cyber-Scams (AVASC): mission, privacy-first design, and anti-scam support.",
+    "titlePrefix": "About",
+    "intro": "AVASC is a nonprofit anti-scam platform built to support victims with dignity. We combine structured incident reporting, privacy-safe pattern intelligence, and practical recovery guidance.",
+    "whatWeDo": "What we do",
+    "do1": "Help victims submit secure, structured scam reports.",
+    "do2": "Analyze scam indicators and cluster recurring patterns.",
+    "do3": "Publish anonymized public scam profiles for prevention.",
+    "do4": "Issue <alerts>public scam alerts</alerts> and a weekly \"This Week in Scams\" briefing.",
+    "do5": "Offer free <guides>scam-prevention education</guides> — guides, resources, and an AI Scam Check.",
+    "do6": "Provide support-request workflows and recovery checklists.",
+    "whatWeAreNot": "What we are not",
+    "not1": "Not a law firm.",
+    "not2": "Not a government agency.",
+    "not3": "Not a guaranteed recovery service.",
+    "not4": "Not a place to publish private victim information.",
+    "privacyTitle": "Privacy and safety commitments",
+    "privacyBody": "Reports are private by default. Public database pages use anonymized, victim-safe summaries only. We do not expose private narratives, internal admin notes, or other victims' identifiable information in public views.",
+    "reportCta": "Report a scam",
+    "searchCta": "Search scam database"
   }
 }
