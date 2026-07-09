@@ -1,30 +1,35 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
 
-export const metadata: Metadata = {
-  title: "Common Cryptocurrency Scam Types and How to Avoid Them",
-  description:
-    "Learn about pig butchering, fake exchanges, pump and dump schemes, and cryptocurrency investment fraud. Protect your crypto assets.",
-  openGraph: {
-    title: "Common Cryptocurrency Scam Types and How to Avoid Them | AVASC",
-    description:
-      "Learn about pig butchering, fake exchanges, pump and dump schemes, and cryptocurrency investment fraud. Protect your crypto assets.",
-    type: "article",
-    url: "https://www.avasc.org/guides/cryptocurrency-scam-types",
-    images: ["/og-image.png"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    images: ["/og-image.png"],
-  },
-  alternates: {
-    canonical: "/guides/cryptocurrency-scam-types",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("guide_cryptocurrency_scam_types");
+  const title = t("metaTitle");
+  const description = t("metaDescription");
+  return {
+    title,
+    description,
+    openGraph: {
+      title: t("ogTitle"),
+      description,
+      type: "article",
+      url: "https://www.avasc.org/guides/cryptocurrency-scam-types",
+      images: ["/og-image.png"],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/og-image.png"],
+    },
+    alternates: {
+      canonical: "/guides/cryptocurrency-scam-types",
+    },
+  };
+}
 
-export default function CryptoScamPage() {
+export default async function CryptoScamPage() {
+  const t = await getTranslations("guide_cryptocurrency_scam_types");
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -78,289 +83,291 @@ export default function CryptoScamPage() {
         className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-slate-900"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
-        Back to guides
+        {t("backToGuides")}
       </Link>
 
       <header className="max-w-3xl space-y-4">
         <h1 className="text-3xl font-semibold tracking-tight text-slate-900">
-          Common Cryptocurrency Scam Types and How to Avoid Them
+          {t("h1")}
         </h1>
         <p className="text-base leading-relaxed text-slate-600">
-          Cryptocurrency fraud is sophisticated, fast-moving, and often irreversible. Understanding the tactics—and how they differ from legitimate crypto—is essential for protecting your assets.
+          {t("intro")}
         </p>
       </header>
 
       <div className="space-y-8">
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Why Cryptocurrencies Are Targeted by Scammers</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("whyHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Cryptocurrencies have become primary targets for fraud because they offer scammers significant advantages:
+            {t("whyPara")}
           </p>
 
           <ul className="space-y-2 text-slate-700">
-            <li>• <span className="font-medium">Irreversible transfers:</span> Unlike credit cards or bank transfers, crypto transactions can't be reversed or disputed.</li>
-            <li>• <span className="font-medium">Pseudonymity:</span> Transactions are difficult to trace, making it hard to identify or recover from scammers.</li>
-            <li>• <span className="font-medium">No regulatory oversight:</span> Crypto is less regulated than traditional finance, giving scammers more room to operate.</li>
-            <li>• <span className="font-medium">Global reach:</span> A scammer in one country can easily target victims worldwide.</li>
-            <li>• <span className="font-medium">Speed:</span> Transactions happen in minutes, giving victims no time to pause and verify.</li>
+            <li>• <span className="font-medium">{t("whyItem1Label")}</span> {t("whyItem1Body")}</li>
+            <li>• <span className="font-medium">{t("whyItem2Label")}</span> {t("whyItem2Body")}</li>
+            <li>• <span className="font-medium">{t("whyItem3Label")}</span> {t("whyItem3Body")}</li>
+            <li>• <span className="font-medium">{t("whyItem4Label")}</span> {t("whyItem4Body")}</li>
+            <li>• <span className="font-medium">{t("whyItem5Label")}</span> {t("whyItem5Body")}</li>
           </ul>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Pig Butchering (The Most Sophisticated Crypto Scam)</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("pigHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            "Pig butchering" is an elaborate, long-game scam that can last weeks or months. The name refers to the process: raising a pig (building trust with the victim) then slaughtering it (stealing all their money).
+            {t("pigPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">How it works</h3>
+            <h3 className="font-semibold text-slate-900">{t("pigHowTitle")}</h3>
             <ol className="mt-3 list-decimal space-y-3 pl-5 text-slate-700">
-              <li><span className="font-medium">Initial contact:</span> Scammer reaches out via dating app, text, or social media, posing as an attractive person interested in dating or friendship.</li>
-              <li><span className="font-medium">Trust building:</span> Over weeks, they build emotional connection, sharing personal stories and showing genuine interest in your life.</li>
-              <li><span className="font-medium">Investment introduction:</span> They mention their "side business" of cryptocurrency trading or investment. They may show fabricated returns or profits.</li>
-              <li><span className="font-medium">Invitation:</span> They ask you to join the investment opportunity, offering to help or guide you through the process.</li>
-              <li><span className="font-medium">Deposit phase:</span> You're directed to a fake cryptocurrency exchange or trading platform. You deposit money, which scammers accept.</li>
-              <li><span className="font-medium">False growth:</span> The platform shows fake returns on your investment. Your balance grows in the app, but it's all fabricated.</li>
-              <li><span className="font-medium">The slaughter:</span> When you try to withdraw funds, you're told you need to pay fees, taxes, or make a larger deposit to "unlock" your returns. When you refuse, you realize the money is gone.</li>
+              <li><span className="font-medium">{t("pigStep1Label")}</span> {t("pigStep1Body")}</li>
+              <li><span className="font-medium">{t("pigStep2Label")}</span> {t("pigStep2Body")}</li>
+              <li><span className="font-medium">{t("pigStep3Label")}</span> {t("pigStep3Body")}</li>
+              <li><span className="font-medium">{t("pigStep4Label")}</span> {t("pigStep4Body")}</li>
+              <li><span className="font-medium">{t("pigStep5Label")}</span> {t("pigStep5Body")}</li>
+              <li><span className="font-medium">{t("pigStep6Label")}</span> {t("pigStep6Body")}</li>
+              <li><span className="font-medium">{t("pigStep7Label")}</span> {t("pigStep7Body")}</li>
             </ol>
           </Card>
 
           <Card className="border-red-200 bg-red-50/80 p-6">
-            <h3 className="font-semibold text-red-950">Warning signs of pig butchering</h3>
+            <h3 className="font-semibold text-red-950">{t("pigWarnTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-red-950/90">
-              <li>Someone you met romantically suddenly mentions crypto investments</li>
-              <li>Offers to help you invest or guides you to a platform</li>
-              <li>Shows you screenshots of large profits from small deposits</li>
-              <li>Platform shows growing balance but you can't withdraw</li>
-              <li>They pressure you to deposit more to "unlock" returns</li>
-              <li>They claim fees or taxes are preventing your withdrawal</li>
+              <li>{t("pigWarn1")}</li>
+              <li>{t("pigWarn2")}</li>
+              <li>{t("pigWarn3")}</li>
+              <li>{t("pigWarn4")}</li>
+              <li>{t("pigWarn5")}</li>
+              <li>{t("pigWarn6")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Fake Cryptocurrency Exchanges</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("fakeExHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Scammers create fake websites and apps that look nearly identical to legitimate exchanges. They're designed to steal your money or credentials.
+            {t("fakeExPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">What they look like</h3>
+            <h3 className="font-semibold text-slate-900">{t("fakeExLookTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Professional-looking websites with branding similar to real exchanges</li>
-              <li>Apps that mimic Coinbase, Kraken, Binance, or other legitimate platforms</li>
-              <li>Slightly different URLs (coibase.com instead of coinbase.com)</li>
-              <li>Charts showing fake market data and prices</li>
-              <li>Login screens that steal your credentials</li>
-              <li>Deposit functions that accept crypto but never reflect in your account</li>
+              <li>{t("fakeExLook1")}</li>
+              <li>{t("fakeExLook2")}</li>
+              <li>{t("fakeExLook3")}</li>
+              <li>{t("fakeExLook4")}</li>
+              <li>{t("fakeExLook5")}</li>
+              <li>{t("fakeExLook6")}</li>
             </ul>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">How to verify an exchange is real</h3>
+            <h3 className="font-semibold text-slate-900">{t("fakeExVerifyTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Always type the URL directly into your browser; never click links from emails, texts, or messages</li>
-              <li>Check that the URL matches exactly (Coinbase is coinbase.com, not coibase.com)</li>
-              <li>Verify the domain has an SSL certificate (look for the padlock icon)</li>
-              <li>Download apps directly from the official app store, not from links in messages</li>
-              <li>Look up the exchange's official support contact and call them to verify</li>
-              <li>Check if the exchange is registered and regulated in your jurisdiction</li>
+              <li>{t("fakeExVerify1")}</li>
+              <li>{t("fakeExVerify2")}</li>
+              <li>{t("fakeExVerify3")}</li>
+              <li>{t("fakeExVerify4")}</li>
+              <li>{t("fakeExVerify5")}</li>
+              <li>{t("fakeExVerify6")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Pump and Dump Schemes</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("pumpHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Scammers promote obscure or newly created cryptocurrencies to drive up the price (pump), then sell their holdings for profit (dump), leaving regular investors with worthless coins.
+            {t("pumpPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">How pump and dump works</h3>
+            <h3 className="font-semibold text-slate-900">{t("pumpHowTitle")}</h3>
             <ol className="mt-3 list-decimal space-y-3 pl-5 text-slate-700">
-              <li><span className="font-medium">Promotion:</span> Scammers promote a worthless coin on social media, crypto forums, or Discord communities. They may pose as insiders, developers, or influencers.</li>
-              <li><span className="font-medium">The pump:</span> New investors buy the coin based on hype, driving the price up dramatically.</li>
-              <li><span className="font-medium">The dump:</span> The original scammers sell their coins at the inflated price, crashing the value.</li>
-              <li><span className="font-medium">The collapse:</span> Late-arriving investors are left holding coins worth a fraction of what they paid.</li>
+              <li><span className="font-medium">{t("pumpStep1Label")}</span> {t("pumpStep1Body")}</li>
+              <li><span className="font-medium">{t("pumpStep2Label")}</span> {t("pumpStep2Body")}</li>
+              <li><span className="font-medium">{t("pumpStep3Label")}</span> {t("pumpStep3Body")}</li>
+              <li><span className="font-medium">{t("pumpStep4Label")}</span> {t("pumpStep4Body")}</li>
             </ol>
           </Card>
 
           <Card className="border-red-200 bg-red-50/80 p-6">
-            <h3 className="font-semibold text-red-950">Red flags for pump and dump</h3>
+            <h3 className="font-semibold text-red-950">{t("pumpFlagsTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-red-950/90">
-              <li>Promises of "guaranteed" returns from a new coin</li>
-              <li>Pressure to invest quickly before the price rises further</li>
-              <li>Celebrity or influencer endorsements (often fake)</li>
-              <li>Coin suddenly appears in private groups or Discord chats</li>
-              <li>"Insider information" about upcoming developments</li>
-              <li>Coin with no clear use case or technology</li>
-              <li>Rapid, unsustainable price increases</li>
+              <li>{t("pumpFlag1")}</li>
+              <li>{t("pumpFlag2")}</li>
+              <li>{t("pumpFlag3")}</li>
+              <li>{t("pumpFlag4")}</li>
+              <li>{t("pumpFlag5")}</li>
+              <li>{t("pumpFlag6")}</li>
+              <li>{t("pumpFlag7")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Phishing and Wallet Theft</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("phishHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Scammers use phishing emails, fake websites, and malware to steal your crypto wallet credentials or recovery phrases.
+            {t("phishPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Common phishing tactics</h3>
+            <h3 className="font-semibold text-slate-900">{t("phishTacticsTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Fake emails from Coinbase, MetaMask, or Ledger asking you to "verify" your account</li>
-              <li>Links to fake wallet sites that steal your seed phrase or private key</li>
-              <li>USB drives or downloads containing malware that monitors your wallet</li>
-              <li>Social engineering to trick you into revealing recovery phrases</li>
-              <li>Fake wallet apps that steal your credentials when you log in</li>
+              <li>{t("phishTactic1")}</li>
+              <li>{t("phishTactic2")}</li>
+              <li>{t("phishTactic3")}</li>
+              <li>{t("phishTactic4")}</li>
+              <li>{t("phishTactic5")}</li>
             </ul>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">How to protect your wallet</h3>
+            <h3 className="font-semibold text-slate-900">{t("phishProtectTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Never share your seed phrase (recovery phrase) with anyone, ever</li>
-              <li>Never enter your seed phrase on any website, even if it looks official</li>
-              <li>Use hardware wallets (Ledger, Trezor) for large amounts of crypto</li>
-              <li>Enable all security features on your wallet (2FA, biometric lock)</li>
-              <li>Only download wallets from official app stores or websites</li>
-              <li>Never click links in emails about your wallet—go to the official site directly</li>
+              <li>{t("phishProtect1")}</li>
+              <li>{t("phishProtect2")}</li>
+              <li>{t("phishProtect3")}</li>
+              <li>{t("phishProtect4")}</li>
+              <li>{t("phishProtect5")}</li>
+              <li>{t("phishProtect6")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Fake Investment Platforms and "Trading Bots"</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("botsHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Scammers promise to grow your crypto through automated trading, AI bots, or exclusive investment programs. The platform accepts deposits but the "trading" is fictitious.
+            {t("botsPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Red flags for fake investment platforms</h3>
+            <h3 className="font-semibold text-slate-900">{t("botsFlagsTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Guaranteed or unrealistic returns (20%, 50%, 100%+ per month)</li>
-              <li>Pressure to invest large amounts quickly</li>
-              <li>Minimal or vague information about how the platform works</li>
-              <li>Fake testimonials from "traders" showing large profits</li>
-              <li>Requests to recruit others (pyramid structure)</li>
-              <li>Difficulty withdrawing funds or excessive withdrawal requirements</li>
-              <li>No regulatory oversight or licensing information</li>
+              <li>{t("botsFlag1")}</li>
+              <li>{t("botsFlag2")}</li>
+              <li>{t("botsFlag3")}</li>
+              <li>{t("botsFlag4")}</li>
+              <li>{t("botsFlag5")}</li>
+              <li>{t("botsFlag6")}</li>
+              <li>{t("botsFlag7")}</li>
             </ul>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">What legitimate crypto investment looks like</h3>
+            <h3 className="font-semibold text-slate-900">{t("botsLegitTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Clear, realistic returns (2-5% annually is more realistic)</li>
-              <li>Transparent about fees and costs</li>
-              <li>Regulated by financial authorities</li>
-              <li>Easy withdrawal of funds</li>
-              <li>Conservative marketing without pressure</li>
-              <li>Clear explanation of how returns are generated</li>
+              <li>{t("botsLegit1")}</li>
+              <li>{t("botsLegit2")}</li>
+              <li>{t("botsLegit3")}</li>
+              <li>{t("botsLegit4")}</li>
+              <li>{t("botsLegit5")}</li>
+              <li>{t("botsLegit6")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">NFT and Metaverse Scams</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("nftHeading")}</h2>
           <p className="text-slate-700 leading-relaxed">
-            Scammers create fake NFTs or metaverse projects that are worthless or stolen artwork. Victims often lose significant amounts paying for assets that have no value.
+            {t("nftPara")}
           </p>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Common NFT scam tactics</h3>
+            <h3 className="font-semibold text-slate-900">{t("nftTacticsTitle")}</h3>
             <ul className="mt-3 list-disc space-y-2 pl-5 text-slate-700">
-              <li>Fake "collection drops" with copied artwork or stolen images</li>
-              <li>Stealing NFTs directly from wallets using malicious smart contracts</li>
-              <li>Impersonating legitimate projects (fake Discord or Twitter)</li>
-              <li>Rug pulls: new projects that take investors' money and disappear</li>
-              <li>Fake metaverse land with no actual utility or value</li>
+              <li>{t("nftTactic1")}</li>
+              <li>{t("nftTactic2")}</li>
+              <li>{t("nftTactic3")}</li>
+              <li>{t("nftTactic4")}</li>
+              <li>{t("nftTactic5")}</li>
             </ul>
           </Card>
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Essential Crypto Security Practices</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">{t("securityHeading")}</h2>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Never invest in anything you don't understand</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec1Title")}</h3>
             <p className="mt-2 text-slate-700">
-              If you can't explain how an investment makes money, or the explanation doesn't make sense, it's likely a scam. Take time to research before investing.
+              {t("sec1Body")}
             </p>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Use established, regulated platforms</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec2Title")}</h3>
             <p className="mt-2 text-slate-700">
-              For buying and trading crypto, use major exchanges like Coinbase, Kraken, or Gemini that are registered with financial regulators. For holding crypto, use established wallets like MetaMask, Ledger, or hardware wallets.
+              {t("sec2Body")}
             </p>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Be skeptical of "opportunities"</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec3Title")}</h3>
             <p className="mt-2 text-slate-700">
-              If someone is actively recruiting you into an investment or platform, especially through personal connections, it's likely a scam. Legitimate investments don't rely on recruitment.
+              {t("sec3Body")}
             </p>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Keep your private keys private</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec4Title")}</h3>
             <p className="mt-2 text-slate-700">
-              Your private keys and seed phrases are like passwords to your bank account. Never share them with anyone, type them online, or enter them on websites.
+              {t("sec4Body")}
             </p>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Start small, verify everything</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec5Title")}</h3>
             <p className="mt-2 text-slate-700">
-              If you're testing a new platform or investment, start with a small amount you can afford to lose. Verify that withdrawals work before depositing more.
+              {t("sec5Body")}
             </p>
           </Card>
 
           <Card className="border-slate-200 p-6 shadow-sm">
-            <h3 className="font-semibold text-slate-900">Enable two-factor authentication (2FA)</h3>
+            <h3 className="font-semibold text-slate-900">{t("sec6Title")}</h3>
             <p className="mt-2 text-slate-700">
-              On all cryptocurrency platforms and wallets, enable 2FA using an authenticator app (not SMS when possible, as SMS can be compromised).
+              {t("sec6Body")}
             </p>
           </Card>
         </section>
 
         <section className="rounded-2xl border border-amber-200 bg-amber-50/80 p-6">
-          <h2 className="text-lg font-semibold text-amber-950">If You've Lost Crypto to a Scam</h2>
+          <h2 className="text-lg font-semibold text-amber-950">{t("lostHeading")}</h2>
           <p className="mt-3 text-amber-950/90">
-            Unfortunately, cryptocurrency transactions are typically irreversible. However, you should still report the scam to law enforcement and AVASC. Documenting the fraud helps authorities identify patterns and protect others. Some specialized recovery services may be able to assist with certain types of theft, but be careful—many "recovery services" are themselves scams.
+            {t("lostBody")}
           </p>
         </section>
       </div>
 
       <div className="space-y-6 border-t border-slate-200 pt-8">
-        <h2 className="text-2xl font-semibold text-slate-900">Next Steps</h2>
+        <h2 className="text-2xl font-semibold text-slate-900">{t("nextStepsHeading")}</h2>
 
         <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
           <Link
             href="/database"
             className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
           >
-            <h3 className="font-semibold text-slate-900 group-hover:text-blue-600">Search Scam Database</h3>
-            <p className="mt-2 text-sm text-slate-600">Check if a crypto platform, person, or address is known to scam.</p>
+            <h3 className="font-semibold text-slate-900 group-hover:text-blue-600">{t("nextDatabaseTitle")}</h3>
+            <p className="mt-2 text-sm text-slate-600">{t("nextDatabaseBody")}</p>
           </Link>
 
           <Link
             href="/report"
             className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:border-slate-300"
           >
-            <h3 className="font-semibold text-slate-900 group-hover:text-blue-600">Report a Crypto Scam</h3>
-            <p className="mt-2 text-sm text-slate-600">Document your experience and help protect other crypto users.</p>
+            <h3 className="font-semibold text-slate-900 group-hover:text-blue-600">{t("nextReportTitle")}</h3>
+            <p className="mt-2 text-sm text-slate-600">{t("nextReportBody")}</p>
           </Link>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <p className="text-sm text-slate-600">
-            If you've lost money to a cryptocurrency scam, visit our{" "}
-            <Link href="/recovery" className="font-medium text-slate-900 underline underline-offset-2">
-              recovery resources
-            </Link>{" "}
-            for guidance on next steps.
+            {t.rich("recoveryNote", {
+              link: (chunks) => (
+                <Link href="/recovery" className="font-medium text-slate-900 underline underline-offset-2">
+                  {chunks}
+                </Link>
+              ),
+            })}
           </p>
         </div>
       </div>
