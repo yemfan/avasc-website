@@ -555,11 +555,17 @@ model ContentTranslation {
   locale     String
   sourceHash String
   fields     Json
+  // Human-authored native translation: pinned (machine never overwrites it) and
+  // always served over machine output. `stale` marks a human row whose English
+  // source changed since it was written — still served, surfaced for re-review.
+  isHuman    Boolean  @default(false)
+  stale      Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
   @@unique([entityType, entityId, locale])
   @@index([entityType, entityId])
+  @@index([locale, isHuman])
 }
 
 model Donation {

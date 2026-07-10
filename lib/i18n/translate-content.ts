@@ -96,7 +96,7 @@ export async function translateFields<T extends Fields>(
   locale: Locale,
   fields: T
 ): Promise<T> {
-  if (locale === defaultLocale || !hasContent(fields) || !isAnthropicConfigured()) {
+  if (locale === defaultLocale || !hasContent(fields)) {
     return fields;
   }
 
@@ -107,15 +107,39 @@ export async function translateFields<T extends Fields>(
       where: { entityType_entityId_locale: { entityType, entityId, locale } },
     })
     .catch(() => null);
+
+  // Human-authored native translation wins unconditionally and is never
+  // machine-overwritten. If the English source has drifted since it was
+  // written, flag it stale for re-review — but keep serving the human text.
+  if (cached?.isHuman) {
+    if (cached.sourceHash !== sourceHash && !cached.stale) {
+      prisma.contentTranslation
+        .update({
+          where: { entityType_entityId_locale: { entityType, entityId, locale } },
+          data: { stale: true },
+        })
+        .catch(() => {});
+    }
+    return { ...fields, ...(cached.fields as Fields) };
+  }
+
+  // Fresh machine cache.
   if (cached && cached.sourceHash === sourceHash) {
     return { ...fields, ...(cached.fields as Fields) };
+  }
+
+  // A (re)machine-translation is needed, which requires the model. Without a
+  // key, serve any existing (stale) machine cache before falling back to English.
+  if (!isAnthropicConfigured()) {
+    return cached ? { ...fields, ...(cached.fields as Fields) } : fields;
   }
 
   let translated: Fields;
   try {
     translated = await callClaude(locale as Exclude<Locale, "en">, fields);
   } catch {
-    return fields; // fail open to English
+    // Fail open — prefer a stale machine cache over losing the translation.
+    return cached ? { ...fields, ...(cached.fields as Fields) } : fields;
   }
 
   await prisma.contentTranslation
@@ -127,8 +151,15 @@ export async function translateFields<T extends Fields>(
         locale,
         sourceHash,
         fields: translated as unknown as Prisma.InputJsonValue,
+        isHuman: false,
+        stale: false,
       },
-      update: { sourceHash, fields: translated as unknown as Prisma.InputJsonValue },
+      update: {
+        sourceHash,
+        fields: translated as unknown as Prisma.InputJsonValue,
+        isHuman: false,
+        stale: false,
+      },
     })
     .catch(() => {});
 
@@ -146,7 +177,9 @@ export async function translateMany<T extends Fields>(
   items: Array<{ id: string; fields: T }>,
   concurrency = 6
 ): Promise<T[]> {
-  if (locale === defaultLocale || !isAnthropicConfigured()) {
+  // Per-item translateFields handles the no-key case (serving human/cached rows),
+  // so only short-circuit for the canonical locale here.
+  if (locale === defaultLocale) {
     return items.map((it) => it.fields);
   }
 
