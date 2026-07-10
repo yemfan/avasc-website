@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AlertSubscriptionForm } from "@/components/alerts/AlertSubscriptionForm";
 import { SectionShell } from "@/components/avasc/layout/SectionShell";
 import { localeAlternates } from "@/lib/i18n/alternates";
+import { Link } from "@/i18n/navigation";
 
 type SearchProps = {
   searchParams: Promise<{ verify?: string; confirm?: string; unsubscribe?: string }>;
@@ -92,9 +93,9 @@ export default async function AlertsPage({ searchParams }: SearchProps) {
         <AlertSubscriptionForm />
         <p className="text-xs text-muted-foreground">
           Signed in? Manage channels in{" "}
-          <a href="/alerts/preferences" className="text-avasc-gold-light underline">
+          <Link href="/alerts/preferences" className="text-avasc-gold-light underline">
             alert preferences
-          </a>
+          </Link>
           .
         </p>
       </div>
