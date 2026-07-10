@@ -17,6 +17,7 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { href: "/admin/weekly-news", label: "Weekly briefing" },
   { href: "/admin/daily-news", label: "Daily briefing" },
   { href: "/admin/social", label: "Social content" },
+  { href: "/admin/translations", label: "Translations" },
   { href: "/admin/imports", label: "Imports" },
   { href: "/admin/audit", label: "Audit Log" },
   { href: "/admin/users", label: "Users" },
