@@ -2094,5 +2094,14 @@
     "dim_ftc_payment_method": "Reported losses by payment method",
     "dim_ic3_crime_type": "Reported losses by scam type",
     "sourceLabel": "Source"
+  },
+  "cfpb": {
+    "title": "Scam complaints, updated daily",
+    "subtitle": "Consumer complaints that mention scams, filed with the U.S. Consumer Financial Protection Bureau (CFPB) over the last 12 months. A live signal from the CFPB's public database — not a total count of all scams.",
+    "totalLabel": "scam-related complaints in the last 12 months",
+    "topStates": "Most-reported states",
+    "updated": "Updated",
+    "live": "Live",
+    "sourceCta": "Explore the CFPB database"
   }
 }

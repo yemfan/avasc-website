@@ -2094,5 +2094,14 @@
     "dim_ftc_payment_method": "按支付方式划分的报告损失",
     "dim_ic3_crime_type": "按诈骗类型划分的报告损失",
     "sourceLabel": "来源"
+  },
+  "cfpb": {
+    "title": "诈骗投诉，每日更新",
+    "subtitle": "过去 12 个月内向美国消费者金融保护局（CFPB）提交的、提及诈骗的消费者投诉。这是来自 CFPB 公开数据库的实时信号，并非所有诈骗的总数。",
+    "totalLabel": "过去 12 个月内与诈骗相关的投诉",
+    "topStates": "投诉最多的州",
+    "updated": "更新于",
+    "live": "实时",
+    "sourceCta": "浏览 CFPB 数据库"
   }
 }

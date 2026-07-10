@@ -2094,5 +2094,14 @@
     "dim_ftc_payment_method": "Pérdidas reportadas por método de pago",
     "dim_ic3_crime_type": "Pérdidas reportadas por tipo de estafa",
     "sourceLabel": "Fuente"
+  },
+  "cfpb": {
+    "title": "Quejas por estafas, actualizadas a diario",
+    "subtitle": "Quejas de consumidores que mencionan estafas, presentadas ante la Oficina de Protección Financiera del Consumidor de EE. UU. (CFPB) en los últimos 12 meses. Una señal en vivo de la base de datos pública de la CFPB, no un conteo total de todas las estafas.",
+    "totalLabel": "quejas relacionadas con estafas en los últimos 12 meses",
+    "topStates": "Estados con más reportes",
+    "updated": "Actualizado",
+    "live": "En vivo",
+    "sourceCta": "Explora la base de datos de la CFPB"
   }
 }
