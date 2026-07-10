@@ -7,6 +7,7 @@ import { getPublicAlerts } from "@/lib/alerts/avasc-alert-section-api-and-loader
 import { translateMany } from "@/lib/i18n/translate-content";
 import type { Locale } from "@/i18n/config";
 import { localeAlternates } from "@/lib/i18n/alternates";
+import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -138,9 +139,9 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
                 </a>
               </li>
               <li>
-                <a href="/report" className="underline hover:text-[var(--avasc-gold-light)]">
+                <Link href="/report" className="underline hover:text-[var(--avasc-gold-light)]">
                   Submit a scam report to AVASC
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="mailto:security@avasc.org" className="underline hover:text-[var(--avasc-gold-light)]">
@@ -164,7 +165,7 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
       <section className="mt-12 border-t border-[var(--avasc-border)] pt-12">
         <h2 className="text-xl font-semibold text-foreground mb-6">Learn More</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          <a
+          <Link
             href="/report"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
@@ -172,8 +173,8 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
             <p className="mt-1 text-sm text-muted-foreground">
               Share your experience and help us expand the database.
             </p>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/stories"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
@@ -181,8 +182,8 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
             <p className="mt-1 text-sm text-muted-foreground">
               Learn how others identified and responded to scams.
             </p>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/recovery"
             className="rounded-lg border border-[var(--avasc-border)] bg-[var(--avasc-bg-card)] p-4 transition-colors hover:border-[var(--avasc-gold-light)]"
           >
@@ -190,7 +191,7 @@ export default async function PublicDatabasePage({ searchParams }: PageProps) {
             <p className="mt-1 text-sm text-muted-foreground">
               Get guidance on responding to and recovering from scams.
             </p>
-          </a>
+          </Link>
         </div>
       </section>
     </>
