@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
@@ -352,6 +353,7 @@ export default async function BusinessEmailCompromisePage() {
           </p>
         </div>
       </div>
+      <RelatedGuides currentSlug="business-email-compromise" />
     </div>
   );
 }

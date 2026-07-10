@@ -2113,5 +2113,10 @@
     "methodologyTitle": "关于这些数据",
     "methodologyNote": "数据来自美国政府官方来源：FBI 互联网犯罪投诉中心（IC3）、FTC Consumer Sentinel 网络以及 CFPB 消费者投诉数据库。年度数字在新报告发布时更新；CFPB 数据每日更新。这些是已报告的损失和投诉——由于大多数欺诈未被举报，实际总数更高。",
     "footerLink": "诈骗数据"
+  },
+  "related": {
+    "title": "相关指南",
+    "allGuides": "浏览所有指南",
+    "database": "搜索诈骗数据库"
   }
 }

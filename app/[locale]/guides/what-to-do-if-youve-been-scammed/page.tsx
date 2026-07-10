@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -398,6 +399,7 @@ export default async function WhatToDoIfScammedPage() {
           </p>
         </div>
       </div>
+      <RelatedGuides currentSlug="what-to-do-if-youve-been-scammed" />
     </div>
   );
 }

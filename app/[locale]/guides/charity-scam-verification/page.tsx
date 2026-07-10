@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -320,6 +321,7 @@ export default async function CharityScamVerificationPage() {
           </p>
         </div>
       </div>
+      <RelatedGuides currentSlug="charity-scam-verification" />
     </div>
   );
 }

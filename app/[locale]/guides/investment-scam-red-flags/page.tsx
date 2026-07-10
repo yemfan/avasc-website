@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import { RelatedGuides } from "@/components/guides/RelatedGuides";
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -395,6 +396,7 @@ export default async function InvestmentScamPage() {
           </p>
         </div>
       </div>
+      <RelatedGuides currentSlug="investment-scam-red-flags" />
     </div>
   );
 }
