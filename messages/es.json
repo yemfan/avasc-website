@@ -2103,5 +2103,15 @@
     "updated": "Actualizado",
     "live": "En vivo",
     "sourceCta": "Explora la base de datos de la CFPB"
+  },
+  "statistics": {
+    "metaTitle": "Datos sobre estafas y fraude",
+    "metaDescription": "Pérdidas por estafas y fraude reportadas en EE. UU.: totales año tras año (FBI IC3, FTC), adónde va el dinero por tipo de estafa y método de pago, y datos de quejas en vivo de la CFPB. Con fuentes y actualizado con regularidad.",
+    "eyebrow": "Datos",
+    "title": "Estafas y fraude, en cifras",
+    "intro": "Lo que muestran las fuentes oficiales de EE. UU. sobre las estafas y el fraude: cómo evolucionan las pérdidas, adónde va el dinero y datos de quejas en vivo. Cada cifra enlaza a su fuente.",
+    "methodologyTitle": "Sobre estos datos",
+    "methodologyNote": "Las cifras provienen de fuentes oficiales del gobierno de EE. UU.: el Centro de Quejas de Delitos en Internet del FBI (IC3), la Red Consumer Sentinel de la FTC y la base de datos de quejas de la CFPB. Las cifras anuales se actualizan cuando se publican nuevos informes; los datos de la CFPB se actualizan a diario. Son pérdidas y quejas reportadas: los totales reales son mayores, porque la mayoría del fraude no se denuncia.",
+    "footerLink": "Datos de estafas"
   }
 }

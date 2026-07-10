@@ -2103,5 +2103,15 @@
     "updated": "Updated",
     "live": "Live",
     "sourceCta": "Explore the CFPB database"
+  },
+  "statistics": {
+    "metaTitle": "Scam & Fraud Data",
+    "metaDescription": "Reported U.S. scam and fraud losses — year-over-year totals (FBI IC3, FTC), where the money goes by scam type and payment method, and live complaint data from the CFPB. Cited and updated regularly.",
+    "eyebrow": "Data",
+    "title": "Scam & fraud, by the numbers",
+    "intro": "What the official U.S. sources show about scams and fraud — how losses are trending, where the money goes, and live complaint data. Every figure links to its source.",
+    "methodologyTitle": "About this data",
+    "methodologyNote": "Figures come from official U.S. government sources: the FBI Internet Crime Complaint Center (IC3), the FTC Consumer Sentinel Network, and the CFPB Consumer Complaint Database. Annual figures update when new reports are published; CFPB data updates daily. These are reported losses and complaints — the true totals are higher, because most fraud goes unreported.",
+    "footerLink": "Scam data"
   }
 }

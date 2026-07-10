@@ -11,6 +11,7 @@ const footerColTitle = "text-xs font-semibold uppercase tracking-[0.14em] text-[
 
 export function AppShell({ children }: { children: ReactNode }) {
   const t = useTranslations("footer");
+  const tStats = useTranslations("statistics");
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <TopNavbar />
@@ -87,6 +88,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <li>
                   <Link href="/briefings" className={footerLink}>
                     {t("scamNews")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/statistics" className={footerLink}>
+                    {tStats("footerLink")}
                   </Link>
                 </li>
                 <li>
