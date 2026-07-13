@@ -9,6 +9,7 @@ import { createHmac, randomBytes } from "node:crypto";
  *   X (Twitter):  X_API_KEY, X_API_SECRET, X_ACCESS_TOKEN, X_ACCESS_SECRET
  *   Facebook:     FACEBOOK_PAGE_ID, FACEBOOK_PAGE_ACCESS_TOKEN
  *   Instagram:    INSTAGRAM_USER_ID (+ INSTAGRAM_ACCESS_TOKEN, or reuse FACEBOOK_PAGE_ACCESS_TOKEN)
+ *   LinkedIn:     LINKEDIN_ACCESS_TOKEN + LINKEDIN_AUTHOR_URN (or LINKEDIN_ORG_ID)
  */
 
 export type PostResult = { ok: boolean; id?: string; error?: string; skipped?: boolean };
@@ -135,5 +136,65 @@ export async function postToInstagram(imageUrl: string, caption: string): Promis
     return { ok: true, id: pJson.id };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Instagram request failed" };
+  }
+}
+
+/**
+ * Post to a LinkedIn Page (or member feed) via the Share API (`/rest/posts`).
+ *
+ * Author is either an organization ("urn:li:organization:<id>", set via
+ * LINKEDIN_ORG_ID) or a member ("urn:li:person:<id>", set via
+ * LINKEDIN_AUTHOR_URN). Uses a long-lived access token like the FB/IG posters.
+ *
+ * Note: posting AS an organization Page requires the token to carry
+ * `w_organization_social` (LinkedIn's Community Management API, approval-gated);
+ * posting as a member needs only `w_member_social`. Env-gated, so it returns
+ * `skipped` until both a token and an author URN are configured.
+ *
+ * LinkedIn sunsets each YYYYMM API version ~12 months after release (HTTP 426
+ * NONEXISTENT_VERSION once lapsed) — bump LINKEDIN_API_VERSION within the year.
+ */
+const LINKEDIN_API_VERSION = "202506";
+
+export async function postToLinkedIn(text: string): Promise<PostResult> {
+  const token = process.env.LINKEDIN_ACCESS_TOKEN?.trim();
+  const orgId = process.env.LINKEDIN_ORG_ID?.trim();
+  const author =
+    process.env.LINKEDIN_AUTHOR_URN?.trim() ||
+    (orgId ? `urn:li:organization:${orgId}` : "");
+  if (!token || !author) {
+    return { ok: false, skipped: true, error: "LinkedIn not configured" };
+  }
+
+  try {
+    const res = await fetch("https://api.linkedin.com/rest/posts", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "LinkedIn-Version": LINKEDIN_API_VERSION,
+        "X-Restli-Protocol-Version": "2.0.0",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        author,
+        commentary: text,
+        visibility: "PUBLIC",
+        distribution: {
+          feedDistribution: "MAIN_FEED",
+          targetEntities: [],
+          thirdPartyDistributionChannels: [],
+        },
+        lifecycleState: "PUBLISHED",
+        isReshareDisabledByAuthor: false,
+      }),
+    });
+    // /rest/posts returns 201 with an empty body and the post URN in x-restli-id.
+    if (!res.ok) {
+      const json = (await res.json().catch(() => ({}))) as { message?: string };
+      return { ok: false, error: json.message || `LinkedIn error ${res.status}` };
+    }
+    return { ok: true, id: res.headers.get("x-restli-id") || undefined };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "LinkedIn request failed" };
   }
 }
