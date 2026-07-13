@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { appBaseUrl } from "@/lib/subscriptions/links";
 import { buildDailyContext, generateDailyPosts } from "@/lib/social/daily";
-import { postToX, postToFacebook, postToInstagram, type PostResult } from "@/lib/social/post";
+import { postToX, postToFacebook, postToInstagram, postToLinkedIn, type PostResult } from "@/lib/social/post";
 import { getSocialAutopilot } from "@/lib/social/settings";
 import type { SocialPost } from "@/lib/social/types";
 
@@ -31,6 +31,7 @@ async function attemptPost(
   const xPost = posts.find((p) => p.platform === "x");
   const fbPost = posts.find((p) => p.platform === "facebook");
   const igPost = posts.find((p) => p.platform === "instagram");
+  const liPost = posts.find((p) => p.platform === "linkedin");
 
   const results: Record<string, PostResult> = {};
   if (xPost) {
@@ -40,6 +41,17 @@ async function attemptPost(
   }
   if (fbPost) {
     results.facebook = await postToFacebook(fbPost.body, linkUrl ?? undefined);
+  }
+  if (liPost) {
+    // LinkedIn takes the whole post as `commentary`; inline the link + hashtags
+    // (they aren't rendered as separate fields the way FB's `link` param is).
+    let text = liPost.body;
+    if (liPost.hashtags.length) {
+      const tags = liPost.hashtags.map((h) => (h.startsWith("#") ? h : `#${h}`)).join(" ");
+      text = `${text}\n\n${tags}`;
+    }
+    if (linkUrl && !text.includes(linkUrl)) text = `${text}\n\n${linkUrl}`.trim();
+    results.linkedin = await postToLinkedIn(text);
   }
   if (igPost) {
     // IG needs a public JPEG; the daily-image route renders one from this post.
